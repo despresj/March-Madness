@@ -11,7 +11,7 @@ list_of_dfs$`data/MSeasons.csv`
 # identifies the different seasons included in the historical data, 
 # along with certain season-level properties.
 
-list_of_dfs$`data/MTeams.csv`
+list_of_dfs$`data/MTeams.csv` # JOINED
 # identifies the id number of the team
 
 list_of_dfs$`data/MTeamConferences.csv`
@@ -57,9 +57,6 @@ list_of_dfs$`data/MRegularSeasonDetailedResults.csv`
 list_of_dfs$`data/MRegularSeasonCompactResults.csv`
 # identifies the game-by-game results for many 
 # seasons of historical data, starting with the 1985 season 
-
-
-
 
 # Probally not useful -----------------------------------------------------
 # For files I dont think well need but dont know yet
