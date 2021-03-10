@@ -34,6 +34,55 @@ seasion <- list_of_dfs$`data/MRegularSeasonDetailedResults.csv` %>%
          Lpersonalfoulscommitted = LPF
   ) %>%
   relocate(LTeamName, .after = LTeamID) %>% 
-  relocate(WTeamName, .after = WTeamID)
+  relocate(WTeamName, .after = WTeamID) %>% 
+  mutate(diff = (Winfieldgoalsmade - Lfieldgoalsmade),
+         std_dif = diff / sd(diff))
 
-seasion
+
+hist(seasion$std_dif, breaks = 100)
+hist(seasion$diff, breaks = 100)
+mean(seasion$diff)
+var(seasion$diff)
+
+mean(seasion$WScore)
+var(seasion$WScore)
+
+hist(seasion$WScore, breaks = 100)
+
+hist(rgamma(1000, 5, 3), breaks = 100)
+
+
+preds <- seasion %>% 
+  select(9:35) %>% 
+  names()
+
+varcombiner <- function(vars, outcome){
+  models <- list()
+  for (i in 1:length(vars)) {
+    vc <- combn(vars,i)
+    for (j in 1:ncol(vc)) {
+      mod <- paste0(outcome, " ~ ", paste0(vc[,j], collapse = " + "))
+      model <- as.formula(mod)
+      models <- c(models, model)
+    }
+  }
+  models
+}
+
+logistic <- function(x){
+  lm(x, data = seasion)
+}
+
+models <- varcombiner(vars = preds, outcome = "std_dif")
+
+
+best_subsets_model <- map(models, logistic) %>% 
+  map(glance) %>% 
+  setNames(models) %>% 
+  bind_rows(.id = "id") %>% 
+  distinct() %>% 
+  rename(model = id) %>% 
+  slice_min(AIC) %>% 
+  select(model)
+
+best_subsets_model
