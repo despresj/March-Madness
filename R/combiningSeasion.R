@@ -1,5 +1,6 @@
 source(here::here("R", "ReadIn.R"))
-library(broom)
+
+
 seasion <- list_of_dfs$`data/MRegularSeasonDetailedResults.csv` %>% 
   left_join( list_of_dfs$`data/MTeams.csv`, by = c("WTeamID" = "TeamID")) %>% 
   select(-ends_with("Season")) %>% 
@@ -39,11 +40,10 @@ seasion <- list_of_dfs$`data/MRegularSeasonDetailedResults.csv` %>%
          std_dif = diff / sd(diff))
 
 
-
-seasion %>%
-  left_join(list_of_dfs$`data/MTeamConferences.csv`, by = c("WTeamID" = "TeamID")) %>%
-  filter(Season == 2019) %>%
-  unique()
+# seasion %>%
+#   left_join(list_of_dfs$`data/MTeamConferences.csv`, by = c("WTeamID" = "TeamID")) %>%
+#   filter(Season == 2019) %>%
+#   unique()
 
 hist(seasion$std_dif, breaks = 100)
 hist(seasion$diff, breaks = 100)
@@ -56,41 +56,3 @@ var(seasion$WScore)
 hist(seasion$WScore, breaks = 100)
 
 hist(rgamma(1000, 5, 3), breaks = 100)
-
-
-preds <- seasion %>% 
-  select(9:35) %>% 
-  names()
-
-varcombiner <- function(vars, outcome){
-  models <- list()
-  for (i in 1:length(vars)) {
-    vc <- combn(vars,i)
-    for (j in 1:ncol(vc)) {
-      mod <- paste0(outcome, " ~ ", paste0(vc[,j], collapse = " + "))
-      model <- as.formula(mod)
-      models <- c(models, model)
-    }
-  }
-  models
-}
-
-
-logistic <- function(x){
-  lm(x, data = seasion)
-}
-
-models <- varcombiner(vars = preds, outcome = "std_dif")
-
-
-best_subsets <- map(models, logistic) %>% 
-  map(glance) %>% 
-  setNames(models) %>% 
-  bind_rows(.id = "id") %>% 
-  distinct() %>% 
-  rename(model = id) 
-
-best_subsets %>% 
-  View()
-  
-beepr::beep()
