@@ -1,5 +1,5 @@
 source(here::here("R", "ReadIn.R"))
-
+library(broom)
 seasion <- list_of_dfs$`data/MRegularSeasonDetailedResults.csv` %>% 
   left_join( list_of_dfs$`data/MTeams.csv`, by = c("WTeamID" = "TeamID")) %>% 
   select(-ends_with("Season")) %>% 
@@ -75,6 +75,7 @@ varcombiner <- function(vars, outcome){
   models
 }
 
+
 logistic <- function(x){
   lm(x, data = seasion)
 }
@@ -82,13 +83,14 @@ logistic <- function(x){
 models <- varcombiner(vars = preds, outcome = "std_dif")
 
 
-best_subsets_model <- map(models, logistic) %>% 
+best_subsets <- map(models, logistic) %>% 
   map(glance) %>% 
   setNames(models) %>% 
   bind_rows(.id = "id") %>% 
   distinct() %>% 
-  rename(model = id) %>% 
-  slice_min(AIC) %>% 
-  select(model)
+  rename(model = id) 
 
-best_subsets_model
+best_subsets %>% 
+  View()
+  
+beepr::beep()
