@@ -39,6 +39,12 @@ seasion <- list_of_dfs$`data/MRegularSeasonDetailedResults.csv` %>%
          std_dif = diff / sd(diff))
 
 
+
+seasion %>%
+  left_join(list_of_dfs$`data/MTeamConferences.csv`, by = c("WTeamID" = "TeamID")) %>%
+  filter(Season == 2019) %>%
+  unique()
+
 hist(seasion$std_dif, breaks = 100)
 hist(seasion$diff, breaks = 100)
 mean(seasion$diff)
