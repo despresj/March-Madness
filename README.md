@@ -1,10 +1,10 @@
 # March-Madness
 
 ## Timeline
-| date | goal |
-| ---- | ---- |
-| 3/15 | The whole dataset combined and a model |
-| TBD  | Meet and fill out a bracket. |
+| date | goal | Progress|
+| ---- | ---- | --- |
+| 3/15 | The whole dataset combined and a model | Mostly done |
+| TBD  | Meet and fill out a bracket. |   |
 | 3/22 | Get Meeting |
 | 3/29 | Tune |
 | 4/05 | Test performance against, random change, seeds, and odds|
