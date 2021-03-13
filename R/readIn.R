@@ -95,31 +95,34 @@ teams <- plyr::join_all(list_of_stats, by= "Team")
 teams <- teams[, !duplicated(colnames(teams), fromLast = TRUE)] 
 
 
+# TODO: NEED MI AND MISTATE DISTINCT
+
+# fuzzjoined2019 <- 
+  teams <- teams %>% janitor::clean_names() %>% 
+  tibble() %>% 
+    mutate(team = str_remove_all(tolower(team), "(?=\\().*?(?<=\\))"),
+           team = str_remove_all(team, "[[:punct:] ]+"))
+  
+team_dict <- team_dict %>% 
+    group_by(TeamID) %>% 
+    distinct(TeamID, .keep_all = TRUE) 
+
+# View(team_dict)
+# View(teams)
+
 ci_str_detect <- function(x, y){str_detect(x, regex(y, ignore_case = TRUE))}
 
-# TODO: NEED MI AND MISTATE DISTINCT
-fuzzjoined2019 <- 
-  teams %>% janitor::clean_names() %>% 
-  tibble() %>% 
-    mutate(team = str_remove_all(tolower(team), " "),
-          Team = str_split_fixed(team, " \\(|\\)", 2)[,1],
-         Team = str_replace_all(tolower(Team), "[^a-zA-Z0-9]", "")) %>% 
-  fuzzyjoin::fuzzy_left_join(team_dict, match_fun = ci_str_detect, by = c("Team" = "TeamSp")) %>%
-  distinct(x3fg, x3fga, blks, bkpg, ast, apg, opp_fg, .keep_all = TRUE) %>% 
-  select(-ends_with(".x")) %>% 
-  rename(Team = Team.y) %>% 
-  mutate(TeamID = as.character(TeamID)) %>% 
-  View()
 
-fuzzjoined2019  %>% 
-  write_csv(here::here("data", "teams"))
-  
-fuzzjoined2019 %>% 
-  skimr::skim()
-
+fuzzjoined2019 <- teams %>% 
+fuzzyjoin::fuzzy_left_join(team_dict, match_fun = ci_str_detect, by = c("team" = "TeamSp")) %>% 
+  drop_na() %>% 
+  select(-Team) %>% 
+  relocate(TeamSp:TeamID, .after = team) %>% 
+  mutate(TeamID = as.character(TeamID))
 
 # https://stats.ncaa.org/rankings/change_sport_year_div
 
+fuzzjoined2019
 
 opo <- fuzzjoined2019 %>%
   rename_all(~(paste0("opo_",  make.names(names(fuzzjoined2019)))))
@@ -127,21 +130,24 @@ opo <- fuzzjoined2019 %>%
 team_ <- fuzzjoined2019 %>%
   rename_all(~(paste0("team_",  make.names(names(fuzzjoined2019)))))
 
+write_csv(team_, here::here("data", "teamstat.csv"))
+write_csv(opo, here::here("data", "oposestat.csv"))
+
 opo
 team_
-
 
 skimr::skim(seasion2019outcome)
 skimr::skim(team_)
 
-
 merged <- seasion2019outcome %>% 
+  mutate(TeamID = as.character(TeamID)) %>% 
   # What happened here ?
   left_join(team_, by = c("TeamID" = "team_TeamID")) %>% 
   full_join(opo, by = c("TeamID" = "opo_TeamID")) %>%
-  #TODO: Something is wrong with this join
+  # Something is wrong with this join 90% ish completion rate
   # Deal with it for now
-  drop_na()
+  drop_na() %>% 
+  select(-A, -B)
 
 merged %>% 
-  write_csv(here::here("data", "merged"))
+  write_csv(here::here("data", "merged.csv"))
