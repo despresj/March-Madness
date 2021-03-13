@@ -1,8 +1,11 @@
 library(tidymodels)
 
 merged <- readr::read_csv(here::here("data", "merged"))
+team_stats <- readr::read_csv(here::here("data", "teams"))
 
-
+team_stats %>% 
+  filter(TeamSp == "michigan") %>% 
+  View()
 # Modeling. ---------------------------------------------------------------
 
 formula <- merged %>% 
