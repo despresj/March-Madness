@@ -88,11 +88,20 @@ left_join(list_of_dfs$`data/MTeams.csv`, by = "TeamID") %>%
   
 team_dict
 
+teams <- plyr::join_all(list_of_stats, by= "Team")
+teams <- teams[, !duplicated(colnames(teams), fromLast = TRUE)] 
+
+# 2021 Team Stats ---------------------------------------------------------
+list_of_stats_2021 <- sapply(paste0("currentseson/", dir("currentseson")), readxl::read_excel, USE.NAMES = TRUE)
+list_of_stats_2021
+
+stats_2021 <- plyr::join_all(list_of_stats_2021, by= "Team")
+stats_2021 <- stats_2021 [, !duplicated(colnames(stats_2021 ), fromLast = TRUE)] 
+
+stats_2021
 skimr::skim(team_dict)
 # 100% completion
 
-teams <- plyr::join_all(list_of_stats, by= "Team")
-teams <- teams[, !duplicated(colnames(teams), fromLast = TRUE)] 
 
 
 # TODO: NEED MI AND MISTATE DISTINCT
@@ -148,6 +157,10 @@ merged <- seasion2019outcome %>%
   # Deal with it for now
   drop_na() %>% 
   select(-A, -B)
+
+merged %>% View()
+
+skimr::skim(merged)
 
 merged %>% 
   write_csv(here::here("data", "merged.csv"))
