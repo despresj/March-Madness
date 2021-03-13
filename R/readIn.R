@@ -1,8 +1,7 @@
 library(tidyverse)
-options(tibble.print_max = 30, tibble.print_min = 30)
+# options(tibble.print_max = 30, tibble.print_min = 30)
 
 list_of_dfs <- sapply(paste0("data/", dir("data")), read_csv, USE.NAMES = TRUE)
-
 
 # Season -----------------------------------------------------------------
 games <- list_of_dfs$`data/MConferenceTourneyGames.csv` %>% 
@@ -51,34 +50,35 @@ season <- list_of_dfs$`data/MRegularSeasonDetailedResults.csv` %>%
   select(-ends_with(".y"))
 
 
-Season
-
-
-  
+season
 
 # 2019 Season Games --------------------------------------------------------------
 
-# TODO: The game stats need to be combined with the team stats. 
-# From there we are ready to rock and roll
+seasion2019outcome <- season %>%
+  filter(Season == 2019) %>% 
+  select(WTeamID, LTeamID, WTeamName, LTeamName, LScore, WScore) %>%
+  mutate(game = paste(WTeamName, "v.", LTeamName),
+         IDs = paste(WTeamID, "vs", LTeamID)) %>% 
+  pivot_longer(cols = ends_with("Name"),
+               names_to = "outcome", 
+               values_to = "team") %>% 
+  mutate(win = if_else(outcome == "WTeamName", 1, 0),
+         teamid = if_else(win == 1, WTeamID, LTeamID),
+         points_scored = ifelse(win == 1, WScore, LScore),
+         TeamID = as.character(teamid),
+          team = tolower(team)
+  ) %>% 
+  select(-WTeamID, -LTeamID, -LScore,  -WScore, -teamid, -outcome) %>% 
+  separate(IDs, c("A", "B"), sep = " vs ") %>% 
+  mutate(oposingTeamID = if_else(TeamID == A, B, A)) 
 
-season2019 <- season %>%
-  
-  filter(Season == 2018) %>% View()
-
-
-season2019 <- season2019 %>% 
-  # select(WTeamName, LTeamName, WScore, LScore) %>%
-  pivot_longer(cols = ends_with("Name"), values_to = "Team") %>% 
-  rename(outcome = name) %>% 
-  mutate(outcome = str_replace_all(outcome, "TeamName", ""),
-         diff = if_else(outcome == "W", diff * -1, diff), 
-         std_dif = if_else(outcome == "W", std_dif * -1, std_dif))
-
+seasion2019outcome %>% skimr::skim()
+# 100% completion
 
 # 2019 Team Stats --------------------------------------------------------------------
 
 list_of_stats <- sapply(paste0("ncaateamstats/", dir("ncaateamstats")), readxl::read_excel, USE.NAMES = TRUE)
-
+list_of_stats
 
 team_dict <- list_of_dfs$`data/MTeamSpellings.csv` %>%
 left_join(list_of_dfs$`data/MTeams.csv`, by = "TeamID") %>% 
@@ -86,22 +86,62 @@ left_join(list_of_dfs$`data/MTeams.csv`, by = "TeamID") %>%
        TeamSp = str_replace_all(tolower(TeamNameSpelling), "[^a-zA-Z0-9]", "")) %>% 
   select(TeamID, Team, TeamSp)
   
+team_dict
+
+skimr::skim(team_dict)
+# 100% completion
 
 teams <- plyr::join_all(list_of_stats, by= "Team")
 teams <- teams[, !duplicated(colnames(teams), fromLast = TRUE)] 
 
+
 ci_str_detect <- function(x, y){str_detect(x, regex(y, ignore_case = TRUE))}
 
-fuzzjoined2019 <- teams %>% janitor::clean_names() %>% 
+# TODO: NEED MI AND MISTATE DISTINCT
+fuzzjoined2019 <- 
+  teams %>% janitor::clean_names() %>% 
   tibble() %>% 
-  select(-team) %>% 
-  mutate(Team = str_split_fixed(teams$Team, " \\(|\\)", 2)[,1],
-         Team = str_replace_all(tolower(Team), "[^a-zA-Z0-9]", "")) %>%
+    mutate(team = str_remove_all(tolower(team), " "),
+          Team = str_split_fixed(team, " \\(|\\)", 2)[,1],
+         Team = str_replace_all(tolower(Team), "[^a-zA-Z0-9]", "")) %>% 
   fuzzyjoin::fuzzy_left_join(team_dict, match_fun = ci_str_detect, by = c("Team" = "TeamSp")) %>%
   distinct(x3fg, x3fga, blks, bkpg, ast, apg, opp_fg, .keep_all = TRUE) %>% 
   select(-ends_with(".x")) %>% 
-  rename(Team = Team.y)
+  rename(Team = Team.y) %>% 
+  mutate(TeamID = as.character(TeamID)) %>% 
+  View()
+
+fuzzjoined2019  %>% 
+  write_csv(here::here("data", "teams"))
   
+fuzzjoined2019 %>% 
+  skimr::skim()
 
 
 # https://stats.ncaa.org/rankings/change_sport_year_div
+
+
+opo <- fuzzjoined2019 %>%
+  rename_all(~(paste0("opo_",  make.names(names(fuzzjoined2019)))))
+
+team_ <- fuzzjoined2019 %>%
+  rename_all(~(paste0("team_",  make.names(names(fuzzjoined2019)))))
+
+opo
+team_
+
+
+skimr::skim(seasion2019outcome)
+skimr::skim(team_)
+
+
+merged <- seasion2019outcome %>% 
+  # What happened here ?
+  left_join(team_, by = c("TeamID" = "team_TeamID")) %>% 
+  full_join(opo, by = c("TeamID" = "opo_TeamID")) %>%
+  #TODO: Something is wrong with this join
+  # Deal with it for now
+  drop_na()
+
+merged %>% 
+  write_csv(here::here("data", "merged"))
