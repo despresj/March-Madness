@@ -86,7 +86,9 @@ left_join(list_of_dfs$`data/MTeams.csv`, by = "TeamID") %>%
        TeamSp = str_replace_all(tolower(TeamNameSpelling), "[^a-zA-Z0-9]", "")) %>% 
   select(TeamID, Team, TeamSp)
   
-team_dict
+   
+
+
 
 teams <- plyr::join_all(list_of_stats, by= "Team")
 teams <- teams[, !duplicated(colnames(teams), fromLast = TRUE)] 
@@ -118,6 +120,11 @@ team_dict <- team_dict %>%
 
 # View(team_dict)
 # View(teams)
+
+team_dict %>% 
+  select(TeamSp, TeamID) %>% 
+  as.data.frame() %>% 
+  head(25)
 
 ci_str_detect <- function(x, y){str_detect(x, regex(y, ignore_case = TRUE))}
 
@@ -164,3 +171,29 @@ skimr::skim(merged)
 
 merged %>% 
   write_csv(here::here("data", "merged.csv"))
+
+
+team <- season %>%
+  filter(Season == 2019) %>% 
+  select(WTeamID, LTeamID, WTeamName, LTeamName, LScore, WScore) %>%
+  mutate(game = paste(WTeamName, "v.", LTeamName),
+         IDs = paste(WTeamID, "vs", LTeamID)) %>% 
+  pivot_longer(cols = ends_with("Name"),
+               names_to = "outcome", 
+               values_to = "team")
+
+
+
+df <- list_of_dfs$`data/MTeamSpellings.csv` %>% 
+  mutate(sp = str_remove_all(TeamNameSpelling, "[^a-zA-Z0-9]"))
+
+teams %>% 
+  # select(team) %>%
+  left_join(df, by = c("team" = "sp")) %>% 
+  skimr::skim()
+
+team %>% 
+  mutate(new = tolower(team)) %>% 
+  mutate(sp = str_remove_all(new, "[^a-zA-Z0-9]")) %>% 
+  left_join(teams, by = "sp") %>% 
+  skimr::skim()
