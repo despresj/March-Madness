@@ -1,6 +1,4 @@
-library(tidyverse)
-
-
+library(tidyverse) 
 
 list_of_dfs <- sapply(paste0("data/", dir("data")), read_csv, USE.NAMES = TRUE)
 
@@ -67,10 +65,13 @@ team_stats <- sapply(stats, selector) %>%
 
 merged <- seasionsoutcomes %>% 
   left_join(team_stats, by = c('TeamID', 'season')) %>% 
-  drop_na()
+  drop_na() %>% 
+  select(-TeamNameSpelling)
 
+merged %>% View()
 
 merged %>% 
   write_csv(here::here("data", "merged.csv"))
 
 merged <- readr::read_csv(here::here("data", "merged.csv"))
+
