@@ -7,7 +7,7 @@ games <- list_of_dfs$`rawdata/MConferenceTourneyGames.csv` %>%
             Season, ConfAbbrev) 
 
 seasionsoutcomes <- list_of_dfs$`rawdata/MRegularSeasonDetailedResults.csv` %>% 
-  left_join( list_of_dfs$`rawdata/MTeams.csv`, by = c("WTeamID" = "TeamID")) %>% 
+  left_join(list_of_dfs$`rawdata/MTeams.csv`, by = c("WTeamID" = "TeamID")) %>% 
   filter(Season %in% c(2019, 2020, 2021)) %>% 
   rename(WTeamName = TeamName) %>% 
   left_join( list_of_dfs$`rawdata/MTeams.csv`, by = c("LTeamID" = "TeamID")) %>% 
@@ -73,3 +73,5 @@ merged %>%
 
 merged <- readr::read_csv(here::here("data", "merged.csv"))
 
+merged %>% 
+  skimr::skim()
