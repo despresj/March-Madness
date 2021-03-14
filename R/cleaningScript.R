@@ -35,15 +35,14 @@ selector <- function (df, cols = co) {
   return(grabbed)
 }
 
-a<- colnames(stats$`se_data/se_2019`)
-b<- colnames(stats$`se_data/se_2020`)
-c<- colnames(stats$`se_data/se_2021`)
+a <- colnames(stats$`se_data/se_2019`)
+b <- colnames(stats$`se_data/se_2020`)
+c <- colnames(stats$`se_data/se_2021`)
 
 co <- as.data.frame(table(c(a, b, c))) %>% 
   filter(Freq == 3) %>% 
   mutate(Var1 = as.character(Var1)) %>% 
   .$Var1
-
 
 nameandID <- list_of_dfs$`rawdata/MTeamSpellings.csv` %>% 
   mutate(sp = str_remove_all(TeamNameSpelling, "[^a-zA-Z0-9]"))
@@ -58,7 +57,7 @@ team_stats <- sapply(stats, selector) %>%
   mutate(team = str_remove_all(tolower(team), "(?=\\().*?(?<=\\))"),
          team = str_remove_all(team, "[[:punct:] ]+")) %>% 
   left_join(nameandID, by = c("team" = "sp")) %>% 
-  # Drops 8 teams, all with W-L ratios >.5
+  # Drops 8 teams, all with W-L ratios < .5
   drop_na() %>% 
   mutate(TeamID = as.character(TeamID))
 # Here is complete df of team stats from 2019 to 2021
