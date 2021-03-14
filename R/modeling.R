@@ -2,23 +2,49 @@ library(tidymodels)
 
 merged <- readr::read_csv(here::here("data", "merged.csv"))
 
-team_ <- readr::read_csv(here::here("data", "teamstat.csv"))
-opo   <- readr::read_csv(here::here("data", "oposestat.csv"))
+# Model Selection ---------------------------------------------------------------
 
 
-team_ %>% 
-  filter(team_team == "michigan") 
-  
-opo %>% 
-  filter(opo_TeamSp == "michiganst") 
+# Best Subsets ------------------------------------------------------------
 
-merged
+preds <- merged %>%
+  select(x3fg:w) %>% 
+  names()
 
-# Modeling. ---------------------------------------------------------------
+varcombiner <- function(vars, outcome){
+  models <- vector(mode = "list", length = 2^length(preds)-1)
+  for (i in 1:length(vars)) {
+    vc <- combn(vars,i)
+    for (j in 1:ncol(vc)) {
+      mod <- paste0(outcome, " ~ ", paste0(vc[,j], collapse = " + "))
+      model <- as.formula(mod)
+      models <- c(models, model)
+    }
+  }
+  models
+}
+
+logistic <- function(x){
+  glm(x, data = merged, family = "binomial")
+}
+
+models <- varcombiner(vars = preds, outcome = "win")
+
+best_subsets_model <- map(models, logistic) %>% 
+  map(glance) %>% 
+  setNames(models) %>% 
+  bind_rows(.id = "id") %>% 
+  distinct()
+
+best_subsets_model %>% 
+  readr::write_csv("data", "bss.csv")
+
+
+# predictions -------------------------------------------------------------
+
 
 formula <- merged %>% 
   select_if(is.numeric) %>% 
-  select(-win, -TeamID, -oposingTeamID) %>% 
   colnames() %>% 
   # random for now
   sample(5) %>% 
@@ -62,3 +88,5 @@ modeltibble %>%
   select(term)
 debugonce(predictor)
 predictor(logistic_fit, modeltibble = modeltibble, predvec = c(5, 3, 2, 4,5))
+
+
