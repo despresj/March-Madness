@@ -1,4 +1,5 @@
-source(here::here("R", "ReadIn.R"))
+
+list_of_dfs <- sapply(paste0("data/", dir("data")), read_csv, USE.NAMES = TRUE)
 
 # https://www.kaggle.com/c/ncaam-march-mania-2021/data
 lapply(list_of_dfs, colnames)
