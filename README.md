@@ -3,7 +3,8 @@
 ## Timeline
 | date | goal | Progress|
 | ---- | ---- | --- |
-| 3/15 | The whole dataset combined and a model | Mostly done |
+| 3/15 | The whole dataset combined and a model | Data is clean |
+| TBD |Need method for prediction||
 | TBD  | Meet and fill out a bracket. |   |
 | 3/22 | Get Meeting |
 | 3/29 | Tune |
