@@ -1,16 +1,16 @@
 library(tidyverse) 
 
-list_of_dfs <- sapply(paste0("data/", dir("data")), read_csv, USE.NAMES = TRUE)
+list_of_dfs <- sapply(paste0("rawdata/", dir("rawdata")), read_csv, USE.NAMES = TRUE)
 
-games <- list_of_dfs$`data/MConferenceTourneyGames.csv` %>% 
+games <- list_of_dfs$`rawdata/MConferenceTourneyGames.csv` %>% 
   transmute(gameid = paste0(DayNum, WTeamID, LTeamID),
             Season, ConfAbbrev) 
 
-seasionsoutcomes <- list_of_dfs$`data/MRegularSeasonDetailedResults.csv` %>% 
-  left_join( list_of_dfs$`data/MTeams.csv`, by = c("WTeamID" = "TeamID")) %>% 
+seasionsoutcomes <- list_of_dfs$`rawdata/MRegularSeasonDetailedResults.csv` %>% 
+  left_join( list_of_dfs$`rawdata/MTeams.csv`, by = c("WTeamID" = "TeamID")) %>% 
   filter(Season %in% c(2019, 2020, 2021)) %>% 
   rename(WTeamName = TeamName) %>% 
-  left_join( list_of_dfs$`data/MTeams.csv`, by = c("LTeamID" = "TeamID")) %>% 
+  left_join( list_of_dfs$`rawdata/MTeams.csv`, by = c("LTeamID" = "TeamID")) %>% 
   select(1:7) %>% 
   pivot_longer(cols = ends_with("ID"),
                names_to = "outcome", 
@@ -45,7 +45,7 @@ co <- as.data.frame(table(c(a, b, c))) %>%
   .$Var1
 
 
-nameandID <- list_of_dfs$`data/MTeamSpellings.csv` %>% 
+nameandID <- list_of_dfs$`rawdata/MTeamSpellings.csv` %>% 
   mutate(sp = str_remove_all(TeamNameSpelling, "[^a-zA-Z0-9]"))
 
 team_stats <- sapply(stats, selector) %>% 
@@ -67,8 +67,6 @@ merged <- seasionsoutcomes %>%
   left_join(team_stats, by = c('TeamID', 'season')) %>% 
   drop_na() %>% 
   select(-TeamNameSpelling)
-
-merged %>% View()
 
 merged %>% 
   write_csv(here::here("data", "merged.csv"))
