@@ -1,20 +1,45 @@
 library(tidyverse)
+# https://plexkits.com/march-madness-bracket/ I think this will update
+# https://docs.google.com/spreadsheets/d/1zaWZ2Xh7sll-PZKA1DhKvS6TdfE0Yggk0m5OWY4aICc/edit#gid=0
 
+team_names <- readr::read_csv(here::here("rawdata", "MTeamSpellings.csv"))
 bracket <- readxl::read_excel(here::here("rawdata", "prebracket.xlsx"))
+
+# Even better
+# bracket <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1zaWZ2Xh7sll-PZKA1DhKvS6TdfE0Yggk0m5OWY4aICc/edit#gid=0")
+# remember API times out...
 
 bracket <- bracket %>% 
   select(2, 35)
   
 colnames(bracket) <- c("x1", "x2")
 
-stack(bracket) %>% 
+bracket <- stack(bracket) %>% 
   select(values) %>% 
   drop_na() %>% 
   tibble() %>% 
   rename(team = values) %>% 
+  mutate(team = tolower(team)) %>% 
   mutate(game = 1:n(),
          game = as.numeric(game),
          otherteam  = if_else(game %% 2 == 1, team, lag(team)),
          game = if_else(game %% 2 == 1, game + 1, game), .before = team) %>% 
-  filter(team != otherteam)
+  filter(team != otherteam) %>% 
+  separate(team, into = c("team", "pocket"), "/") %>% 
+  filter(otherteam != "first round") %>% 
+  left_join(team_names, by = c("team" = "TeamNameSpelling")) %>% 
+  rename(teamid = TeamID) %>% 
+  left_join(team_names, by = c("otherteam" = "TeamNameSpelling")) %>%
+  rename(otherteamid = TeamID) %>% 
   
+  mutate(teamid = replace(teamid, team == "app st.", 1111))
+
+bracket %>% 
+  select(-pocket)
+
+
+pockets <- bracket %>% 
+  select(team, pocket) %>% 
+  drop_na()
+
+pockets
