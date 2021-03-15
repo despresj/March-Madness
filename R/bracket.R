@@ -14,6 +14,10 @@ bracket <- bracket %>%
   
 colnames(bracket) <- c("x1", "x2")
 
+
+# bracket -----------------------------------------------------------------
+
+
 bracket <- stack(bracket) %>% 
   select(values) %>% 
   drop_na() %>% 
@@ -31,15 +35,25 @@ bracket <- stack(bracket) %>%
   rename(teamid = TeamID) %>% 
   left_join(team_names, by = c("otherteam" = "TeamNameSpelling")) %>%
   rename(otherteamid = TeamID) %>% 
-  
-  mutate(teamid = replace(teamid, team == "app st.", 1111))
-
-bracket %>% 
-  select(-pocket)
+  mutate(teamid = replace(teamid, team == "app st.", 1111)) %>% 
+  mutate_if(is.numeric, as.character)
 
 
-pockets <- bracket %>% 
+# pockets -----------------------------------------------------------------
+
+pocket <- bracket %>% 
   select(team, pocket) %>% 
-  drop_na()
+  drop_na() %>% 
+  left_join(team_names, by = c("team" = "TeamNameSpelling")) %>% 
+  rename(teamid = TeamID, otherteam = pocket) %>% 
+  left_join(team_names, by = c("otherteam" = "TeamNameSpelling")) %>%
+  rename(otherteamid = TeamID) %>% 
+  mutate(otherteamid = replace(otherteam, team == "app st.", 1111)) %>% 
+  relocate(ends_with("id"), .after = everything())
 
-pockets
+pocket
+
+bracket <- bracket %>% 
+  select(-game, -pocket)
+
+bracket
