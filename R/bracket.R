@@ -38,6 +38,7 @@ bracket <- stack(bracket) %>%
   mutate(teamid = replace(teamid, team == "app st.", 1111)) %>% 
   mutate_if(is.numeric, as.character)
 
+bracket
 
 # pockets -----------------------------------------------------------------
 
@@ -48,7 +49,7 @@ pocket <- bracket %>%
   rename(teamid = TeamID, otherteam = pocket) %>% 
   left_join(team_names, by = c("otherteam" = "TeamNameSpelling")) %>%
   rename(otherteamid = TeamID) %>% 
-  mutate(otherteamid = replace(otherteam, team == "app st.", 1111)) %>% 
+  mutate(otherteamid = replace(otherteamid, otherteam == "app st.", 1111)) %>% 
   relocate(ends_with("id"), .after = everything())
 
 pocket
@@ -57,3 +58,4 @@ bracket <- bracket %>%
   select(-game, -pocket)
 
 bracket
+
