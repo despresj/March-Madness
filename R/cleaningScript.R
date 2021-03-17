@@ -80,14 +80,9 @@ opposing_stats <- team_stats %>%
 
 merged %>% 
   left_join(opposing_stats, by = c('opposing', 'season')) %>% 
-  readr::write_csv("merged.csv")
-
-
-
+  readr::write_csv(here::here("data", "merged.csv"))
 
 merged <- readr::read_csv(here::here("data", "merged.csv"))
 
 merged %>% 
   skimr::skim()
-
-
