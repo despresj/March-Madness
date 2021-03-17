@@ -4,7 +4,9 @@
 | date | goal | Progress|
 | ---- | ---- | --- |
 | 3/15 | The whole dataset combined and a model | Data is clean |
-| TBD |Need method for prediction||
+|  | get our model | model is complete |
+| TBD |Need method for prediction| Have a method  |
+| TBD |Need to fill out bracket |  |
 | TBD  | Meet and fill out a bracket. |   |
 | 3/22 | Get Meeting |
 | 3/29 | Tune |
