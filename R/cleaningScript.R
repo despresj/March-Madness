@@ -12,6 +12,7 @@ seasionsoutcomes <- list_of_dfs$`rawdata/MRegularSeasonDetailedResults.csv` %>%
   rename(WTeamName = TeamName) %>% 
   left_join( list_of_dfs$`rawdata/MTeams.csv`, by = c("LTeamID" = "TeamID")) %>% 
   select(1:7) %>% 
+  mutate(W = WTeamID, L =  LTeamID) %>% 
   pivot_longer(cols = ends_with("ID"),
                names_to = "outcome", 
                values_to = "TeamID") %>% 
@@ -34,6 +35,7 @@ selector <- function (df, cols = co) {
   grabbed <- select(df, contains(cols))
   return(grabbed)
 }
+
 
 a <- colnames(stats$`se_data/se_2019`)
 b <- colnames(stats$`se_data/se_2020`)
@@ -65,12 +67,27 @@ team_stats <- sapply(stats, selector) %>%
 merged <- seasionsoutcomes %>% 
   left_join(team_stats, by = c('TeamID', 'season')) %>% 
   drop_na() %>% 
-  select(-TeamNameSpelling)
+  select(-TeamNameSpelling) %>% 
+  mutate(opposing = if_else(TeamID == W, L, W), .after = TeamID, 
+         opposing = as.character(opposing))
+
+# get opopsing stats
+
+opposing_stats <- team_stats %>% 
+  tibble() %>% 
+  rename_at(vars(-season), ~paste0("opposing",.)) %>% 
+  rename(opposing = opposingTeamID)
 
 merged %>% 
-  write_csv(here::here("data", "merged.csv"))
+  left_join(opposing_stats, by = c('opposing', 'season')) %>% 
+  readr::write_csv("merged.csv")
+
+
+
 
 merged <- readr::read_csv(here::here("data", "merged.csv"))
 
 merged %>% 
   skimr::skim()
+
+
