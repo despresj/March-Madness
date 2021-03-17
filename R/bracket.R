@@ -3,7 +3,7 @@ library(tidyverse)
 # https://docs.google.com/spreadsheets/d/1zaWZ2Xh7sll-PZKA1DhKvS6TdfE0Yggk0m5OWY4aICc/edit#gid=0
 
 team_names <- readr::read_csv(here::here("rawdata", "MTeamSpellings.csv"))
-bracket <- readxl::read_excel(here::here("rawdata", "prebracket.xlsx"))
+bracket <- readxl::read_excel(here::here("data", "prebracket.xlsx"))
 
 # Even better
 # bracket <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1zaWZ2Xh7sll-PZKA1DhKvS6TdfE0Yggk0m5OWY4aICc/edit#gid=0")
