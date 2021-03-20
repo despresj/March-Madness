@@ -5,10 +5,8 @@
 | ---- | ---- | --- |
 | 3/15 | The whole dataset combined and a model | Data is clean |
 |  | get our model | model is complete |
-| TBD |Need method for prediction| Have a method  |
-| TBD |Need to fill out bracket |  |
-| TBD  | Meet and fill out a bracket. |   |
-| 3/22 | Get Meeting |
+| 3/17 |Need method for prediction| Have a method, a model, and data aggrigated  |
+| TBD |Need to fill out a whole bracket | Project is on pause until after 862 exam |
 | 3/29 | Tune |
 | 4/05 | Test performance against, random change, seeds, and odds|
 | 4/12 | Write paper |
