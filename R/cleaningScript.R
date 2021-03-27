@@ -1,4 +1,5 @@
 library(tidyverse) 
+options(tibble.print_max = 35, tibble.print_min = 35)
 
 list_of_dfs <- sapply(paste0("rawdata/", dir("rawdata")), read_csv, USE.NAMES = TRUE)
 
@@ -22,6 +23,8 @@ seasionsoutcomes <- list_of_dfs$`rawdata/MRegularSeasonDetailedResults.csv` %>%
   select(-outcome, -DayNum) %>% 
   rename(season = Season)
 
+seasionsoutcomes
+
 stats_fn <- function (directory) {
   stats <- sapply(paste0(directory, "/", dir(directory)),
                   readxl::read_excel, USE.NAMES = TRUE)
@@ -36,7 +39,6 @@ selector <- function (df, cols = co) {
   return(grabbed)
 }
 
-
 a <- colnames(stats$`se_data/se_2019`)
 b <- colnames(stats$`se_data/se_2020`)
 c <- colnames(stats$`se_data/se_2021`)
@@ -46,9 +48,13 @@ co <- as.data.frame(table(c(a, b, c))) %>%
   mutate(Var1 = as.character(Var1)) %>% 
   .$Var1
 
-
 nameandID <- list_of_dfs$`rawdata/MTeamSpellings.csv` %>% 
-  mutate(sp = str_remove_all(TeamNameSpelling, "[^a-zA-Z0-9]"))
+
+  mutate(sp = str_remove_all(TeamNameSpelling, "[^a-zA-Z0-9]")) %>% 
+  left_join(list_of_dfs$`rawdata/MTeamConferences.csv`, by = "TeamID") %>%
+  # lets assume there were no major conference changes from '19-'21
+  filter(Season == 2019) %>% 
+  select(-Season) 
 
 team_stats <- sapply(stats, selector) %>% 
   bind_rows(.id = "id") %>% 
@@ -64,16 +70,9 @@ team_stats <- sapply(stats, selector) %>%
   mutate(TeamID = as.character(TeamID))
 # Here is complete df of team stats from 2019 to 2021
 
-# Checking seasions
-team_stats %>% 
-  group_by(season) %>% 
-  tally()
+team_stats
 
-seasionsoutcomes %>% 
-  group_by(season) %>% 
-  tally()
-
-merged <- seasionsoutcomes %>% 
+statoutcome <- seasionsoutcomes %>% 
   # this is where we lose 2021
   left_join(team_stats, by = c('TeamID', 'season')) %>% 
   drop_na() %>% 
@@ -81,18 +80,26 @@ merged <- seasionsoutcomes %>%
   mutate(opposing = if_else(TeamID == W, L, W), .after = TeamID, 
          opposing = as.character(opposing))
 
-
 opposing_stats <- team_stats %>% 
   tibble() %>% 
   rename_at(vars(-season), ~paste0("opposing",.)) %>% 
   rename(opposing = opposingTeamID)
 
-merged %>% 
+conf <- list_of_dfs$`rawdata/MTeamConferences.csv` %>% 
+  filter(Season == 2019) %>% 
+    mutate(TeamID = as.character(TeamID)) 
+
+statoutcome %>% 
   left_join(opposing_stats, by = c('opposing', 'season')) %>% 
+  left_join(conf, by = "TeamID") %>%
+  # let's assume there were no major conference changes from '19-'21
+  select(-ConfAbbrev.y, Season) %>% 
+  rename(ConfAbbrev = ConfAbbrev.x) %>% 
+  janitor::clean_names() %>% 
+  distinct() %>% 
   readr::write_csv(here::here("data", "merged.csv"))
 
 merged <- readr::read_csv(here::here("data", "merged.csv"))
 
 merged %>% 
   skimr::skim()
-
