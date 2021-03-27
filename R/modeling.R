@@ -1,11 +1,12 @@
 library(tidymodels)
-
+theme_set(theme_test())
 source(here::here("R", "bracket.R"))
 source(here::here("R", 'cleaningScript.R'))
 
-merged <- readr::read_csv(here::here("data", "merged.csv"))
+# merged <- readr::read_csv(here::here("data", "merged.csv"))
 
 
+# Take a look -------------------------------------------------------------
 
 
 # model selection ---------------------------------------------------------
@@ -33,9 +34,12 @@ fit <- glm(win ~ x3fg +
            data = merged, family = "binomial")
 summary(fit)
 
-bracket$otherteam
+s2021 <- team_stats %>% 
+  filter(season == 2021, 
+         TeamID %in% c(bracket$teamid, bracket$otherteamid)) %>% 
+  distinct(TeamID,.keep_all = TRUE )
 
-# TODO: figure out what happened to 2021 data
+# TODO: Need a predictor function.
 
 preddat <- merged %>% 
   filter(season == 2020, 
@@ -55,60 +59,3 @@ preddat <- merged %>%
     opposingto,
     opposingbkpg,
     bkpg)
-
-pred <- merged %>% 
-  filter(season == 2020, 
-         team %in% c(bracket$team, bracket$otherteam))
-
-cbind(
-pred$team,
-faraway::ilogit(predict(fit, preddat))
-) %>% 
-  tibble() %>% 
-  distinct()
-
-team <- team_stats %>% 
-  tibble() %>% 
-  filter(TeamID %in% pocket$teamid,
-         season == 2020) %>%
-  distinct(team, .keep_all = TRUE) %>% 
-  select(
-    x3fg,
-    fg_percent,
-    ft_percent,
-    rpg,
-    st,
-    to,
-    bkpg)
-
-pocket$otherteam
-
-opposing <- team_stats %>%
-  tibble() %>% 
-  filter(TeamID %in% pocket$otherteamid,
-         season == 2020) %>% 
-  distinct(TeamID, .keep_all = TRUE) %>% 
-  select(
-    x3fg,
-    fg_percent,
-    ft_percent,
-    rpg,
-    st,
-    to,
-    bkpg) %>% 
-  rename_all( ~paste0("opposing",.))
-  
-
-# TODO: remember to come up with a better solution for this
-
-opposing <- rbind(opposing, sapply(opposing, mean) )
-
-team
-opposing
-
-bind_cols(team, opposing)
-
-cbind(
-pocket$team,
-faraway::ilogit(predict(fit, bind_cols(team, opposing)))
-)
