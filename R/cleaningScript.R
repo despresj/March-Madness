@@ -46,6 +46,7 @@ co <- as.data.frame(table(c(a, b, c))) %>%
   mutate(Var1 = as.character(Var1)) %>% 
   .$Var1
 
+
 nameandID <- list_of_dfs$`rawdata/MTeamSpellings.csv` %>% 
   mutate(sp = str_remove_all(TeamNameSpelling, "[^a-zA-Z0-9]"))
 
@@ -54,7 +55,6 @@ team_stats <- sapply(stats, selector) %>%
   select(-contains("opp"), -`REB MAR`, -ORebs, -DRebs, -TOPG) %>% 
   mutate(season = str_extract(id,"([0-9]+).*$"), .before = id) %>% 
   janitor::clean_names() %>% 
-  select(-id) %>% 
   relocate(team, .before = season) %>% 
   mutate(team = str_remove_all(tolower(team), "(?=\\().*?(?<=\\))"),
          team = str_remove_all(team, "[[:punct:] ]+")) %>% 
@@ -64,14 +64,23 @@ team_stats <- sapply(stats, selector) %>%
   mutate(TeamID = as.character(TeamID))
 # Here is complete df of team stats from 2019 to 2021
 
+# Checking seasions
+team_stats %>% 
+  group_by(season) %>% 
+  tally()
+
+seasionsoutcomes %>% 
+  group_by(season) %>% 
+  tally()
+
 merged <- seasionsoutcomes %>% 
+  # this is where we lose 2021
   left_join(team_stats, by = c('TeamID', 'season')) %>% 
   drop_na() %>% 
   select(-TeamNameSpelling) %>% 
   mutate(opposing = if_else(TeamID == W, L, W), .after = TeamID, 
          opposing = as.character(opposing))
 
-# get opopsing stats
 
 opposing_stats <- team_stats %>% 
   tibble() %>% 
@@ -86,3 +95,4 @@ merged <- readr::read_csv(here::here("data", "merged.csv"))
 
 merged %>% 
   skimr::skim()
+
