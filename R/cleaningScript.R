@@ -67,7 +67,8 @@ team_stats <- sapply(stats, selector) %>%
   left_join(nameandID, by = c("team" = "sp")) %>% 
   # Drops 8 teams, all with W-L ratios < .5
   drop_na() %>% 
-  mutate(TeamID = as.character(TeamID))
+  mutate(TeamID = as.character(TeamID)) %>% 
+  tibble()
 # Here is complete df of team stats from 2019 to 2021
 
 team_stats
