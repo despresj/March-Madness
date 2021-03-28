@@ -33,22 +33,11 @@ fit <- glm(win ~ x3fg +
            data = merged, family = "binomial")
 summary(fit)
 
-
 s2021 <- team_stats %>% 
   filter(season == 2021, 
          TeamID %in% c(bracket$teamid, bracket$otherteamid)) %>% 
-  distinct(TeamID,.keep_all = TRUE ) %>% 
-  select(-season) %>% 
-  select(
-    team,
-    TeamID,
-    x3fg,
-    fg_percent,
-    ft_percent,
-    rpg,
-    st,
-    to,
-    bkpg)
+  distinct(TeamID, .keep_all = TRUE) %>% 
+  select(-season) 
 
 s2021
 
@@ -61,18 +50,17 @@ predictor_fn <- function (team_1_id, team_2_id) {
   return(pred)
 }
 
-predictor_fn(team_1 = teams_in_turn[1], team_2 = teams_in_turn[2])
+possibly_predictor_fn <- possibly(.f = predictor_fn, otherwise = 0)
 
-bracket_ <- bracket %>% 
-  # missing app st. ID 1111
-  filter(team != "app st.")
+# app state is missing from the data
+# that 0 puts a zero pros of them winning to effectively drop them.
 
-probs <- map2_dbl(bracket_$teamid, bracket_$otherteamid, predictor_fn)
-# app state is missing so I am assigning it a 0 pob of winning.
-probs <- c(probs[1:16], "0", probs[17:33])
+probs <- map2_dbl(.x = bracket$teamid, 
+                  .y = bracket$otherteamid, 
+                  .f = possibly_predictor_fn)
 
 bracket <- bracket %>% 
-  mutate(team_prob = as.numeric(probs),
+  mutate(team_prob = probs,
          otherteam_prob = 1 - team_prob, 
          game = paste0(team, " vs. ", otherteam),
          predicted_winner = if_else(team_prob > 0.5, team, otherteam),
