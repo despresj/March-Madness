@@ -52,6 +52,9 @@ predictor_fn <- function (team_1_id, team_2_id) {
   return(pred)
 }
 
+
+# First round -------------------------------------------------------------
+
 possibly_predictor_fn <- possibly(.f = predictor_fn, otherwise = "ERROR")
 
 # app state is missing from the data
@@ -78,3 +81,156 @@ games <- begining_bracket %>%
 
 games
 
+
+# second round ------------------------------------------------------------
+
+second_round <- begining_bracket %>% 
+  select(predicted_winner, predicted_winnerid) %>% 
+  rename(team = predicted_winner, teamid = predicted_winnerid) %>% 
+  mutate(game = rep(c("team", "otherteam"), nrow(begining_bracket)/2))
+
+team <- second_round %>% 
+  filter(game != "team")
+
+other <- second_round %>% 
+  filter(game == "team")
+
+probs <- map2_dbl(.x = team$teamid, 
+                  .y = other$teamid, 
+                  .f = possibly_predictor_fn)
+
+second_round_prediction <- other %>% 
+  rename_all(~ paste0("opposing",.)) %>% 
+  bind_cols(team) %>% 
+  mutate(team_prob = as.numeric(probs),
+         otherteam_prob = 1 - team_prob, 
+         game = paste0(team, " vs. ", opposingteam), 
+         predicted_winner = if_else(team_prob > 0.5, team, opposingteam),
+         predicted_winnerid = if_else(team_prob > 0.5, teamid, opposingteamid))
+
+second_round_prediction %>% 
+  select(predicted_winner)
+
+# sweet sixteen -------------------------------------------------------------
+
+winner_selector <- function(df){
+    output <- df %>% 
+    select(predicted_winner, predicted_winnerid) %>% 
+    rename(team = predicted_winner, teamid = predicted_winnerid) %>% 
+    mutate(game = rep(c("team", "otherteam"), nrow(df)/2))
+    return(output)
+}
+
+sweet_sixteen <- winner_selector(df = second_round_prediction) 
+
+team <- sweet_sixteen %>% 
+  filter(game != "team")
+
+other <- sweet_sixteen %>% 
+  filter(game == "team")
+
+probs <- map2_dbl(.x = team$teamid, 
+                  .y = other$teamid, 
+                  .f = possibly_predictor_fn)
+
+sweet_sixteen <- other %>% 
+  rename_all(~ paste0("opposing",.)) %>% 
+  bind_cols(team) %>% 
+  mutate(team_prob = as.numeric(probs),
+         otherteam_prob = 1 - team_prob, 
+         game = paste0(team, " vs. ", opposingteam), 
+         predicted_winner = if_else(team_prob > 0.5, team, opposingteam),
+         predicted_winnerid = if_else(team_prob > 0.5, teamid, opposingteamid),
+         game = paste0(team, " vs. ", opposingteam)) 
+
+sweet_sixteen %>% 
+  select(game, predicted_winner, team_prob, otherteam_prob)
+
+
+# elite eight -------------------------------------------------------------
+
+
+elite_eight <- sweet_sixteen %>% 
+  winner_selector()
+
+team <- elite_eight %>% 
+  filter(game != "team")
+
+other <- elite_eight %>% 
+  filter(game == "team")
+  
+
+probs <- map2_dbl(.x = team$teamid, 
+                  .y = other$teamid, 
+                  .f = possibly_predictor_fn)
+
+elite_eight <- other %>% 
+  rename_all(~ paste0("opposing",.)) %>% 
+  bind_cols(team) %>% 
+  mutate(team_prob = as.numeric(probs),
+         otherteam_prob = 1 - team_prob, 
+         game = paste0(team, " vs. ", opposingteam), 
+         predicted_winner = if_else(team_prob > 0.5, team, opposingteam),
+         predicted_winnerid = if_else(team_prob > 0.5, teamid, opposingteamid),
+         game = paste0(team, " vs. ", opposingteam)) 
+
+elite_eight %>% 
+  select(game, predicted_winner, team_prob, otherteam_prob)
+
+
+# final_four --------------------------------------------------------------
+
+final_four <- elite_eight %>% 
+  winner_selector()
+
+team <- final_four %>% 
+  filter(game != "team")
+
+other <- final_four %>% 
+  filter(game == "team")
+
+probs <- map2_dbl(.x = team$teamid, 
+                  .y = other$teamid, 
+                  .f = possibly_predictor_fn)
+
+final_four <- other %>% 
+  rename_all(~ paste0("opposing",.)) %>% 
+  bind_cols(team) %>% 
+  mutate(team_prob = as.numeric(probs),
+         otherteam_prob = 1 - team_prob, 
+         game = paste0(team, " vs. ", opposingteam), 
+         predicted_winner = if_else(team_prob > 0.5, team, opposingteam),
+         predicted_winnerid = if_else(team_prob > 0.5, teamid, opposingteamid),
+         game = paste0(team, " vs. ", opposingteam)) 
+
+final_four %>% 
+  select(game, predicted_winner, team_prob, otherteam_prob)
+
+
+# championship ------------------------------------------------------------
+
+championship <- final_four %>% 
+  winner_selector()
+
+team <- championship %>% 
+  filter(game != "team")
+
+other <- championship %>% 
+  filter(game == "team")
+
+probs <- map2_dbl(.x = team$teamid, 
+                  .y = other$teamid, 
+                  .f = possibly_predictor_fn)
+
+championship <- other %>% 
+  rename_all(~ paste0("opposing",.)) %>% 
+  bind_cols(team) %>% 
+  mutate(team_prob = as.numeric(probs),
+         otherteam_prob = 1 - team_prob, 
+         game = paste0(team, " vs. ", opposingteam), 
+         predicted_winner = if_else(team_prob > 0.5, team, opposingteam),
+         predicted_winnerid = if_else(team_prob > 0.5, teamid, opposingteamid),
+         game = paste0(team, " vs. ", opposingteam)) 
+
+championship %>% 
+  select(game, predicted_winner, team_prob, otherteam_prob)
