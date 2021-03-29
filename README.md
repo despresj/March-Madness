@@ -6,9 +6,14 @@
 | 3/15 | The whole dataset combined and a model | Data is clean |
 | 3/20 | get our model | model is complete |
 | 3/28 |Need method for prediction| Function to predict outcome is written |
-| TBD |Need to fill out a whole bracket |  |
-| 3/29 | Tune |
+| 3/29 |Need to fill out a whole bracket | Bracket filled out |
+|  TBD | Determine scoring metric| 
+|      | Tune |
+| 3/31 | meet prof |
 | 4/05 | Test performance against, random chance, seeds, and odds|
+
+| 4/05 | | Game finals played |
+| 4/10 | | proposal due |
 | 4/12 | Write paper |
 | 4/19 | Due  |
 ## Questions:
