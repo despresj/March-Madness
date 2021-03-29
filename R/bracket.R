@@ -65,6 +65,9 @@ bracket
 
 # begining bracket (no pockets) -------------------------------------------
 
+
+
+
 begining_bracket <- begining_bracket %>% 
   select(2, 35) %>% 
   stack() %>% 
@@ -86,3 +89,4 @@ begining_bracket <- begining_bracket %>%
   mutate_if(is.numeric, as.character) %>% 
   select(-ind, -game)
   
+begining_bracket
