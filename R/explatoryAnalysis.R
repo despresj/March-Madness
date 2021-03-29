@@ -1,3 +1,4 @@
+library(tidyverse)
 
 list_of_dfs <- sapply(paste0("rawdata/", dir("rawdata")), read_csv, USE.NAMES = TRUE)
 
