@@ -1,0 +1,243 @@
+\documentclass[11pt,]{article}
+\usepackage[left=1in,top=1in,right=1in,bottom=1in]{geometry}
+\newcommand*{\authorfont}{\fontfamily{phv}\selectfont}
+\usepackage[]{mathpazo}
+
+
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+
+
+
+
+\usepackage{abstract}
+\renewcommand{\abstractname}{}    % clear the title
+\renewcommand{\absnamepos}{empty} % originally center
+
+\renewenvironment{abstract}
+ {{%
+    \setlength{\leftmargin}{0mm}
+    \setlength{\rightmargin}{\leftmargin}%
+  }%
+  \relax}
+ {\endlist}
+
+\makeatletter
+\def\@maketitle{%
+  \newpage
+%  \null
+%  \vskip 2em%
+%  \begin{center}%
+  \let \footnote \thanks
+    {\fontsize{18}{20}\selectfont\raggedright  \setlength{\parindent}{0pt} \@title \par}%
+}
+%\fi
+\makeatother
+
+
+
+
+\setcounter{secnumdepth}{0}
+
+
+
+
+\title{Using Statistical Methods to Predict the Outcome of Basketball
+Games  }
+
+
+
+\author{\Large Sabrina
+Ball\vspace{0.05in} \newline\normalsize\emph{}   \and \Large Joseph
+Despres\vspace{0.05in} \newline\normalsize\emph{}  }
+
+
+\date{}
+
+\usepackage{titlesec}
+
+\titleformat*{\section}{\normalsize\bfseries}
+\titleformat*{\subsection}{\normalsize\itshape}
+\titleformat*{\subsubsection}{\normalsize\itshape}
+\titleformat*{\paragraph}{\normalsize\itshape}
+\titleformat*{\subparagraph}{\normalsize\itshape}
+
+
+
+
+
+\newtheorem{hypothesis}{Hypothesis}
+\usepackage{setspace}
+
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+
+% move the hyperref stuff down here, after header-includes, to allow for - \usepackage{hyperref}
+
+\makeatletter
+\@ifpackageloaded{hyperref}{}{%
+\ifxetex
+  \PassOptionsToPackage{hyphens}{url}\usepackage[setpagesize=false, % page size defined by xetex
+              unicode=false, % unicode breaks when used with xetex
+              xetex]{hyperref}
+\else
+  \PassOptionsToPackage{hyphens}{url}\usepackage[draft,unicode=true]{hyperref}
+\fi
+}
+
+\@ifpackageloaded{color}{
+    \PassOptionsToPackage{usenames,dvipsnames}{color}
+}{%
+    \usepackage[usenames,dvipsnames]{color}
+}
+\makeatother
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            pdfauthor={Sabrina Ball () and Joseph Despres ()},
+             pdfkeywords = {},
+            pdftitle={Using Statistical Methods to Predict the Outcome
+of Basketball Games},
+            colorlinks=true,
+            citecolor=blue,
+            urlcolor=blue,
+            linkcolor=magenta,
+            pdfborder={0 0 0}}
+\urlstyle{same}  % don't use monospace font for urls
+
+% Add an option for endnotes. -----
+
+
+% add tightlist ----------
+\providecommand{\tightlist}{%
+\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% add some other packages ----------
+
+% \usepackage{multicol}
+% This should regulate where figures float
+% See: https://tex.stackexchange.com/questions/2275/keeping-tables-figures-close-to-where-they-are-mentioned
+\usepackage[section]{placeins}
+
+% CSL environment change -----
+
+
+\begin{document}
+
+% \pagenumbering{arabic}% resets `page` counter to 1
+%
+% \maketitle
+
+{% \usefont{T1}{pnc}{m}{n}
+\setlength{\parindent}{0pt}
+\thispagestyle{plain}
+{\fontsize{18}{20}\selectfont\raggedright
+\maketitle  % title \par
+
+}
+
+{
+   \vskip 13.5pt\relax \normalsize\fontsize{11}{12}
+\textbf{\authorfont Sabrina
+Ball} \hskip 15pt \emph{\small }   \par \textbf{\authorfont Joseph
+Despres} \hskip 15pt \emph{\small }   
+
+}
+
+}
+
+
+
+
+
+
+
+
+\begin{abstract}
+
+    \hbox{\vrule height .2pt width 39.14pc}
+
+    \vskip 8.5pt % \small
+
+\noindent Quick Summary
+
+
+    \hbox{\vrule height .2pt width 39.14pc}
+
+
+\end{abstract}
+
+
+\vskip -8.5pt
+
+
+ % removetitleabstract
+
+\noindent 
+
+\hypertarget{data}{%
+\section{1. Data}\label{data}}
+
+Our data comes from three different data sources Kaggle, NCAA, and a
+March Madness bracket. First, a Kaggle\footnote{\url{https://www.kaggle.com/c/ncaam-march-mania-2021/data}}
+machine learning challenge that has a comprehensive records of every US
+division I basketball game played from 2003 to 2020. Second, the
+NCAA\footnote{\url{http://stats.ncaa.org/rankings/change_sport_year_div}}
+team statistics. Third, the tournament bracket in a nice .xls format we
+obtained from a blog\footnote{\url{https://plexkits.com/march-madness-bracket/}}.
+
+\hypertarget{variables}{%
+\subsection{Variables}\label{variables}}
+
+Our response is the outcome win/loss as a function of team statistics.
+win \textbar{} Variable name \textbar{} Description \textbar{} Type
+\textbar{} \textbar{} ------------------ \textbar{} -------------
+\textbar{} ------- \textbar{} \textbar{} win \textbar{} \textbar{}
+\textbar{} \textbar{} fg\_percent \textbar{} \textbar{} \textbar{}
+\textbar{} opposingfg\_percent \textbar{} \textbar{} \textbar{}
+\textbar{} ft\_percent \textbar{} \textbar{} \textbar{} \textbar{}
+opposingft\_percent \textbar{} \textbar{} \textbar{} \textbar{} rpg
+\textbar{} \textbar{} \textbar{} \textbar{} opposingrpg \textbar{}
+\textbar{} \textbar{} \textbar{} st \textbar{} \textbar{} \textbar{}
+\textbar{} opposingst \textbar{} \textbar{} \textbar{} \textbar{} to
+\textbar{} \textbar{} \textbar{} \textbar{} opposingto \textbar{}
+\textbar{} \textbar{} \textbar{} opposingbkpg \textbar{} \textbar{}
+\textbar{} \textbar{} bkpg \textbar{} \textbar{} \textbar{}
+
+\hypertarget{questions}{%
+\section{2. Questions}\label{questions}}
+
+Can we use statistical methods to predict outcomes of the March Madness
+basketball games better than chance? Better than seed? Better than
+betting markets?
+
+\hypertarget{learning}{%
+\section{3. Learning}\label{learning}}
+
+We would like to learn how to make predictions with logistic regression.
+We would like to come up with a good way to evaluate our predictions.
+This will be dificult since the outcome is binary so we would need to
+weight our predictions somehow and index our socres.
+
+\hypertarget{methods}{%
+\section{4. Methods}\label{methods}}
+
+Logistic regression with a response prediction function.
+
+\hypertarget{issues}{%
+\section{5. Issues}\label{issues}}
+
+The seeds are likely derrived from the predictors we are using.
+Multicolinearity, will be something to watchout for because better teams
+probally have better statistics.
+
+
+
+
+
+\newpage
+\singlespacing
+\end{document}
