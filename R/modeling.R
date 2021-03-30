@@ -33,8 +33,6 @@ fit <- glm(win ~ x3fg +
            data = merged, family = "binomial")
 summary(fit)
 
-begining_bracket
-
 s2021 <- team_stats %>% 
   filter(season == 2021, 
          TeamID %in% c(begining_bracket$teamid, begining_bracket$otherteamid)) %>% 
@@ -54,62 +52,94 @@ predictor_fn <- function (team_1_id, team_2_id) {
 
 
 # First round -------------------------------------------------------------
+begining_bracket
 
 possibly_predictor_fn <- possibly(.f = predictor_fn, otherwise = "ERROR")
 
-# app state is missing from the data
-# that 0 puts a zero pros of them winning to effectively drop them.
-begining_bracket
 probs <- map2_dbl(.x = begining_bracket$teamid, 
                   .y = begining_bracket$otherteamid, 
                   .f = possibly_predictor_fn)
 
 probs
 
-begining_bracket <- begining_bracket%>% 
-  mutate(team_prob = probs,
-         otherteam_prob = 1 - team_prob, 
-         game = paste0(team, " vs. ", otherteam),
-         predicted_winner = if_else(team_prob > 0.5, team, otherteam),
-         predicted_winnerid = if_else(team_prob > 0.5, teamid, otherteamid))
+add_probs <- function(df, probs){
   
-games <- begining_bracket %>% 
-  mutate(team_prob = as.numeric(probs),
-         otherteam_prob = 1 - team_prob, 
-         game = paste0(team, " vs. ", otherteam)) %>% 
-  select(game, team_prob, otherteam_prob)
+  df <- df %>% 
+    mutate(team_prob = probs,
+           otherteam_prob = 1 - team_prob, 
+           game = paste0(team, " vs. ", otherteam),
+           predicted_winner = if_else(team_prob > 0.5, team, otherteam),
+           predicted_winnerid = if_else(team_prob > 0.5, teamid, otherteamid),
+           game = paste0(team, " vs. ", otherteam))
+  return(df)
+}
 
-games
+begining_bracket <- add_probs(begining_bracket, probs = probs)
 
+begining_bracket %>% 
+  select(game, team_prob, otherteam_prob, predicted_winner)
 
 # second round ------------------------------------------------------------
 
-second_round <- begining_bracket %>% 
-  select(predicted_winner, predicted_winnerid) %>% 
-  rename(team = predicted_winner, teamid = predicted_winnerid) %>% 
-  mutate(game = rep(c("team", "otherteam"), nrow(begining_bracket)/2))
+advance_round <- function(df){
+  df <- df %>% 
+    select(predicted_winner, predicted_winnerid) %>% 
+    rename(team = predicted_winner, teamid = predicted_winnerid) %>% 
+    mutate(game = rep(c("team", "otherteam"), nrow(df)/2))
+  
+  return(df)
+}
 
-team <- second_round %>% 
-  filter(game != "team")
+second_round  <- advance_round(begining_bracket)
 
-other <- second_round %>% 
-  filter(game == "team")
+second_round
 
-probs <- map2_dbl(.x = team$teamid, 
-                  .y = other$teamid, 
+align_teams <- function(df){
+  
+   team <- filter(df, game != "team")
+  other <- filter(df, game == "team")
+  
+  output <- other %>% 
+    rename_all(~ paste0("other",.)) %>% 
+    bind_cols(team) 
+  
+  return(output)
+}
+
+second_round_games <- align_teams(second_round)
+
+second_round_games 
+
+probs <- map2_dbl(.x = second_round_games$teamid, 
+                  .y = second_round_games$otherteamid, 
                   .f = possibly_predictor_fn)
 
-second_round_prediction <- other %>% 
-  rename_all(~ paste0("opposing",.)) %>% 
-  bind_cols(team) %>% 
-  mutate(team_prob = as.numeric(probs),
-         otherteam_prob = 1 - team_prob, 
-         game = paste0(team, " vs. ", opposingteam), 
-         predicted_winner = if_else(team_prob > 0.5, team, opposingteam),
-         predicted_winnerid = if_else(team_prob > 0.5, teamid, opposingteamid))
+probs
 
-second_round_prediction %>% 
-  select(predicted_winner)
+second_round <- add_probs(second_round_games, probs)
+
+second_round
+
+# sweet sixteen -------------------------------------------------------------
+
+sweet_sixteen <- advance_round(second_round)
+
+sweet_sixteen_games <- align_teams(sweet_sixteen)
+
+sweet_sixteen_probs <- map2_dbl(.x = sweet_sixteen_games$teamid, 
+         .y = sweet_sixteen_games$otherteamid, 
+         .f = possibly_predictor_fn)
+
+sweet_sixteen_prediction <- add_probs(sweet_sixteen_games, probs = sweet_sixteen_probs)
+
+sweet_sixteen_prediction %>% 
+  select(game, team_prob, otherteam_prob, predicted_winner)
+
+
+# elite eight -------------------------------------------------------------
+
+
+
 
 # sweet sixteen -------------------------------------------------------------
 
