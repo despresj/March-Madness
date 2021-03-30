@@ -20,6 +20,10 @@
 
 Can we make a predictive model for the upcoming March Madness Turniment.
 
+![](/Users/josephdespres/Documents/MSU/STT-864_Statistical_Methods_II/March-Madness/images/bbal.gif)
+
+![](/Users/josephdespres/Documents/MSU/STT-864_Statistical_Methods_II/March-Madness/images/bracket.png)
+
 # Datasets:
 ### Turniment game outcomes data
 DayNum, WTeamID, WTeamName, WScore, LTeamID, LTeamName, LScore, WLoc, NumOT, Winfieldgoalsmade, Winfieldgoalsattempted, Winthreepointersmade, Winthreepointersattempted, Winfreethrowsmade, Winfreethrowsattempted, Winoffensiverebounds, Windefensiverebounds, Winassists, Winturnoverscommitted, Winsteals, Winblocks, Winpersonalfoulscommitted, Lfieldgoalsmade, Lfieldgoalsattempted, Lthreepointersmade, Lthreepointersattempted, Lfreethrowsmade, Lfreethrowsattempted, Loffensiverebounds, Ldefensiverebounds, Lassists, Lturnoverscommitted, Lsteals, Lblocks, Lpersonalfoulscommitted, FirstD1Season, LastD1Season"
