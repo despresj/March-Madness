@@ -20,12 +20,15 @@
 
 Can we make a predictive model for the upcoming March Madness Tournament.
 
-
+### First Round Predcitons
 ![](https://i.imgur.com/KG9rI9z.png)
+### Second Round Prediction
 ![](https://i.imgur.com/0xgl8nh.png)
-![](https://i.imgur.com/k5BPMcJ.png)
+### Third Round Predictions
+![](https://i.imgur.com/mEuNcPl.png)
 
-![](/Users/josephdespres/Documents/MSU/STT-864_Statistical_Methods_II/March-Madness/images/bracket.png)
+### Filled out bracket
+![](https://i.imgur.com/dCyHFlc.png)
 
 
 # Datasets:
