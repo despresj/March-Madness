@@ -51,3 +51,5 @@ predictor_fn <- function (team_1_id, team_2_id) {
   
   return(pred)
 }
+
+possibly_predictor_fn <- possibly(.f = predictor_fn, otherwise = "ERROR")

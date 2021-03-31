@@ -43,8 +43,6 @@ s2021 <- team_stats %>%
 
 begining_bracket
 
-possibly_predictor_fn <- possibly(.f = predictor_fn, otherwise = "ERROR")
-
 probs <- map2_dbl(.x = begining_bracket$teamid, 
                   .y = begining_bracket$otherteamid, 
                   .f = possibly_predictor_fn)
