@@ -18,11 +18,15 @@
 | 4/19 | Due  |
 ## Questions:
 
-Can we make a predictive model for the upcoming March Madness Turniment.
+Can we make a predictive model for the upcoming March Madness Tournament.
 
-![](/Users/josephdespres/Documents/MSU/STT-864_Statistical_Methods_II/March-Madness/images/bbal.gif)
+
+![](https://i.imgur.com/KG9rI9z.png)
+![](https://i.imgur.com/0xgl8nh.png)
+![](https://i.imgur.com/k5BPMcJ.png)
 
 ![](/Users/josephdespres/Documents/MSU/STT-864_Statistical_Methods_II/March-Madness/images/bracket.png)
+
 
 # Datasets:
 ### Turniment game outcomes data
