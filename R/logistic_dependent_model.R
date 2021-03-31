@@ -1,4 +1,3 @@
-library(tidymodels)
 source(here::here("R", "bracket.R"))
 source(here::here("R", 'cleaningScript.R'))
 source(here::here("R", "helper_functions.R"))
@@ -45,7 +44,7 @@ begining_bracket
 
 probs <- map2_dbl(.x = begining_bracket$teamid, 
                   .y = begining_bracket$otherteamid, 
-                  .f = possibly_predictor_fn)
+                  .f = logistic_predictor)
 
 
 begining_bracket <- add_probs(begining_bracket, probs = probs)
@@ -60,7 +59,7 @@ second_round_games <- align_teams(second_round)
 
 probs <- map2_dbl(.x = second_round_games$teamid, 
                   .y = second_round_games$otherteamid, 
-                  .f = possibly_predictor_fn)
+                  .f = logistic_predictor)
 
 second_round <- add_probs(second_round_games, probs)
 
@@ -74,7 +73,7 @@ sweet_sixteen_games <- align_teams(sweet_sixteen)
 
 sweet_sixteen_probs <- map2_dbl(.x = sweet_sixteen_games$teamid, 
                                 .y = sweet_sixteen_games$otherteamid, 
-                                .f = possibly_predictor_fn)
+                                .f = logistic_predictor)
 
 sweet_sixteen_prediction <- add_probs(sweet_sixteen_games, probs = sweet_sixteen_probs)
 
@@ -89,7 +88,7 @@ elite_eight_games <- align_teams(elite_eight)
 
 elite_eight_probs <- map2_dbl(.x = elite_eight_games$teamid, 
                                 .y = elite_eight_games$otherteamid, 
-                                .f = possibly_predictor_fn)
+                                .f = logistic_predictor)
 
 elite_eight_prediction <- add_probs(elite_eight_games, elite_eight_probs)
 
@@ -104,7 +103,7 @@ final_four_games <- align_teams(final_four)
 
 final_four_probs <- map2_dbl(.x = final_four_games$teamid, 
                              .y = final_four_games$otherteamid, 
-                             .f = possibly_predictor_fn)
+                             .f = logistic_predictor)
 
 final_four_prediction <- add_probs(final_four_games, final_four_probs)
 
@@ -119,7 +118,7 @@ championship_game <- align_teams(championship)
 
 championship_probs <- map2_dbl(.x = championship_game$teamid, 
                                .y = championship_game$otherteamid, 
-                               .f = possibly_predictor_fn)
+                               .f = logistic_predictor)
 
 championship_prediction  <- add_probs(championship_game, championship_probs)
 

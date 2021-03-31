@@ -104,3 +104,11 @@ merged <- readr::read_csv(here::here("data", "merged.csv"))
 
 merged %>% 
   skimr::skim()
+
+
+
+s2021 <- team_stats %>% 
+  filter(season == 2021, 
+         TeamID %in% c(begining_bracket$teamid, begining_bracket$otherteamid)) %>% 
+  distinct(TeamID, .keep_all = TRUE) %>% 
+  select(-season)
