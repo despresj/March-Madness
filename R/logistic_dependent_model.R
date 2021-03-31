@@ -1,10 +1,11 @@
 library(tidymodels)
-theme_set(theme_test())
 source(here::here("R", "bracket.R"))
 source(here::here("R", 'cleaningScript.R'))
+theme_set(theme_test())
+options(tibble.print_max = 20, tibble.print_min = 20)
+
 
 # merged <- readr::read_csv(here::here("data", "merged.csv"))
-
 
 # model selection ---------------------------------------------------------
 
@@ -29,7 +30,7 @@ fit <- glm(win ~ x3fg +
          opposingbkpg +
                  bkpg,
            data = merged, family = "binomial")
-# summary(fit)
+summary(fit)
 
 s2021 <- team_stats %>% 
   filter(season == 2021, 
@@ -180,3 +181,12 @@ championship_prediction  <- add_probs(championship_game, championship_probs)
 
 nice_format(championship_prediction)}
 
+# TODO: How do we score this model? train and test data set
+# check previous year 19
+# corss valad
+# caret package
+# weight prediction score pred_winner_prob pred_loser_prob
+# TODO: Run make it independent
+
+# multinomeal category low close high
+# problem with right or wrong...
