@@ -1,4 +1,3 @@
-source(here::here("R", "bracket.R"))
 source(here::here("R", 'cleaningScript.R'))
 source(here::here("R", "helper_functions.R"))
 theme_set(theme_test())
@@ -29,14 +28,6 @@ fit <- glm(win ~ x3fg +
          opposingbkpg +
                  bkpg,
            data = merged, family = "binomial")
-summary(fit)
-
-s2021 <- team_stats %>% 
-  filter(season == 2021, 
-         TeamID %in% c(begining_bracket$teamid, begining_bracket$otherteamid)) %>% 
-  distinct(TeamID, .keep_all = TRUE) %>% 
-  select(-season) 
-
 
 # First round -------------------------------------------------------------
 

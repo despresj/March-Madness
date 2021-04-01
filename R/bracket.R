@@ -4,9 +4,7 @@ library(tidyverse)
 
 team_names <- readr::read_csv(here::here("rawdata", "MTeamSpellings.csv"))
 bracket <- readxl::read_excel(here::here("data", "prebracket.xlsx"))
-
 begining_bracket <- readxl::read_excel(here::here("data", "begining_bracket.xlsx"))
-
 
 # Even better
 # bracket <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1zaWZ2Xh7sll-PZKA1DhKvS6TdfE0Yggk0m5OWY4aICc/edit#gid=0")
@@ -64,7 +62,8 @@ bracket
 
 
 # begining bracket (no pockets) -------------------------------------------
-
+begining_bracket <- readxl::read_excel(here::here("data", "begining_bracket.xlsx"))
+team_names <- readr::read_csv(here::here("rawdata", "MTeamSpellings.csv"))
 
 begining_bracket <- begining_bracket %>% 
   select(2, 35) %>% 

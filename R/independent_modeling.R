@@ -1,7 +1,6 @@
-library(tidymodels)
-source(here::here("R", "bracket.R"))
+source(here::here("R", "cleaningScript.R"))
 source(here::here("R", "helper_functions.R"))
-source(here::here("R", 'cleaningScript.R'))
+library(tidymodels)
 theme_set(theme_test())
 options(tibble.print_min = 20)
 
@@ -11,8 +10,7 @@ team2id <- pull(s2021, TeamID)
 ids <- crossing(teamid = team1id, other = team2id) %>% 
   distinct() %>%
   filter(teamid != other) %>% 
-  # note choose(64,2) = 2016 Im removing double counts.
-  top_n(2016) %>% 
+  top_n(2016) %>%   # choose(64,2) = 2016 (removing double counts)
   left_join(s2021, by = c("other" = "TeamID")) %>% 
   rename(other_team = team) %>% 
   select(teamid:other_team) %>% 
@@ -25,20 +23,21 @@ predicted_games <- ids %>%
   mutate(predicted_probs = map2_dbl(.x = ids$teamid, 
                                     .y = ids$otherid, 
                                     .f = logistic_predictor))
-# about 30 seconds to run
+# This takes about 30 seconds to run
 paste0("runtime: ", round(Sys.time() - start, 2))
+
 
 predicted_games %>% 
   mutate(  
     predicted_winner = if_else(predicted_probs > .5, team, other_team),
     predicted_winner_probs = if_else(predicted_probs > .5, predicted_probs , 1 - predicted_probs),
     predicted_loser_probs = 1 - predicted_winner_probs,
+    prediction_points = predicted_winner_probs - predicted_loser_probs,
     .after = game
   )
 
-# TODO: rename possibly_predictor_fn
 
-# 
+
 # fit <- glm(win ~ x3fg +
 #              opposingx3fg +
 #              # field goal pct
@@ -59,7 +58,7 @@ predicted_games %>%
 #              # blocks
 #              opposingbkpg +
 #              bkpg,
-#            data = merged, family = "binomial")
+#              data = merged, family = "binomial")
 # 
 # logistic_predictor_fn <- function (team_1_id, team_2_id) {
 #   stats_team_1 <- filter(s2021, TeamID == team_1_id)

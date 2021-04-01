@@ -1,5 +1,5 @@
 library(tidyverse) 
-options(tibble.print_max = 35, tibble.print_min = 35)
+# options(tibble.print_min = 35)
 
 list_of_dfs <- sapply(paste0("rawdata/", dir("rawdata")), read_csv, USE.NAMES = TRUE)
 
@@ -106,9 +106,66 @@ merged %>%
   skimr::skim()
 
 
+# bracket no pockets ------------------------------------------------------
+
+begining_bracket <- readxl::read_excel(here::here("data", "begining_bracket.xlsx"))
+team_names <- readr::read_csv(here::here("rawdata", "MTeamSpellings.csv"))
+
+begining_bracket <- begining_bracket %>% 
+  select(2, 35) %>% 
+  stack() %>% 
+  drop_na() %>% 
+  tibble() %>% 
+  rename(team = values) %>% 
+  mutate(team = tolower(team)) %>% 
+  mutate(game = 1:n(),
+         game = as.numeric(game),
+         otherteam  = if_else(game %% 2 == 1, team, lag(team)),
+         game = if_else(game %% 2 == 1, game + 1, game), .before = team) %>% 
+  filter(team != otherteam) %>% 
+  filter(otherteam != "first round") %>% 
+  left_join(team_names, by = c("team" = "TeamNameSpelling")) %>% 
+  rename(teamid = TeamID) %>% 
+  left_join(team_names, by = c("otherteam" = "TeamNameSpelling")) %>%
+  rename(otherteamid = TeamID) %>% 
+  mutate(teamid = replace(teamid, team == "app st.", 1111)) %>% 
+  mutate_if(is.numeric, as.character) %>% 
+  select(-ind, -game)
+
+begining_bracket
+
+# 2021 stats --------------------------------------------------------------
+
+
 
 s2021 <- team_stats %>% 
   filter(season == 2021, 
          TeamID %in% c(begining_bracket$teamid, begining_bracket$otherteamid)) %>% 
   distinct(TeamID, .keep_all = TRUE) %>% 
   select(-season)
+
+
+# logsitic fit ------------------------------------------------------------
+
+logistic_fit <- glm(win ~ x3fg +
+                      opposingx3fg +
+                      # field goal pct
+                      fg_percent +
+                      opposingfg_percent +
+                      # free throws
+                      ft_percent +
+                      opposingft_percent +
+                      # rebound per game
+                      rpg + 
+                      opposingrpg +
+                      # steels
+                      st +
+                      opposingst +
+                      #turnover
+                      to +
+                      opposingto +
+                      # blocks
+                      opposingbkpg +
+                      bkpg,
+                    data = merged, family = "binomial")
+
