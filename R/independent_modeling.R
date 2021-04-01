@@ -5,6 +5,8 @@ library(tidymodels)
 theme_set(theme_test())
 options(tibble.print_min = 20)
 
+# TODO: recipes::step_normalize() try that see if there is a difference
+
 team1id <- pull(s2021, TeamID)
 team2id <- pull(s2021, TeamID) 
 
