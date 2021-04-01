@@ -98,6 +98,7 @@ statoutcome %>%
   rename(ConfAbbrev = ConfAbbrev.x) %>% 
   janitor::clean_names() %>% 
   distinct() %>% 
+  mutate(team_score = ifelse(win == 1, w_score, l_score)) %>% 
   readr::write_csv(here::here("data", "merged.csv"))
 
 merged <- readr::read_csv(here::here("data", "merged.csv"))
