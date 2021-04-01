@@ -7,13 +7,12 @@
 | 3/20 | get our model | model is complete |
 | 3/28 |Need method for prediction| Function to predict outcome is written |
 | 3/29 |Need to fill out a whole bracket | Bracket filled out |
-|  TBD | Determine scoring metric| 
-|      | Tune |
-| 3/31 | meet prof |
-| 4/05 | Test performance against, random chance, seeds, and odds|
-
-| 4/05 | | Game finals played |
-| 4/10 | | proposal due |
+| 3/31 | meet prof | check |
+| 4/02 | run poison and multinom |
+| 4/05 | Test performance against, random chance, seeds, and odds. |
+| 4/05 | recipes::step_normalize() compare outcome |
+| 4/05 | - | Game finals played |
+| 4/10 | - | proposal due |
 | 4/12 | Write paper |
 | 4/19 | Due  |
 ## Questions:
@@ -30,6 +29,10 @@ Can we make a predictive model for the upcoming March Madness Tournament.
 ### Filled out bracket
 ![](https://i.imgur.com/dCyHFlc.png)
 
+
+### scoring
+
+assing score of pred_winner - pred_loser. sum it up and compare to 0.
 
 # Datasets:
 ### Turniment game outcomes data
