@@ -98,7 +98,20 @@ statoutcome %>%
   rename(ConfAbbrev = ConfAbbrev.x) %>% 
   janitor::clean_names() %>% 
   distinct() %>% 
-  mutate(team_score = ifelse(win == 1, w_score, l_score)) %>% 
+  mutate(team_score = ifelse(win == 1, w_score, l_score),
+         other_team_score = ifelse(w_score == team_score, l_score, w_score),
+         diff = team_score - other_team_score, 
+         fifth_xtile = case_when(diff <  -12             ~ '<-12',
+                                 diff >= -12 & diff < -4 ~ '-12:-4',
+                                 diff >=  -4 & diff <  4 ~ '-4:4',
+                                 diff >=   4 & diff < 13 ~ '4:13',
+                                 diff >= 13               ~ '>13'
+         )) %>% 
+  mutate(x_tile = fct_relevel(fifth_xtile, levels = c("<-12",
+                                                      "-12:-4",
+                                                      "-4:4",
+                                                      "4:13",
+                                                      ">13"))) %>% 
   readr::write_csv(here::here("data", "merged.csv"))
 
 merged <- readr::read_csv(here::here("data", "merged.csv"))
