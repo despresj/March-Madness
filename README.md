@@ -6,16 +6,16 @@
 | 3/15 | The whole dataset combined and a model | Data is clean |
 | 3/20 | get our model | model is complete |
 | 3/28 |Need method for prediction| Function to predict outcome is written |
-| 3/29 |Need to fill out a whole bracket | Bracket filled out |
+| 3/29 | Need to fill out a whole bracket | Bracket filled out |
 | 3/31 | meet prof | check |
-| 4/02 | run poison and multinom |
-| 4/05 | Test performance against, random chance, seeds, and odds. ||
+| 4/02 | run poison and multinom | check |
+| 4/05 | outline paper |
 | 4/05 | recipes::step_normalize() compare outcome |
-|4/05|outline paper|
-| 4/05 |  Game finals played |
+| 4/05 | Test performance against, random chance, seeds, and odds. ||
+| 4/05 | Game finals played |
 | 4/10 | proposal due |
-| 4/12 | Write paper |
-| 4/19 | Due  |
+| 4/12 | Finish Write paper |
+| 4/19 | Due |
 ## Questions:
 
 Can we make a predictive model for the upcoming March Madness Tournament.
