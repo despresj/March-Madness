@@ -114,13 +114,3 @@ championship_probs <- map2_dbl(.x = championship_game$teamid,
 championship_prediction  <- add_probs(championship_game, championship_probs)
 
 nice_format(championship_prediction)
-
-# TODO: How do we score this model? train and test data set
-# check previous year 19
-# corss valad
-# caret package
-# weight prediction score pred_winner_prob pred_loser_prob
-# TODO: Run make it independent
-
-# multinomeal category low close high
-# problem with right or wrong...
