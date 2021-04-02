@@ -56,7 +56,7 @@ nameandID <- list_of_dfs$`rawdata/MTeamSpellings.csv` %>%
   filter(Season == 2019) %>% 
   select(-Season) 
 
-team_stats <- sapply(stats, selector) %>% 
+sapply(stats, selector) %>% 
   bind_rows(.id = "id") %>% 
   select(-contains("opp"), -`REB MAR`, -ORebs, -DRebs, -TOPG) %>% 
   mutate(season = str_extract(id,"([0-9]+).*$"), .before = id) %>% 
@@ -68,7 +68,11 @@ team_stats <- sapply(stats, selector) %>%
   # Drops 8 teams, all with W-L ratios < .5
   drop_na() %>% 
   mutate(TeamID = as.character(TeamID)) %>% 
-  tibble()
+  tibble() %>% 
+  write_csv(here::here("data", "team_stats.csv"))
+
+team_stats <- read_csv(here::here("team_stats.csv"))
+
 # Here is complete df of team stats from 2019 to 2021
 
 team_stats
@@ -116,16 +120,12 @@ statoutcome %>%
 
 merged <- readr::read_csv(here::here("data", "merged.csv"))
 
-merged %>% 
-  skimr::skim()
-
-
 # bracket no pockets ------------------------------------------------------
 
 begining_bracket <- readxl::read_excel(here::here("data", "begining_bracket.xlsx"))
 team_names <- readr::read_csv(here::here("rawdata", "MTeamSpellings.csv"))
 
-begining_bracket <- begining_bracket %>% 
+begining_bracket %>% 
   select(2, 35) %>% 
   stack() %>% 
   drop_na() %>% 
@@ -144,42 +144,37 @@ begining_bracket <- begining_bracket %>%
   rename(otherteamid = TeamID) %>% 
   mutate(teamid = replace(teamid, team == "app st.", 1111)) %>% 
   mutate_if(is.numeric, as.character) %>% 
-  select(-ind, -game)
+  select(-ind, -game) %>% 
+  write_csv(here::here("data", "begining_bracket.csv"))
 
-begining_bracket
+begining_bracket <- read_csv(here::here("data", "begining_bracket.csv"))
 
 # 2021 stats --------------------------------------------------------------
 
-
-
-s2021 <- team_stats %>% 
+team_stats %>% 
   filter(season == 2021, 
          TeamID %in% c(begining_bracket$teamid, begining_bracket$otherteamid)) %>% 
   distinct(TeamID, .keep_all = TRUE) %>% 
-  select(-season)
+  select(-season) %>% 
+  write_csv("data/s2021.csv")
 
+s2021 <- read_csv(here::here("data", "s2021.csv"))
 
-# logsitic fit ------------------------------------------------------------
+# ids ---------------------------------------------------------------------
 
-logistic_fit <- glm(win ~ x3fg +
-                      opposingx3fg +
-                      # field goal pct
-                      fg_percent +
-                      opposingfg_percent +
-                      # free throws
-                      ft_percent +
-                      opposingft_percent +
-                      # rebound per game
-                      rpg + 
-                      opposingrpg +
-                      # steels
-                      st +
-                      opposingst +
-                      #turnover
-                      to +
-                      opposingto +
-                      # blocks
-                      opposingbkpg +
-                      bkpg,
-                    data = merged, family = "binomial")
+team1id <- pull(s2021, TeamID)
+team2id <- pull(s2021, TeamID)
 
+crossing(teamid = team1id, other = team2id) %>%
+  distinct() %>%
+  filter(teamid != other) %>%
+  top_n(2016) %>%   # choose(64,2) = 2016 (removing double counts)
+  left_join(s2021, by = c("other" = "TeamID")) %>%
+  rename(other_team = team) %>%
+  select(teamid:other_team) %>%
+  left_join(s2021, by = c("teamid" = "TeamID")) %>%
+  mutate(game = paste0(team, " vs. ", other_team)) %>%
+  select(team, other_team,game, teamid, otherid = other) %>% 
+  write_csv(here::here("data", "ids.csv"))
+
+ids <- read_csv(here::here("data", "ids.csv"))
