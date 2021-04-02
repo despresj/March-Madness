@@ -1,0 +1,68 @@
+---
+title             : "Using GLMs to Predict Basketball Games"
+shorttitle        : "GLM"
+
+author: 
+  - name          : "Sabrina Ball"
+    affiliation   : "1"
+    corresponding : yes    # Define only one corresponding author
+  - name          : "Joseph Despres"
+    affiliation   : "1"
+
+affiliation:
+  - id            : "1"
+    institution   : "Michigan State University \n "
+  
+keywords          : "keywords"
+wordcount         : "X"
+
+bibliography      : ["r-references.bib"]
+
+floatsintext      : no
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+linenumbers       : yes
+mask              : no
+draft             : no
+
+documentclass     : "apa6"
+classoption       : "man"
+output            : papaja::apa6_pdf
+---
+
+```{r setup, include = FALSE}
+library("papaja")
+r_refs("r-references.bib")
+```
+
+__Introduction__  
+
+testing citat [@R-base]
+<!-- (a) introduces the background -->
+<!-- (b) states the scientific questions you aim to answer -->
+<!-- (c) describes the data set that you will use for the analysis (d) summarizes your major findings. -->
+__Exploratory Data Analysis__  
+<!-- • Perform exploratory data analysis (with summary statistics or exploratory graphs) that reveals some basic and general information of the data set. -->
+__Description__  
+<!-- • Provide a description and explanation of the steps that you have taken to obtain the best model (or models). -->
+__Results__  
+<!-- • Give the results of relevant parameter estimation and statistical inference under your best model (or models). Discuss and interpret important features of your best model (or models), and state your conclusions in the context of the scientific questions that you have been focused on. -->
+__Diagnostic Methods__  
+<!-- • Check the goodness of fit of your model (or models), including a description of the model diagnostic methods and test procedures you used, and what the results were. -->
+__Conculsion__  
+<!-- • Conclude the report with a discussion section that -->
+<!-- (a) recaps your scientific findings -->
+<!-- (b) discusses possible limitations and improvements of your methods -->
+<!-- (c) outlines additional questions that are worth studying as a future work. -->
+
+\newpage
+
+# References
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+<div id="refs" custom-style="Bibliography"></div>
+\endgroup
