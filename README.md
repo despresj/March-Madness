@@ -9,7 +9,7 @@
 | 3/29 | Need to fill out a whole bracket | Bracket filled out |
 | 3/31 | meet prof | check |
 | 4/02 | run poison and multinom | check |
-| 4/05 | outline paper |
+| 4/05 | outline paper | check |
 | 4/05 | recipes::step_normalize() compare outcome |
 | 4/05 | Test performance against, random chance, seeds, and odds. ||
 | 4/05 | Game finals played |
