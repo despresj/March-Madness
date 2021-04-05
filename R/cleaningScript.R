@@ -1,6 +1,5 @@
 library(tidyverse) 
 # options(tibble.print_min = 35)
-
 list_of_dfs <- sapply(paste0("rawdata/", dir("rawdata")), read_csv, USE.NAMES = TRUE)
 
 games <- list_of_dfs$`rawdata/MConferenceTourneyGames.csv` %>% 
@@ -67,17 +66,21 @@ sapply(stats, selector) %>%
   left_join(nameandID, by = c("team" = "sp")) %>% 
   # Drops 8 teams, all with W-L ratios < .5
   drop_na() %>% 
-  mutate(TeamID = as.character(TeamID)) %>% 
   tibble() %>% 
-  write_csv(here::here("data", "team_stats.csv"))
+  write_csv(here::here("data", "team_stats.csv")) 
 
-team_stats <- read_csv(here::here("team_stats.csv"))
+
+team_stats <- read_csv(here::here("data", "team_stats.csv")) %>% 
+    mutate(TeamID = as.character(TeamID),
+           season = as.character(season))
 
 # Here is complete df of team stats from 2019 to 2021
 
-team_stats
+team_stats 
 
 statoutcome <- seasionsoutcomes %>% 
+  mutate(TeamID = as.character(TeamID),
+         season = as.character(season)) %>% 
   # this is where we lose 2021
   left_join(team_stats, by = c('TeamID', 'season')) %>% 
   drop_na() %>% 
