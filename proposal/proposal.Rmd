@@ -5,13 +5,11 @@ output:
 #bibliography: master.bib
 urlcolor: blue
 biblio-style: apsr
-title: "Using Statistical Methods to Predict the Outcome of Basketball Games"
+title: "Predicting the Outcome of Basketball Games with GLMs"
 author:
-- name: Sabrina Ball
+- name: Sabrina Ball and Joseph Despres
   affiliation:
-- name: Joseph Despres
-  affiliation:
-abstract: "Quick Summary"
+abstract: "Every year top university basketball teams compete in the March Madness tournament. Casual fans and Enthuasists submit predictions gambling small sums of money on the outcomes. This study will determine if which GLM performs best in predicting the results."
 geometry: margin=1in
 fontfamily: mathpazo
 fontsize: 11pt
@@ -29,26 +27,17 @@ par(op)
 # source(here::here("R", "explatoryAnalysis.R"))
 ```
 
-# 1. Data
- ^[https://plexkits.com/march-madness-bracket/].
+# Data
+Our data comes from three different sources Kaggle, NCAA, and the tournament results. Kagggle provides a comprehensive dataset^[https://plexkits.com/march-madness-bracket/] for all NCAA in season (non-turniment) basektball games from 2001 to 2020. The NCAA provides team-level statistics^[https://stats.ncaa.org/rankings/change_sport_year_div] for each team. We will use those two datasets to train a model that uses team-level statistics to predict basketball game outcomes. We will test our model on the actual tournament results after it is concluded on April 5th. The objective is to predict the individual game outcomes as accurately as possible.
+ 
+Our response is the outcome *win/loss* as a function of team statistics. Win or loss coded 0 or 1. Then we will look at both team's statistics and determine which is more important. In our dataset we have: *field goal percentage* which is the rate attempt to score vs actually scoring. *Free-throw percentage*,  is the rate that the team has the opportunity to take an unguarded shot. Cumulative *Three-point goals made*. *Rebounds per game*, counts the times the team recovered the ball after a missed shot. *Steals*, the times a team was able to remove possession of the ball from the opposing team. *Turnover*, the number of times the team lost possession. *Blocks*, The number of times the team was able to block a shot made by the opposing team.
 
-## Variables
+# Learning Objectives
 
-Our response is the outcome win/loss as a function of team statistics. Win or loss coded 0 or 1. field goal precentage, 
-win,fg_percent, opposingfg_percent, ft_percent, opposingft_percent, rpg, opposingrpg, st, opposingst, to, opposingto, opposingbkpg, bkpg
+We want to learn how to make and validate predictions with GLMs. Additionally, we want an appropriate scoring metric that can compare the performance of various methods. We want to know which GLM performs the best for this particular problem.
 
-# 2. Questions
+# Methods and Difficulties
 
-Can we use statistical methods to predict outcomes of the March Madness basketball games better than chance? Better than seed? Better than betting markets?
+We will use three regression methods, logistic, Poisson, and multinominal, to compare the results to determine which is most accurate. Logistic regression most naturally fits this problem because games do not tie so there is a 50/50 split of wins and losses. Also, we will try Poisson regression to predict the number of points scored by each team. Since there are many close basketball games we will use multinomial regression to predict if the game score is going to be a large difference one way, small difference, or a large difference the other way.
 
-# 3. Learning
-
-We would like to learn how to make predictions with logistic regression. We would like to come up with a good way to evaluate our predictions. This will be dificult since the outcome is binary so we would need to weight our predictions somehow and index our socres.
-
-# 4. Methods
-
-Logistic regression with a response prediction function.
-
-# 5. Issues
-
-The seeds are likely derrived from the predictors we are using. Multicolinearity, will be something to watchout for because better teams probally have better statistics.
+For the most part, assembling the data was not an issue yet I was worried about that. An issue we will face is scoring this model. We switched from making predictions depending on the previous round to being independent of the previous round. We come up with a simple scoring metric then, treat games played as a random sample from all possible games, and use basic statistical methods to infer the prediction accuracy.
