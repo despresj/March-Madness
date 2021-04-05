@@ -1,50 +1,129 @@
 ---
 title             : "Using GLMs to Predict Basketball Games"
-shorttitle        : "GLM"
+shorttitle        : "Using GLMs to Predict Basketball Games"
 
 author: 
-  - name          : "Sabrina Ball"
-    affiliation   : "1"
+  - name          : "Joe Despres"
     corresponding : yes    # Define only one corresponding author
-  - name          : "Joseph Despres"
-    affiliation   : "1"
+  - name          : "Sabrina Ball"
 
 affiliation:
-  - id            : "1"
-    institution   : "Michigan State University \n "
+  - id            : ""
+    institution   : "Michigan State University"
+
   
-keywords          : "keywords"
+keywords          : "keyword"
 wordcount         : "X"
 
 bibliography      : ["r-references.bib"]
 
-floatsintext      : no
+floatsintext      : yes
 figurelist        : no
 tablelist         : no
 footnotelist      : no
-linenumbers       : yes
+linenumbers       : no
 mask              : no
 draft             : no
 
 documentclass     : "apa6"
 classoption       : "man"
 output            : papaja::apa6_pdf
+urlcolor: blue
 ---
+
 
 ```{r setup, include = FALSE}
 library("papaja")
+library(tidymodels)
+library(patchwork)
+library(kableExtra)
+theme_set(theme_test())
 r_refs("r-references.bib")
+
+merged <- readr::read_csv("data/merged.csv")
+team_stats <- readr::read_csv("data/team_stats.csv")
 ```
 
 __Introduction__  
 
-testing citat [@R-base]
+Every year top university basketball teams compete in the March Madness tournament. Casual fans and enthusiasts submit predictions gambling small sums of money on the outcomes. This study will determine if which GLM performs best in predicting the results. Our data comes from three different sources Kaggle, NCAA, and the tournament results. Kagggle provides a comprehensive dataset^[CITE THIS: https://plexkits.com/march-madness-bracket/] for all NCAA in season (non-turniment) basektball games from 2001 to 2020. The NCAA provides team-level statistics^[CITE THIS: https://stats.ncaa.org/rankings/change_sport_year_div] for each team. We will use those two datasets to train a model that uses team-level statistics to predict basketball game outcomes. We will test our model on the actual tournament results after it is concluded on April 5th. The objective is to predict the individual game outcomes as accurately as possible.
+ 
+Our response is the outcome *win/loss* as a function of team statistics. Win or loss coded 0 or 1. Then we will look at both team's statistics and determine which is more important. In our dataset we have: *field goal percentage* which is the rate attempt to score vs actually scoring. *Free-throw percentage*,  is the rate that the team has the opportunity to take an unguarded shot. Cumulative *Three-point goals made*. *Rebounds per game*, counts the times the team recovered the ball after a missed shot. *Steals*, the times a team was able to remove possession of the ball from the opposing team. *Turnover*, the number of times the team lost possession. *Blocks*, The number of times the team was able to block a shot made by the opposing team.
+
+We will use three regression methods, logistic, Poisson, and multinominal, to compare the results to determine which is most accurate. Logistic regression most naturally fits this problem because games do not tie so there is a 50/50 split of wins and losses. Also, we will try Poisson regression to predict the number of points scored by each team. Since there are many close basketball games we will use multinomial regression to predict if the game score is going to be a large difference one way, small difference, or a large difference the other way.
+
+We Found....
+
 <!-- (a) introduces the background -->
 <!-- (b) states the scientific questions you aim to answer -->
 <!-- (c) describes the data set that you will use for the analysis (d) summarizes your major findings. -->
+
+
 __Exploratory Data Analysis__  
+
+taking a look at our variables we see that they all have a reasionably normal distribution.
+
+```{r}
+hists <- merged %>% 
+  select(x3fg, fg_percent, rpg, st, to,  bkpg)
+
+histogram <- function(x, t){
+  ggplot(data = hists, aes(x)) + 
+    geom_histogram(bins = 30, color = "black", fill = "gray98") + 
+    theme_light(base_size = 5) + 
+    labs(title = paste0("Distribution of ", t), x = t, y = "") + 
+    NULL
+    
+}
+
+a <- histogram(merged$x3fg,       t = "Three-Points goals Scored")
+b <- histogram(merged$fg_percent, t = "Percentage of Field Goals Scored")
+c <- histogram(merged$rpg,        t = "Rebounds Per Game")
+d <- histogram(merged$st,         t = "Steels Per Game")
+e <- histogram(merged$to,         t = "Turn Overs Per Game")
+f <- histogram(merged$bkpg,       t = "Blocks Per game")
+(a + b + c) / (d + e + f)
+```
+
+```{r}
+stat <- function(x, df = hists, rounding_digits = 2){
+    x <- enquo(x)
+    df %>%
+      summarise(
+                       Mean  = mean( !! x),
+                     Median  = median( !! x),
+                         Std = sd  ( !! x),
+                         Min = min ( !! x),
+                         Max = max ( !! x),
+                       Range = max(!! x) - min(!! x) ) %>%
+      mutate_if(is.numeric, round, rounding_digits)
+}
+
+variables <- c(
+"Three-Points goals Scored",
+"Field Goals Scored Percentage",
+"Rebounds Per Game",
+"Steels Per Game",
+"Turn Overs Per Game",
+"Blocks Per game")
+
+hists %>% 
+  map_df(stat) %>% 
+  mutate(Variable = variables , .before = Mean) %>% 
+  kable(
+  format = "latex",
+  booktabs = TRUE,
+  escape = FALSE,
+  longtable = TRUE,
+  caption = "Descriptive Statistics")
+```
+
+
 <!-- • Perform exploratory data analysis (with summary statistics or exploratory graphs) that reveals some basic and general information of the data set. -->
 __Description__  
+To gather these data, we used the tidyr, [@R-tidyr] dplyr, [@R-dplyr] and purrr [@R-purrr] package to read-in clean, and prepare our data for analysis.
+Since this is a predictive model we used all the data we had at our disposal that was not colinear. 
+
 <!-- • Provide a description and explanation of the steps that you have taken to obtain the best model (or models). -->
 __Results__  
 <!-- • Give the results of relevant parameter estimation and statistical inference under your best model (or models). Discuss and interpret important features of your best model (or models), and state your conclusions in the context of the scientific questions that you have been focused on. -->
