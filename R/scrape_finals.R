@@ -12,9 +12,11 @@ scraped_final_scores <- read_html(url) %>%
   html_nodes('.lvp') %>% 
   html_text(trim = TRUE)
 
-games  <- tibble::tibble(scraped_final_scores[12:275]) %>% 
-  rename(game = 1) %>% 
-  mutate(id = rep(c("a", "b"), 132)) # this will break when game is done
+scraped_final_scores[1:300]
+
+games  <- tibble::tibble(scraped_final_scores[12:279]) %>% 
+    rename(game = 1) %>% 
+  mutate(id = rep(c("a", "b"), 268/2)) # this will break when game is done
 
 spliter <- function(df, tag){
   df  %>% 
@@ -34,7 +36,7 @@ scores <- bind_cols(a, b) %>%
   mutate(team = stringr::str_to_lower(team)) %>% 
   left_join(MTeamSpellings, by = "team") %>% 
   select(1, 2, 4) %>% 
-  mutate(id = rep(c("a", "b"), 132/2)) # this will break when game is done
+  mutate(id = rep(c("a", "b"), 134/2)) # this will break when game is done
   
 a <- spliter(scores, "a")
 b <- spliter(scores, "b")
@@ -49,6 +51,6 @@ bind_cols(a, b) %>%
   select(1:3, 5:7) %>% 
   mutate(game = paste0(team, " vs ", otherteam),
          winner = if_else(teamscore > otherteamscore, team, otherteam)) %>% 
-  select(game, winner, teamscore, otherteamscore) %>% 
+  select(game, winner, teamscore, otherteamscore) %>%
   readr::write_csv(here::here("data", "results.csv"))
   
