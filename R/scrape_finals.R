@@ -1,57 +1,54 @@
+
+# Scrape finals scores ----------------------------------------------------
+
 library(rvest)
+library(dplyr)
 
-url <- "https://www.ncaa.com/news/basketball-men/mml-official-bracket/2021-04-05/2021-ncaa-bracket-printable-march-madness-bracket-pdf"
-webpage <- read_html(url)
-
-rank_data_html <- html_nodes(webpage,'.embedded-entity a')
-
-rank_data_html %>% 
-  html_text(trim = TRUE) %>% 
-  html_table()
-
-links <- rank_data_html %>% 
-  html_attr("href")
-
-links
-
-
-
-url <- "https://www.ncaa.com/march-madness-live/game/208?cid=mml2021_editorial_gamecenter"
-webpage <- read_html(url)
-
-score_getter <- function (link) {
-  webpage <- read_html(link)
-  rank_data_html <- html_nodes(webpage,'.color_lvl_5')
-  teams <- html_nodes(webpage,'.h4')
-  
-  teams <- teams %>% 
-    html_text(trim = TRUE)
-  
-  raw <- rank_data_html %>% 
-    html_text(trim = TRUE)
-  team <- raw[1:2]
-  team2 <- raw[5:6]
-  output <- c(raw, teams)
-  return(output)
-    
-}
-
-links <- subset(links, grepl("https://www.ncaa.com/game/", links) )
-
-lapply(links, score_getter)
-
-score_getter(links[1])
-
-
-# this works the best -----------------------------------------------------
-
+options(tibble.print_max = 50, tibble.print_min = 50)
 
 url <- "https://www.ncaa.com/march-madness-live/scores"
-webpage <- read_html(url)
 
-rank_data_html <- html_nodes(webpage,'.lvp')
-
-data <- rank_data_html %>% 
+scraped_final_scores <- read_html(url) %>% 
+  html_nodes('.lvp') %>% 
   html_text(trim = TRUE)
 
-tibble::tibble(data[12:277])
+games  <- tibble::tibble(scraped_final_scores[12:275]) %>% 
+  rename(game = 1) %>% 
+  mutate(id = rep(c("a", "b"), 132)) # this will break when game is done
+
+spliter <- function(df, tag){
+  df  %>% 
+    filter(id == tag)
+}
+
+a <- spliter(games, "a")
+b <- spliter(games, "b")
+
+MTeamSpellings <- readr::read_csv("rawdata/MTeamSpellings.csv") %>% 
+  mutate(TeamID = as.character(TeamID), 
+           team = TeamNameSpelling)
+
+scores <- bind_cols(a, b) %>% 
+  select(1, 3) %>% 
+  rename(team = 1, score = 2) %>% 
+  mutate(team = stringr::str_to_lower(team)) %>% 
+  left_join(MTeamSpellings, by = "team") %>% 
+  select(1, 2, 4) %>% 
+  mutate(id = rep(c("a", "b"), 132/2)) # this will break when game is done
+  
+a <- spliter(scores, "a")
+b <- spliter(scores, "b")
+
+bind_cols(a, b) %>% 
+  rename(team = 1, 
+            otherteam = 5,
+            teamscore = 2, 
+            otherteamscore = 6, 
+            teamid = 3, 
+         otherteamid = 7) %>% 
+  select(1:3, 5:7) %>% 
+  mutate(game = paste0(team, " vs ", otherteam),
+         winner = if_else(teamscore > otherteamscore, team, otherteam)) %>% 
+  select(game, winner, teamscore, otherteamscore) %>% 
+  readr::write_csv(here::here("data", "results.csv"))
+  
