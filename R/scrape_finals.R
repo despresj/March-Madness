@@ -53,4 +53,3 @@ bind_cols(a, b) %>%
     game = paste0(team, " vs. ", otherteam),
          winner = if_else(teamscore > otherteamscore, team, otherteam)) %>% 
   readr::write_csv(here::here("data", "results.csv"))
-  

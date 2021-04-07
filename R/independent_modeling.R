@@ -12,6 +12,7 @@ options(tibble.print_min = 20)
 # TODO: recipes::step_normalize() try that see if there is a difference
 
 # logsitic fit ------------------------------------------------------------
+
 # logistic_fit <- glm(win ~ x3fg +
 #                       opposingx3fg +
 #                       # field goal pct
@@ -33,14 +34,14 @@ options(tibble.print_min = 20)
 #                       opposingbkpg +
 #                       bkpg,
 #                     data = merged, family = "binomial")
-# # 
+# 
 # start <- Sys.time()
+# 
 # logistic_predictions <- ids %>%
 #   mutate(predicted_probs = map2_dbl(.x = ids$teamid,
 #                                     .y = ids$otherid,
 #                                     .f = logistic_predictor)) %>%
-# # This takes about 30 seconds to run..not if we cache it 
-#   mutate(
+#    mutate(
 #     predicted_winner = if_else(predicted_probs > .5, team, other_team),
 #     predicted_winner_probs = if_else(predicted_probs > .5, predicted_probs , 1 - predicted_probs),
 #     predicted_loser_probs = 1 - predicted_winner_probs,
@@ -48,9 +49,9 @@ options(tibble.print_min = 20)
 #     .after = game
 #   )
 # paste0("runtime: ", round(Sys.time() - start, 2))
-
+# 
 # saveRDS(logistic_predictions, here::here("cache", "logistic_predictions.RDS"))
-
+# 
 
 logistic_predictions <- readRDS(here::here("cache", "logistic_predictions.RDS"))
 logistic_predictions
@@ -106,14 +107,14 @@ logistic_predictions
 #                                     .y = ids$teamid,
 #                                     .f = poisson_predictor))
 # paste0("runtime: ", round(Sys.time() - start, 2))
-## this takes about a 160 secs to run
+# # this takes about a 160 secs to run
 # saveRDS(posson_prediction, here::here("cache", "posson_prediction.RDS"))
 
 posson_prediction <- readRDS(here::here("cache", "posson_prediction.RDS"))
 posson_prediction
 
 # mulitnom ----------------------------------------------------------------
-# 
+#
 # fit_multinom <- VGAM::vglm(x_tile ~ x3fg +
 #                  opposingx3fg +
 #                  # field goal pct
@@ -172,12 +173,12 @@ posson_prediction
 #   return(x)
 # }
 # 
-# multinom_prediction <- multinom_prediction  %>% 
-#   mutate(predicted_score = map(predicted_score, add_name)) %>% 
-#   unnest_wider(predicted_score) %>% 
-#   mutate(other_predicted_score = map(other_predicted_score, add_name_other)) %>% 
-#   unnest_wider(other_predicted_score) 
-#   
+# multinom_prediction <- multinom_prediction  %>%
+#   mutate(predicted_score = map(predicted_score, add_name)) %>%
+#   unnest_wider(predicted_score) %>%
+#   mutate(other_predicted_score = map(other_predicted_score, add_name_other)) %>%
+#   unnest_wider(other_predicted_score)
+# 
 # saveRDS(multinom_prediction, here::here("cache", "multinom_prediction.RDS"))
 
 multinom_prediction <- readRDS(here::here("cache", "multinom_prediction.RDS"))
