@@ -171,7 +171,7 @@ team2id <- pull(s2021, TeamID)
 crossing(teamid = team1id, other = team2id) %>%
   distinct() %>%
   filter(teamid != other) %>%
-  top_n(2016) %>%   # choose(64,2) = 2016 (removing double counts)
+  top_n(2016) %>% 
   left_join(s2021, by = c("other" = "TeamID")) %>%
   rename(other_team = team) %>%
   select(teamid:other_team) %>%
