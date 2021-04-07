@@ -1,68 +1,68 @@
 team,teamscore,teamid,otherteam,otherteamscore,otherteamid,game,winner
-texas southern,60,1411,mount st. mary's,52,1291,texas southern vs mount st. mary's,texas southern
-drake,53,1179,wichita st.,52,1455,drake vs wichita st.,drake
-appalachian st.,53,1111,norfolk st.,54,1313,appalachian st. vs norfolk st.,norfolk st.
-ucla,86,1417,michigan st.,80,1277,ucla vs michigan st.,ucla
-virginia tech,70,1439,florida,75,1196,virginia tech vs florida,florida
-colgate,68,1159,arkansas,85,1116,colgate vs arkansas,arkansas
-drexel,49,1180,illinois,78,1228,drexel vs illinois,illinois
-utah st.,53,1429,texas tech,65,1403,utah st. vs texas tech,texas tech
-oral roberts,75,1331,ohio st.,72,1326,oral roberts vs ohio st.,oral roberts
-hartford,55,1216,baylor,79,1124,hartford vs baylor,baylor
-georgia tech,60,1210,loyola chicago,71,1260,georgia tech vs loyola chicago,loyola chicago
-oregon st.,70,1333,tennessee,56,1397,oregon st. vs tennessee,oregon st.
-liberty,60,1251,oklahoma st.,69,1329,liberty vs oklahoma st.,oklahoma st.
-wisconsin,85,1458,north carolina,62,1314,wisconsin vs north carolina,wisconsin
-cleveland st.,56,1156,houston,87,1222,cleveland st. vs houston,houston
-north texas,78,1317,purdue,69,1345,north texas vs purdue,north texas
-rutgers,60,1353,clemson,56,1155,rutgers vs clemson,rutgers
-syracuse,78,1393,san diego st.,62,1361,syracuse vs san diego st.,syracuse
-winthrop,63,1457,villanova,73,1437,winthrop vs villanova,villanova
-morehead st.,67,1287,west virginia,84,1452,morehead st. vs west virginia,west virginia
-georgetown,73,1207,colorado,96,1160,georgetown vs colorado,colorado
-unc greensboro,54,1422,florida st.,64,1199,unc greensboro vs florida st.,florida st.
-eastern wash.,84,1186,kansas,93,1242,eastern wash. vs kansas,kansas
-st. bonaventure,61,1382,lsu,76,1261,st. bonaventure vs lsu,lsu
-texas southern,66,1411,michigan,82,1276,texas southern vs michigan,michigan
-ucsb,62,1364,creighton,63,1166,ucsb vs creighton,creighton
-iona,55,1233,alabama,68,1104,iona vs alabama,alabama
-drake,56,1179,usc,72,1425,drake vs usc,usc
-grand canyon,74,1213,iowa,86,1234,grand canyon vs iowa,iowa
-maryland,63,1268,uconn,54,1163,maryland vs uconn,maryland
-ohio,62,1325,virginia,58,1438,ohio vs virginia,ohio
-missouri,68,1281,oklahoma,72,1328,missouri vs oklahoma,oklahoma
-norfolk st.,55,1313,gonzaga,98,1211,norfolk st. vs gonzaga,gonzaga
-ucla,73,1417,byu,62,1140,ucla vs byu,ucla
-vcu,,1433,oregon,,1332,vcu vs oregon,oregon
-abilene christian,53,1101,texas,52,1400,abilene christian vs texas,abilene christian
-loyola chicago,71,1260,illinois,58,1228,loyola chicago vs illinois,loyola chicago
-wisconsin,63,1458,baylor,76,1124,wisconsin vs baylor,baylor
-syracuse,75,1393,west virginia,72,1452,syracuse vs west virginia,syracuse
-texas tech,66,1403,arkansas,68,1116,texas tech vs arkansas,arkansas
-rutgers,60,1353,houston,63,1222,rutgers vs houston,houston
-oral roberts,81,1331,florida,78,1196,oral roberts vs florida,oral roberts
-north texas,61,1317,villanova,84,1437,north texas vs villanova,villanova
-oregon st.,80,1333,oklahoma st.,70,1329,oregon st. vs oklahoma st.,oregon st.
-oregon,95,1332,iowa,80,1234,oregon vs iowa,oregon
-oklahoma,71,1328,gonzaga,87,1211,oklahoma vs gonzaga,gonzaga
-abilene christian,47,1101,ucla,67,1417,abilene christian vs ucla,ucla
-ohio,58,1325,creighton,72,1166,ohio vs creighton,creighton
-lsu,78,1261,michigan,86,1276,lsu vs michigan,michigan
-colorado,53,1160,florida st.,71,1199,colorado vs florida st.,florida st.
-maryland,77,1268,alabama,96,1104,maryland vs alabama,alabama
-usc,85,1425,kansas,51,1242,usc vs kansas,usc
-oregon st.,65,1333,loyola chicago,58,1260,oregon st. vs loyola chicago,oregon st.
-villanova,51,1437,baylor,62,1124,villanova vs baylor,baylor
-oral roberts,70,1331,arkansas,72,1116,oral roberts vs arkansas,arkansas
-syracuse,46,1393,houston,62,1222,syracuse vs houston,houston
-creighton,65,1166,gonzaga,83,1211,creighton vs gonzaga,gonzaga
-florida st.,58,1199,michigan,76,1276,florida st. vs michigan,michigan
-ucla,88,1417,alabama,78,1104,ucla vs alabama,ucla
-oregon,68,1332,usc,82,1425,oregon vs usc,usc
-oregon st.,61,1333,houston,67,1222,oregon st. vs houston,houston
-arkansas,72,1116,baylor,81,1124,arkansas vs baylor,baylor
-usc,66,1425,gonzaga,85,1211,usc vs gonzaga,gonzaga
-ucla,51,1417,michigan,49,1276,ucla vs michigan,ucla
-houston,59,1222,baylor,78,1124,houston vs baylor,baylor
-ucla,90,1417,gonzaga,93,1211,ucla vs gonzaga,gonzaga
-baylor,86,1124,gonzaga,70,1211,baylor vs gonzaga,baylor
+texassouthern,60,1411,mountstmarys,52,1291,texassouthern vs. mountstmarys,texassouthern
+drake,53,1179,wichitast,52,1455,drake vs. wichitast,drake
+appalachianst,53,1111,norfolkst,54,1313,appalachianst vs. norfolkst,norfolkst
+ucla,86,1417,michiganst,80,1277,ucla vs. michiganst,ucla
+virginiatech,70,1439,florida,75,1196,virginiatech vs. florida,florida
+colgate,68,1159,arkansas,85,1116,colgate vs. arkansas,arkansas
+drexel,49,1180,illinois,78,1228,drexel vs. illinois,illinois
+utahst,53,1429,texastech,65,1403,utahst vs. texastech,texastech
+oralroberts,75,1331,ohiost,72,1326,oralroberts vs. ohiost,oralroberts
+hartford,55,1216,baylor,79,1124,hartford vs. baylor,baylor
+georgiatech,60,1210,loyolachicago,71,1260,georgiatech vs. loyolachicago,loyolachicago
+oregonst,70,1333,tennessee,56,1397,oregonst vs. tennessee,oregonst
+liberty,60,1251,oklahomast,69,1329,liberty vs. oklahomast,oklahomast
+wisconsin,85,1458,northcarolina,62,1314,wisconsin vs. northcarolina,wisconsin
+clevelandst,56,1156,houston,87,1222,clevelandst vs. houston,houston
+northtexas,78,1317,purdue,69,1345,northtexas vs. purdue,northtexas
+rutgers,60,1353,clemson,56,1155,rutgers vs. clemson,rutgers
+syracuse,78,1393,sandiegost,62,1361,syracuse vs. sandiegost,syracuse
+winthrop,63,1457,villanova,73,1437,winthrop vs. villanova,villanova
+moreheadst,67,1287,westvirginia,84,1452,moreheadst vs. westvirginia,westvirginia
+georgetown,73,1207,colorado,96,1160,georgetown vs. colorado,colorado
+uncgreensboro,54,1422,floridast,64,1199,uncgreensboro vs. floridast,floridast
+easternwash,84,1186,kansas,93,1242,easternwash vs. kansas,kansas
+stbonaventure,61,1382,lsu,76,1261,stbonaventure vs. lsu,lsu
+texassouthern,66,1411,michigan,82,1276,texassouthern vs. michigan,michigan
+ucsb,62,1364,creighton,63,1166,ucsb vs. creighton,creighton
+iona,55,1233,alabama,68,1104,iona vs. alabama,alabama
+drake,56,1179,usc,72,1425,drake vs. usc,usc
+grandcanyon,74,1213,iowa,86,1234,grandcanyon vs. iowa,iowa
+maryland,63,1268,uconn,54,1163,maryland vs. uconn,maryland
+ohio,62,1325,virginia,58,1438,ohio vs. virginia,ohio
+missouri,68,1281,oklahoma,72,1328,missouri vs. oklahoma,oklahoma
+norfolkst,55,1313,gonzaga,98,1211,norfolkst vs. gonzaga,gonzaga
+ucla,73,1417,byu,62,1140,ucla vs. byu,ucla
+vcu,,1433,oregon,,1332,vcu vs. oregon,oregon
+abilenechristian,53,1101,texas,52,1400,abilenechristian vs. texas,abilenechristian
+loyolachicago,71,1260,illinois,58,1228,loyolachicago vs. illinois,loyolachicago
+wisconsin,63,1458,baylor,76,1124,wisconsin vs. baylor,baylor
+syracuse,75,1393,westvirginia,72,1452,syracuse vs. westvirginia,syracuse
+texastech,66,1403,arkansas,68,1116,texastech vs. arkansas,arkansas
+rutgers,60,1353,houston,63,1222,rutgers vs. houston,houston
+oralroberts,81,1331,florida,78,1196,oralroberts vs. florida,oralroberts
+northtexas,61,1317,villanova,84,1437,northtexas vs. villanova,villanova
+oregonst,80,1333,oklahomast,70,1329,oregonst vs. oklahomast,oregonst
+oregon,95,1332,iowa,80,1234,oregon vs. iowa,oregon
+oklahoma,71,1328,gonzaga,87,1211,oklahoma vs. gonzaga,gonzaga
+abilenechristian,47,1101,ucla,67,1417,abilenechristian vs. ucla,ucla
+ohio,58,1325,creighton,72,1166,ohio vs. creighton,creighton
+lsu,78,1261,michigan,86,1276,lsu vs. michigan,michigan
+colorado,53,1160,floridast,71,1199,colorado vs. floridast,floridast
+maryland,77,1268,alabama,96,1104,maryland vs. alabama,alabama
+usc,85,1425,kansas,51,1242,usc vs. kansas,usc
+oregonst,65,1333,loyolachicago,58,1260,oregonst vs. loyolachicago,oregonst
+villanova,51,1437,baylor,62,1124,villanova vs. baylor,baylor
+oralroberts,70,1331,arkansas,72,1116,oralroberts vs. arkansas,arkansas
+syracuse,46,1393,houston,62,1222,syracuse vs. houston,houston
+creighton,65,1166,gonzaga,83,1211,creighton vs. gonzaga,gonzaga
+floridast,58,1199,michigan,76,1276,floridast vs. michigan,michigan
+ucla,88,1417,alabama,78,1104,ucla vs. alabama,ucla
+oregon,68,1332,usc,82,1425,oregon vs. usc,usc
+oregonst,61,1333,houston,67,1222,oregonst vs. houston,houston
+arkansas,72,1116,baylor,81,1124,arkansas vs. baylor,baylor
+usc,66,1425,gonzaga,85,1211,usc vs. gonzaga,gonzaga
+ucla,51,1417,michigan,49,1276,ucla vs. michigan,ucla
+houston,59,1222,baylor,78,1124,houston vs. baylor,baylor
+ucla,90,1417,gonzaga,93,1211,ucla vs. gonzaga,gonzaga
+baylor,86,1124,gonzaga,70,1211,baylor vs. gonzaga,baylor

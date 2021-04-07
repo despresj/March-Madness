@@ -46,8 +46,11 @@ bind_cols(a, b) %>%
             otherteamscore = 6, 
             teamid = 3, 
          otherteamid = 7) %>% 
-  select(1:3, 5:7) %>% 
-  mutate(game = paste0(team, " vs ", otherteam),
+  select(1:3, 5:7) %>%
+  
+  mutate(team = gsub("[^[:alnum:]]", "", team),
+         otherteam = gsub("[^[:alnum:]]", "", otherteam),
+    game = paste0(team, " vs. ", otherteam),
          winner = if_else(teamscore > otherteamscore, team, otherteam)) %>% 
   readr::write_csv(here::here("data", "results.csv"))
   
