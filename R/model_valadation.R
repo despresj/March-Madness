@@ -47,14 +47,7 @@ posson_model_score %>%
 
 # multinomeal scoring -----------------------------------------------------
 
-xtile_matcher <- function (x) {
-  ifelse(x > 12 , test$`<-12` , 
-         ifelse(x >= -12 & x < -4, test$`-12:-4`,
-                ifelse(-4 & x <  4, test$`-4:4`,
-                       ifelse(x >= 4 & x < 13, test$`4:13`, test$`>13`))))
-}
-
-test <- toscore(multinom_prediction) %>% 
+multinomeal_model_score  <- toscore(multinom_prediction) %>% 
   mutate(diff = teamscore - otherteamscore,
   fifth_xtile = case_when(diff <  -12             ~ '<-12',
                           diff >= -12 & diff < -4 ~ '-12:-4',
@@ -68,5 +61,8 @@ test <- toscore(multinom_prediction) %>%
                     diff >=   4 & diff < 13  ~ `4:13`,
                     diff >= 13               ~ `>13`)) %>% 
   select(`<-12`:`>13`, fifth_xtile, probs) %>%  # TODO: come up with a way to score this
-  mutate(score = if_else(probs > 0.25, probs * 4, 1-probs))
+  mutate(score = if_else(probs > 0.25, (probs * 4), (1 - probs))) 
 
+multinomeal_model_score %>% 
+  pull(score) %>% 
+  hist()
