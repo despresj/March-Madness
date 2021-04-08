@@ -10,11 +10,12 @@
 | 3/31 | meet prof | check |
 | 4/02 | run poison and multinom | check |
 | 4/05 | outline paper | check |
-| 4/05 | recipes::step_normalize() compare outcome |
-| 4/05 | Test performance against, random chance, seeds, and odds. ||
-| 4/05 | Game finals played |
-| 4/10 | proposal due |
-| 4/12 | Finish Write paper |
+| 4/05 | Game finals played | results [scraped](https://github.com/despresj/March-Madness/blob/main/R/scrape_finals.R) |
+| 4/10 | proposal due | [Done](https://github.com/despresj/March-Madness/blob/main/proposal/proposal.pdf) |
+| 4/10 | recipes::step_normalize() compare outcome |
+| 4/10 | Test performance against, random chance, seeds, and odds. |
+| 4/19 | slides due |
+| 4/24 | Paper Due | |
 | 4/19 | Due |
 ## Questions:
 
