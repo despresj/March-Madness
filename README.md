@@ -10,8 +10,8 @@
 | 3/31 | Consult with Prof |  :white_check_mark:  |
 | 4/02 | Make pois and Multinom |  :white_check_mark:  |
 | 4/05 | outline [Paper](https://github.com/despresj/March-Madness/blob/main/paper/paper.pdf)  |  :white_check_mark:  |
-| 4/05 | Game finals played | results [scraped](https://github.com/despresj/March-Madness/blob/main/R/scrape_finals.R)  :white_check_mark: |
-| 4/10 | [Proposal](https://github.com/despresj/March-Madness/blob/main/proposal/proposal.pdf) due | Done  :white_check_mark:  |
+| 4/05 | Game finals played | :white_check_mark:  results [scraped](https://github.com/despresj/March-Madness/blob/main/R/scrape_finals.R) |
+| 4/10 | [Proposal](https://github.com/despresj/March-Madness/blob/main/proposal/proposal.pdf) due | :white_check_mark: Done  |
 | 4/10 | recipes::step_normalize() compare outcome |
 | 4/10 | Test performance against, random chance, seeds, and odds. |
 | 4/19 | slides due |
