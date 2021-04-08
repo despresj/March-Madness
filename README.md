@@ -3,7 +3,7 @@
 ## Timeline
 | date | goal | Progress|
 | ---- | ---- | --- |
-| 3/15 | The whole dataset combined and a model | Data is clean |
+| 3/15 | The whole dataset combined and a model | Data is :white_check_mark: |
 | 3/20 | get our model | model is complete |
 | 3/28 |Need method for prediction| Function to predict outcome is written |
 | 3/29 | Need to fill out a whole bracket | Bracket filled out |
@@ -11,11 +11,11 @@
 | 4/02 | run poison and multinom | check |
 | 4/05 | outline paper | check |
 | 4/05 | Game finals played | results [scraped](https://github.com/despresj/March-Madness/blob/main/R/scrape_finals.R) |
-| 4/10 | proposal due | [Done](https://github.com/despresj/March-Madness/blob/main/proposal/proposal.pdf) |
+| 4/10 | [proposal](https://github.com/despresj/March-Madness/blob/main/proposal/proposal.pdf) due | Done |
 | 4/10 | recipes::step_normalize() compare outcome |
 | 4/10 | Test performance against, random chance, seeds, and odds. |
 | 4/19 | slides due |
-| 4/24 | Paper Due | |
+| 4/24 | [Paper Due](https://github.com/despresj/March-Madness/blob/main/paper/paper.pdf)| |
 | 4/19 | Due |
 ## Questions:
 
