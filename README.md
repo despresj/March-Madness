@@ -3,19 +3,19 @@
 ## Timeline
 | date | goal | Progress|
 | ---- | ---- | --- |
-| 3/15 | The whole dataset combined and a model | Data is :white_check_mark: |
-| 3/20 | get our model | model is complete |
-| 3/28 |Need method for prediction| Function to predict outcome is written |
-| 3/29 | Need to fill out a whole bracket | Bracket filled out |
-| 3/31 | meet prof | check |
-| 4/02 | run poison and multinom | check |
-| 4/05 | outline paper | check |
-| 4/05 | Game finals played | results [scraped](https://github.com/despresj/March-Madness/blob/main/R/scrape_finals.R) |
-| 4/10 | [proposal](https://github.com/despresj/March-Madness/blob/main/proposal/proposal.pdf) due | Done |
+| 3/15 | The whole dataset combined and a model | Data is combined and clean :white_check_mark: |
+| 3/20 | Outline our model | model outline is complete :white_check_mark:  |
+| 3/28 |Need method for prediction| Function to predict outcome works  :white_check_mark:  |
+| 3/29 | Need to fill out a whole bracket | Bracket filled out :white_check_mark:  |
+| 3/31 | Consult with Prof |  :white_check_mark:  |
+| 4/02 | Make pois and Multinom |  :white_check_mark:  |
+| 4/05 | outline [Paper](https://github.com/despresj/March-Madness/blob/main/paper/paper.pdf)  |  :white_check_mark:  |
+| 4/05 | Game finals played | results [scraped](https://github.com/despresj/March-Madness/blob/main/R/scrape_finals.R)  :white_check_mark: |
+| 4/10 | [Proposal](https://github.com/despresj/March-Madness/blob/main/proposal/proposal.pdf) due | Done  :white_check_mark:  |
 | 4/10 | recipes::step_normalize() compare outcome |
 | 4/10 | Test performance against, random chance, seeds, and odds. |
 | 4/19 | slides due |
-| 4/24 | [Paper Due](https://github.com/despresj/March-Madness/blob/main/paper/paper.pdf)| |
+| 4/24 | [Paper](https://github.com/despresj/March-Madness/blob/main/paper/paper.pdf) Due| |
 | 4/19 | Due |
 ## Questions:
 
