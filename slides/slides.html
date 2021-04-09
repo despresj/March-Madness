@@ -4,9 +4,9 @@
     <title>March Madness Basketball Turniment</title>
     <meta charset="utf-8" />
     <meta name="author" content="Sabrina Ball and Joe Despres" />
-    <script src="libs/header-attrs/header-attrs.js"></script>
-    <link href="libs/remark-css/default.css" rel="stylesheet" />
-    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+    <script src="libs/header-attrs-2.7/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
   <body>
     <textarea id="source">
@@ -14,7 +14,7 @@ class: center, middle, inverse, title-slide
 
 # March Madness Basketball Turniment
 ### Sabrina Ball and Joe Despres
-### updated: 2021-04-08
+### updated: 2021-04-09
 
 ---
 
@@ -22,11 +22,527 @@ class: center, middle, inverse, title-slide
 background-image: url(https://upload.wikimedia.org/wikipedia/en/2/28/March_Madness_logo.svg)
 
 
+
+&lt;style type="text/css"&gt;
+.remark-slide-content {
+    font-size: 30px;
+    padding: 1em 4em 1em 4em;
+}
+&lt;/style&gt;
+
 ---
 
-https://github.com/EvaMaeRey/flipbookr
+```r
+logistic_predictor_fn &lt;- function (team_1_id, team_2_id) {
+  stats_team_1 &lt;- filter(s2021, TeamID == team_1_id)
+  stats_team_2 &lt;- filter(s2021, TeamID == team_2_id) %&gt;% 
+                         rename_all(~ paste0("opposing",.)) 
+  bound_cols &lt;- bind_cols(stats_team_1, stats_team_2)
+  pred &lt;- predict(logistic_fit, newdata = bound_cols, type = "response")
+  
+  return(pred)
+}
+
+logistic_predictor &lt;- purrr::possibly(.f = logistic_predictor_fn, otherwise = "ERROR")
+```
 
 ---
+
+
+```r
+logistic_fit &lt;- glm(win ~ x3fg + opposingx3fg +
+                      # field goal pct
+                      fg_percent + opposingfg_percent +
+                      # free throws
+                      ft_percent + opposingft_percent +
+                      # rebound per game
+                      rpg + opposingrpg +
+                      # steels
+                      st + opposingst +
+                      #turnover
+                      to + opposingto +
+                      # blocks
+                      opposingbkpg + bkpg,
+                    data = merged, family = "binomial")
+```
+---
+count: false
+ 
+
+.panel1-logistic-auto[
+
+```r
+*ids
+```
+]
+ 
+.panel2-logistic-auto[
+
+```
+# A tibble: 4,032 x 5
+   team             other_team  game                             teamid otherid
+   &lt;chr&gt;            &lt;chr&gt;       &lt;chr&gt;                             &lt;dbl&gt;   &lt;dbl&gt;
+ 1 abilenechristian alabama     abilenechristian vs. alabama       1101    1104
+ 2 abilenechristian arkansas    abilenechristian vs. arkansas      1101    1116
+ 3 abilenechristian baylor      abilenechristian vs. baylor        1101    1124
+ 4 abilenechristian byu         abilenechristian vs. byu           1101    1140
+ 5 abilenechristian clemson     abilenechristian vs. clemson       1101    1155
+ 6 abilenechristian clevelandst abilenechristian vs. clevelandst   1101    1156
+ 7 abilenechristian colgate     abilenechristian vs. colgate       1101    1159
+ 8 abilenechristian colorado    abilenechristian vs. colorado      1101    1160
+ 9 abilenechristian uconn       abilenechristian vs. uconn         1101    1163
+10 abilenechristian creighton   abilenechristian vs. creighton     1101    1166
+# … with 4,022 more rows
+```
+]
+
+---
+count: false
+ 
+
+.panel1-logistic-auto[
+
+```r
+ids %&gt;%
+* mutate(predicted_probs = map2_dbl(.x = ids$teamid,
+*                                   .y = ids$otherid,
+*                                   .f = logistic_predictor))
+```
+]
+ 
+.panel2-logistic-auto[
+
+```
+# A tibble: 4,032 x 6
+   team         other_team  game                  teamid otherid predicted_probs
+   &lt;chr&gt;        &lt;chr&gt;       &lt;chr&gt;                  &lt;dbl&gt;   &lt;dbl&gt;           &lt;dbl&gt;
+ 1 abilenechri… alabama     abilenechristian vs.…   1101    1104           0.404
+ 2 abilenechri… arkansas    abilenechristian vs.…   1101    1116           0.308
+ 3 abilenechri… baylor      abilenechristian vs.…   1101    1124           0.262
+ 4 abilenechri… byu         abilenechristian vs.…   1101    1140           0.422
+ 5 abilenechri… clemson     abilenechristian vs.…   1101    1155           0.763
+ 6 abilenechri… clevelandst abilenechristian vs.…   1101    1156           0.694
+ 7 abilenechri… colgate     abilenechristian vs.…   1101    1159           0.165
+ 8 abilenechri… colorado    abilenechristian vs.…   1101    1160           0.507
+ 9 abilenechri… uconn       abilenechristian vs.…   1101    1163           0.474
+10 abilenechri… creighton   abilenechristian vs.…   1101    1166           0.375
+# … with 4,022 more rows
+```
+]
+
+---
+count: false
+ 
+
+.panel1-logistic-auto[
+
+```r
+ids %&gt;%
+  mutate(predicted_probs = map2_dbl(.x = ids$teamid,
+                                    .y = ids$otherid,
+                                    .f = logistic_predictor)) %&gt;%
+*  mutate(
+*   predicted_winner = if_else(predicted_probs &gt; .5, team, other_team),
+*   predicted_winner_probs = if_else(predicted_probs &gt; .5, predicted_probs , 1 - predicted_probs),
+*   predicted_loser_probs = 1 - predicted_winner_probs,
+*   prediction_points = predicted_winner_probs - predicted_loser_probs,
+*   .after = game
+* )
+```
+]
+ 
+.panel2-logistic-auto[
+
+```
+# A tibble: 4,032 x 10
+   team   other_team  game    predicted_winner predicted_winne… predicted_loser…
+   &lt;chr&gt;  &lt;chr&gt;       &lt;chr&gt;   &lt;chr&gt;                       &lt;dbl&gt;            &lt;dbl&gt;
+ 1 abile… alabama     abilen… alabama                     0.596            0.404
+ 2 abile… arkansas    abilen… arkansas                    0.692            0.308
+ 3 abile… baylor      abilen… baylor                      0.738            0.262
+ 4 abile… byu         abilen… byu                         0.578            0.422
+ 5 abile… clemson     abilen… abilenechristian            0.763            0.237
+ 6 abile… clevelandst abilen… abilenechristian            0.694            0.306
+ 7 abile… colgate     abilen… colgate                     0.835            0.165
+ 8 abile… colorado    abilen… abilenechristian            0.507            0.493
+ 9 abile… uconn       abilen… uconn                       0.526            0.474
+10 abile… creighton   abilen… creighton                   0.625            0.375
+# … with 4,022 more rows, and 4 more variables: prediction_points &lt;dbl&gt;,
+#   teamid &lt;dbl&gt;, otherid &lt;dbl&gt;, predicted_probs &lt;dbl&gt;
+```
+]
+
+---
+count: false
+ 
+
+.panel1-logistic-auto[
+
+```r
+ids %&gt;%
+  mutate(predicted_probs = map2_dbl(.x = ids$teamid,
+                                    .y = ids$otherid,
+                                    .f = logistic_predictor)) %&gt;%
+   mutate(
+    predicted_winner = if_else(predicted_probs &gt; .5, team, other_team),
+    predicted_winner_probs = if_else(predicted_probs &gt; .5, predicted_probs , 1 - predicted_probs),
+    predicted_loser_probs = 1 - predicted_winner_probs,
+    prediction_points = predicted_winner_probs - predicted_loser_probs,
+    .after = game
+  )
+```
+]
+ 
+.panel2-logistic-auto[
+
+```
+# A tibble: 4,032 x 10
+   team   other_team  game    predicted_winner predicted_winne… predicted_loser…
+   &lt;chr&gt;  &lt;chr&gt;       &lt;chr&gt;   &lt;chr&gt;                       &lt;dbl&gt;            &lt;dbl&gt;
+ 1 abile… alabama     abilen… alabama                     0.596            0.404
+ 2 abile… arkansas    abilen… arkansas                    0.692            0.308
+ 3 abile… baylor      abilen… baylor                      0.738            0.262
+ 4 abile… byu         abilen… byu                         0.578            0.422
+ 5 abile… clemson     abilen… abilenechristian            0.763            0.237
+ 6 abile… clevelandst abilen… abilenechristian            0.694            0.306
+ 7 abile… colgate     abilen… colgate                     0.835            0.165
+ 8 abile… colorado    abilen… abilenechristian            0.507            0.493
+ 9 abile… uconn       abilen… uconn                       0.526            0.474
+10 abile… creighton   abilen… creighton                   0.625            0.375
+# … with 4,022 more rows, and 4 more variables: prediction_points &lt;dbl&gt;,
+#   teamid &lt;dbl&gt;, otherid &lt;dbl&gt;, predicted_probs &lt;dbl&gt;
+```
+]
+
+&lt;style&gt;
+.panel1-logistic-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-logistic-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-logistic-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+```r
+ids %&gt;%
+  mutate(predicted_probs = map2_dbl(.x = ids$teamid,
+                                    .y = ids$otherid,
+                                    .f = logistic_predictor)) %&gt;% 
+   mutate(
+    predicted_winner = if_else(predicted_probs &gt; .5, team, other_team),
+    predicted_winner_probs = if_else(predicted_probs &gt; .5, predicted_probs , 1 - predicted_probs),
+    predicted_loser_probs = 1 - predicted_winner_probs,
+    prediction_points = predicted_winner_probs - predicted_loser_probs,
+    .after = game
+  )
+```
+
+```
+# A tibble: 4,032 x 10
+   team   other_team  game    predicted_winner predicted_winne… predicted_loser…
+   &lt;chr&gt;  &lt;chr&gt;       &lt;chr&gt;   &lt;chr&gt;                       &lt;dbl&gt;            &lt;dbl&gt;
+ 1 abile… alabama     abilen… alabama                     0.596            0.404
+ 2 abile… arkansas    abilen… arkansas                    0.692            0.308
+ 3 abile… baylor      abilen… baylor                      0.738            0.262
+ 4 abile… byu         abilen… byu                         0.578            0.422
+ 5 abile… clemson     abilen… abilenechristian            0.763            0.237
+ 6 abile… clevelandst abilen… abilenechristian            0.694            0.306
+ 7 abile… colgate     abilen… colgate                     0.835            0.165
+ 8 abile… colorado    abilen… abilenechristian            0.507            0.493
+ 9 abile… uconn       abilen… uconn                       0.526            0.474
+10 abile… creighton   abilen… creighton                   0.625            0.375
+# … with 4,022 more rows, and 4 more variables: prediction_points &lt;dbl&gt;,
+#   teamid &lt;dbl&gt;, otherid &lt;dbl&gt;, predicted_probs &lt;dbl&gt;
+```
+
+--- 
+
+count: false
+ 
+
+.panel1-my_cars-auto[
+
+```r
+*cars
+```
+]
+ 
+.panel2-my_cars-auto[
+
+```
+   speed dist
+1      4    2
+2      4   10
+3      7    4
+4      7   22
+5      8   16
+6      9   10
+7     10   18
+8     10   26
+9     10   34
+10    11   17
+11    11   28
+12    12   14
+13    12   20
+14    12   24
+15    12   28
+16    13   26
+17    13   34
+18    13   34
+19    13   46
+20    14   26
+21    14   36
+22    14   60
+23    14   80
+24    15   20
+25    15   26
+26    15   54
+27    16   32
+28    16   40
+29    17   32
+30    17   40
+31    17   50
+32    18   42
+33    18   56
+34    18   76
+35    18   84
+36    19   36
+37    19   46
+38    19   68
+39    20   32
+40    20   48
+41    20   52
+42    20   56
+43    20   64
+44    22   66
+45    23   54
+46    24   70
+47    24   92
+48    24   93
+49    24  120
+50    25   85
+```
+]
+
+---
+count: false
+ 
+
+.panel1-my_cars-auto[
+
+```r
+cars %&gt;%
+* filter(speed &gt; 4)
+```
+]
+ 
+.panel2-my_cars-auto[
+
+```
+   speed dist
+1      7    4
+2      7   22
+3      8   16
+4      9   10
+5     10   18
+6     10   26
+7     10   34
+8     11   17
+9     11   28
+10    12   14
+11    12   20
+12    12   24
+13    12   28
+14    13   26
+15    13   34
+16    13   34
+17    13   46
+18    14   26
+19    14   36
+20    14   60
+21    14   80
+22    15   20
+23    15   26
+24    15   54
+25    16   32
+26    16   40
+27    17   32
+28    17   40
+29    17   50
+30    18   42
+31    18   56
+32    18   76
+33    18   84
+34    19   36
+35    19   46
+36    19   68
+37    20   32
+38    20   48
+39    20   52
+40    20   56
+41    20   64
+42    22   66
+43    23   54
+44    24   70
+45    24   92
+46    24   93
+47    24  120
+48    25   85
+```
+]
+
+---
+count: false
+ 
+
+.panel1-my_cars-auto[
+
+```r
+cars %&gt;%
+  filter(speed &gt; 4) %&gt;%
+* ggplot()
+```
+]
+ 
+.panel2-my_cars-auto[
+![](slides_files/figure-html/my_cars_auto_03_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-my_cars-auto[
+
+```r
+cars %&gt;%
+  filter(speed &gt; 4) %&gt;%
+  ggplot() +
+* aes(x = speed)
+```
+]
+ 
+.panel2-my_cars-auto[
+![](slides_files/figure-html/my_cars_auto_04_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-my_cars-auto[
+
+```r
+cars %&gt;%
+  filter(speed &gt; 4) %&gt;%
+  ggplot() +
+  aes(x = speed) +
+* aes(y = dist)
+```
+]
+ 
+.panel2-my_cars-auto[
+![](slides_files/figure-html/my_cars_auto_05_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-my_cars-auto[
+
+```r
+cars %&gt;%
+  filter(speed &gt; 4) %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  aes(y = dist) +
+* geom_point(
+*   alpha = .8,
+*   color = "blue"
+*   )
+```
+]
+ 
+.panel2-my_cars-auto[
+![](slides_files/figure-html/my_cars_auto_06_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-my_cars-auto[
+
+```r
+cars %&gt;%
+  filter(speed &gt; 4) %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_point(
+    alpha = .8,
+    color = "blue"
+    ) +
+* aes(size = speed)
+```
+]
+ 
+.panel2-my_cars-auto[
+![](slides_files/figure-html/my_cars_auto_07_output-1.png)&lt;!-- --&gt;
+]
+
+&lt;style&gt;
+.panel1-my_cars-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-my_cars-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-my_cars-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
