@@ -63,6 +63,4 @@ multinomeal_model_score  <- toscore(multinom_prediction) %>%
   select(`<-12`:`>13`, fifth_xtile, probs) %>%  # TODO: come up with a way to score this
   mutate(score = if_else(probs > 0.25, (probs * 4), (1 - probs))) 
 
-multinomeal_model_score %>% 
-  pull(score) %>% 
-  hist()
+multinomeal_model_score
