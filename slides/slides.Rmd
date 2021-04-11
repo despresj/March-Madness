@@ -12,88 +12,129 @@ output:
 ---
 
 background-image: url(https://upload.wikimedia.org/wikipedia/en/2/28/March_Madness_logo.svg)
-
+---
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(fig.width = 6, message = FALSE, warning = FALSE, comment = "", cache = F)
-library(flipbookr)
+knitr::opts_chunk$set(fig.width = 6, echo = FALSE, message = FALSE, warning = FALSE, comment = "", cache = F)
+
 library(tidyverse)
+library(kableExtra)
+library(patchwork)
 
 merged <- readr::read_csv(here::here("data", "merged.csv"))
 ids <- readr::read_csv(here::here("data", "ids.csv"))
 s2021 <- readr::read_csv(here::here("data", "s2021.csv"))
+source(here::here("R", "fitting.R"))
 ```
 
-<style type="text/css">
-.remark-slide-content {
-    font-size: 30px;
-    padding: 1em 4em 1em 4em;
-}
-</style>
+<!-- --- -->
+<!-- # Backround on the turniment -->
+<!-- quick facts... -->
+
+<!-- --- -->
+
+<!-- ![](images/empty_bracket.jpg) -->
+
+<!-- --- -->
+<!-- class: center, middle -->
+<!-- # Zoomed in -->
+
+<!-- ![](images/zoomed.png) -->
+
+<!-- --- -->
+<!-- # Goal -->
+<!-- Can we use basketball seasion data to predict this turniment outcomes? -->
 
 ---
+
+# Training Data
+
 ```{r}
-logistic_predictor_fn <- function (team_1_id, team_2_id) {
-  stats_team_1 <- filter(s2021, TeamID == team_1_id)
-  stats_team_2 <- filter(s2021, TeamID == team_2_id) %>% 
-                         rename_all(~ paste0("opposing",.)) 
-  bound_cols <- bind_cols(stats_team_1, stats_team_2)
-  pred <- predict(logistic_fit, newdata = bound_cols, type = "response")
-  
-  return(pred)
+descriptive_statistics <- function(x){
+  output <- c(mean(x), median(x), sd(x), min(x), max(x))
+  output <- round(output, digits = 2)
+  return(output)
 }
 
-logistic_predictor <- purrr::possibly(.f = logistic_predictor_fn, otherwise = "ERROR")
+
+desc_stats <- merged %>% 
+  select(fg_percent, ft_percent, rpg,st, to, bkpg) %>% 
+  map_df(descriptive_statistics) %>% 
+  t()
+
+colnames(desc_stats) <- c("Mean", "Median", "Standard DEv", "Min", "Max")
+rownames(desc_stats) <- c("Field Goal Percentage", "Free Throw Percentage", "Rebounds Per Game", "Steals", "Turnovers", "Blocked Shots Per Game")
+
+kable(desc_stats) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) 
+```
+
+---
+class: center
+
+# Distribution of Predictors
+
+```{r fig.width=15, fig.height=10}
+hists <- merged %>% 
+  select(x3fg, fg_percent, rpg, st, to,  bkpg)
+
+histogram <- function(x, t){
+  ggplot(data = hists, aes(x)) + 
+    geom_histogram(bins = 50, color = "black", fill = "gray80") + 
+    theme_light(base_size = 20) + 
+    labs(title = paste0("", t), x = "", y = "") + 
+    NULL
+    
+}
+
+a <- histogram(merged$x3fg,       t = "Three-Points Goals")
+b <- histogram(merged$fg_percent, t = "Percentage of Goals Scored")
+c <- histogram(merged$rpg,        t = "Rebounds Per Game")
+d <- histogram(merged$st,         t = "Steals Per Game")
+e <- histogram(merged$to,         t = "Turnovers Per Game")
+f <- histogram(merged$bkpg,       t = "Blocks Per game")
+# (a + b + c) / (d + e + f)
+(a + b) / (c + d) /(e + f)
+```
+
+
+---
+
+# Model
+
+```{r}
+
+equatiomatic::extract_eq(model = logistic_fit, 
+                         use_coefs = FALSE, 
+                         show_distribution = TRUE, 
+                         wrap = TRUE, 
+                         terms_per_line = 2, 
+                         intercept = "beta")
+# results='asis' in code chunk to render as LaTex
 ```
 
 ---
 
 ```{r}
-logistic_fit <- glm(win ~ x3fg + opposingx3fg +
-                      # field goal pct
-                      fg_percent + opposingfg_percent +
-                      # free throws
-                      ft_percent + opposingft_percent +
-                      # rebound per game
-                      rpg + opposingrpg +
-                      # steels
-                      st + opposingst +
-                      #turnover
-                      to + opposingto +
-                      # blocks
-                      opposingbkpg + bkpg,
-                    data = merged, family = "binomial")
+
+equatiomatic::extract_eq(model = fit_poisson, 
+                         use_coefs = FALSE, 
+                         show_distribution = TRUE, 
+                         wrap = TRUE, 
+                         terms_per_line = 2, 
+                         intercept = "beta")
 ```
 ---
-`r chunk_reveal("logistic")`
 
-```{r logistic}
-ids %>%
-  mutate(predicted_probs = map2_dbl(.x = ids$teamid,
-                                    .y = ids$otherid,
-                                    .f = logistic_predictor)) %>% 
-   mutate(
-    predicted_winner = if_else(predicted_probs > .5, team, other_team),
-    predicted_winner_probs = if_else(predicted_probs > .5, predicted_probs , 1 - predicted_probs),
-    predicted_loser_probs = 1 - predicted_winner_probs,
-    prediction_points = predicted_winner_probs - predicted_loser_probs,
-    .after = game
-  )
+# Results
+
+```{r}
+# require(memisc)
+# mtable('Model 1' = logistic_fit,
+#             'Model 2' = fit_poisson,
+#             summary.stats = c('R-squared','F','p','N'), )
 
 ```
 
---- 
 
-`r chunk_reveal("my_cars")`
 
-```{r my_cars, include = FALSE}
-cars %>%
-  filter(speed > 4) %>%
-  ggplot() +
-  aes(x = speed) + #BREAK
-  aes(y = dist) + #BREAK
-  geom_point(
-    alpha = .8, 
-    color = "blue" 
-    ) + 
-  aes(size = speed) #BREAK
-```
+
