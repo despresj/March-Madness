@@ -32,6 +32,7 @@ summarise(mean = mean(score, na.rm = TRUE),
             p = pt(t_stat, n() - 1, lower.tail = FALSE))
 
 
+
 # poisson scoring ---------------------------------------------------------
 
 posson_prediction  <- toscore(posson_prediction) %>% 
@@ -60,7 +61,8 @@ multinomeal_model_score  <- toscore(multinom_prediction) %>%
                     diff >=  -4 & diff <  4  ~ `-4:4`,
                     diff >=   4 & diff < 13  ~ `4:13`,
                     diff >= 13               ~ `>13`)) %>% 
-  select(`<-12`:`>13`, fifth_xtile, probs) %>%  # TODO: come up with a way to score this
-  mutate(score = if_else(probs > 0.25, (probs * 4), (1 - probs))) 
+  select(`<-12`:`>13`, fifth_xtile, probs) %>%
+  mutate(score = if_else(probs > 0.25, (probs * 4), (-1/4)*(1 - probs))) 
+multinomeal_model_score 
+sum(multinomeal_model_score$score, na.rm = T)
 
-multinomeal_model_score

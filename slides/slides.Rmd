@@ -10,9 +10,6 @@ output:
       highlightLines: true
       countIncrementalSlides: false
 ---
-
-background-image: url(https://upload.wikimedia.org/wikipedia/en/2/28/March_Madness_logo.svg)
----
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(fig.width = 6, echo = FALSE, message = FALSE, warning = FALSE, comment = "", cache = F)
 
@@ -26,27 +23,63 @@ s2021 <- readr::read_csv(here::here("data", "s2021.csv"))
 source(here::here("R", "fitting.R"))
 ```
 
-<!-- --- -->
-<!-- # Backround on the turniment -->
-<!-- quick facts... -->
-
-<!-- --- -->
-
-<!-- ![](images/empty_bracket.jpg) -->
-
-<!-- --- -->
-<!-- class: center, middle -->
-<!-- # Zoomed in -->
-
-<!-- ![](images/zoomed.png) -->
-
-<!-- --- -->
-<!-- # Goal -->
-<!-- Can we use basketball seasion data to predict this turniment outcomes? -->
+background-image: url(https://upload.wikimedia.org/wikipedia/en/2/28/March_Madness_logo.svg)
 
 ---
 
-# Training Data
+# Backround
+
+--
+
+- First tournament was in 1939 only 8 teams
+
+--
+
+- Currently, the top 64 teams qualify
+
+--
+
+- Only one team has ever gone undefeated thought a season and the tournament
+
+--
+
+- 16.9 Million Viewers
+
+--
+
+- MSU won in 1979 and 2000
+
+--
+
+- maybe 2022...
+
+--
+
+- When the turiment starts we form small groups and gamble on the outcomes. Usually by selecting winners and loser from the backet until we have a completely filled out turniment
+
+--
+
+- Nobody has ever made a perfect bracket there are $2^{63}$ possible outcomes.
+
+---
+
+![](images/empty_bracket.jpg)
+
+---
+class: center, middle
+# Zoomed in
+
+![](images/zoomed.png)
+
+---
+
+class: inverse, center, middle
+
+# Can we use basketball seasion data to predict this turniment outcomes?
+
+---
+
+# Predictors
 
 ```{r}
 descriptive_statistics <- function(x){
@@ -55,17 +88,33 @@ descriptive_statistics <- function(x){
   return(output)
 }
 
-
-desc_stats <- merged %>% 
-  select(fg_percent, ft_percent, rpg,st, to, bkpg) %>% 
-  map_df(descriptive_statistics) %>% 
+desc_stats <- merged %>%
+  select(fg_percent, ft_percent, rpg,st, to, bkpg) %>%
+  map_df(descriptive_statistics) %>%
   t()
 
-colnames(desc_stats) <- c("Mean", "Median", "Standard DEv", "Min", "Max")
+colnames(desc_stats) <- c("Mean", "Median", "Std. Dev", "Min", "Max")
 rownames(desc_stats) <- c("Field Goal Percentage", "Free Throw Percentage", "Rebounds Per Game", "Steals", "Turnovers", "Blocked Shots Per Game")
 
 kable(desc_stats) %>%
-  kable_styling(bootstrap_options = c("striped", "hover")) 
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+seasion_seasion <- merged %>%
+  nrow()
+
+# n teams
+unique_teams <- length(unique(merged$team_id))
+
+# 64 teams in the turniment.
+
+cbind(
+    `Games Played` = seasion_seasion,
+      Teams = unique_teams,
+      Turniment = 64) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = "striped",
+                full_width = F,
+                position = "center")
 ```
 
 ---
@@ -74,16 +123,16 @@ class: center
 # Distribution of Predictors
 
 ```{r fig.width=15, fig.height=10}
-hists <- merged %>% 
+hists <- merged %>%
   select(x3fg, fg_percent, rpg, st, to,  bkpg)
 
 histogram <- function(x, t){
-  ggplot(data = hists, aes(x)) + 
-    geom_histogram(bins = 50, color = "black", fill = "gray80") + 
-    theme_light(base_size = 20) + 
-    labs(title = paste0("", t), x = "", y = "") + 
+  ggplot(data = hists, aes(x)) +
+    geom_histogram(bins = 50, color = "black", fill = "gray80") +
+    theme_light(base_size = 20) +
+    labs(title = paste0("", t), x = "", y = "") +
     NULL
-    
+
 }
 
 a <- histogram(merged$x3fg,       t = "Three-Points Goals")
@@ -96,44 +145,120 @@ f <- histogram(merged$bkpg,       t = "Blocks Per game")
 (a + b) / (c + d) /(e + f)
 ```
 
-
 ---
 
-# Model
+class: center
+
+# Logistic Model
 
 ```{r}
-
-equatiomatic::extract_eq(model = logistic_fit, 
-                         use_coefs = FALSE, 
-                         show_distribution = TRUE, 
-                         wrap = TRUE, 
-                         terms_per_line = 2, 
-                         intercept = "beta")
-# results='asis' in code chunk to render as LaTex
-```
-
----
-
-```{r}
-
-equatiomatic::extract_eq(model = fit_poisson, 
-                         use_coefs = FALSE, 
-                         show_distribution = TRUE, 
-                         wrap = TRUE, 
-                         terms_per_line = 2, 
+equatiomatic::extract_eq(model = logistic_fit,
+                         use_coefs = FALSE,
+                         show_distribution = TRUE,
+                         wrap = TRUE,
+                         terms_per_line = 2,
                          intercept = "beta")
 ```
+
 ---
 
-# Results
+# Poisson Model
 
 ```{r}
-# require(memisc)
-# mtable('Model 1' = logistic_fit,
-#             'Model 2' = fit_poisson,
-#             summary.stats = c('R-squared','F','p','N'), )
-
+equatiomatic::extract_eq(model = fit_poisson,
+                         use_coefs = FALSE,
+                         show_distribution = TRUE,
+                         wrap = TRUE,
+                         terms_per_line = 2,
+                         intercept = "beta")
 ```
+
+---
+
+# Multinomeal Model
+
+---
+class: center 
+### Output and Interpretation
+
+```{r}
+table_output <- function(obj, rows){
+  broom::tidy(obj) %>% 
+  mutate(p.value = as.character(p.value)) %>%
+  mutate_if(is.numeric, round, 3) %>% 
+  mutate(p.value = as.numeric(p.value))  %>% 
+  kable(col.names =  c("Term", "Estimate", "Std. Error", "T-Stat", "P-Value")) %>% 
+  kable_styling(font_size = 15) %>% 
+  row_spec(rows, color = "white", background = "#025cba")
+}
+
+table_output(obj = logistic_fit, rows = 2:3)
+```
+
+---
+class: center 
+## Output and Interpretation
+
+```{r}
+table_output(obj = logistic_fit, rows = 4:5)
+```
+
+---
+class: center 
+## Output and Interpretation
+
+```{r}
+table_output(obj = logistic_fit, rows = 6:7)
+```
+
+---
+class: center 
+## Output and Interpretation
+
+```{r}
+table_output(obj = logistic_fit, rows = 8:9)
+```
+
+---
+class: center 
+## Output and Interpretation
+
+```{r}
+table_output(obj = logistic_fit, rows = 10:11)
+```
+
+---
+class: center 
+## Output and Interpretation
+
+```{r}
+table_output(obj = logistic_fit, rows = 12:13)
+```
+
+---
+class: center 
+## Output and Interpretation
+
+```{r}
+table_output(obj = logistic_fit, rows = 14:15)
+```
+
+---
+class: center
+# Scoring
+
+$$\LARGE\sum_{i=1}^{63} (p_i * \mathds{1}_{correct prediction}  -p_i * \mathds{1}_{incorrect perdiction}) = score$$
+
+
+---
+
+# Performance
+
+---
+
+# Conclusion
+
+
 
 
 

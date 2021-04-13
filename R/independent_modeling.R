@@ -13,48 +13,50 @@ options(tibble.print_min = 20)
 
 # logsitic fit ------------------------------------------------------------
 
-logistic_fit <- glm(win ~ x3fg +
-                      opposingx3fg +
-                      # field goal pct
-                      fg_percent +
-                      opposingfg_percent +
-                      # free throws
-                      ft_percent +
-                      opposingft_percent +
-                      # rebound per game
-                      rpg +
-                      opposingrpg +
-                      # steels
-                      st +
-                      opposingst +
-                      #turnover
-                      to +
-                      opposingto +
-                      # blocks
-                      opposingbkpg +
-                      bkpg,
-                    data = merged, family = "binomial")
-
-start <- Sys.time()
-
-logistic_predictions <- ids %>%
-  mutate(predicted_probs = map2_dbl(.x = ids$teamid,
-                                    .y = ids$otherid,
-                                    .f = logistic_predictor)) %>%
-   mutate(
-    predicted_winner = if_else(predicted_probs > .5, team, other_team),
-    predicted_winner_probs = if_else(predicted_probs > .5, predicted_probs , 1 - predicted_probs),
-    predicted_loser_probs = 1 - predicted_winner_probs,
-    prediction_points = predicted_winner_probs - predicted_loser_probs,
-    .after = game
-  )
-paste0("runtime: ", round(Sys.time() - start, 2))
-
-saveRDS(logistic_predictions, here::here("cache", "logistic_predictions.RDS"))
-
+# logistic_fit <- glm(win ~ x3fg +
+#                       opposingx3fg +
+#                       # field goal pct
+#                       fg_percent +
+#                       opposingfg_percent +
+#                       # free throws
+#                       ft_percent +
+#                       opposingft_percent +
+#                       # rebound per game
+#                       rpg +
+#                       opposingrpg +
+#                       # steels
+#                       st +
+#                       opposingst +
+#                       #turnover
+#                       to +
+#                       opposingto +
+#                       # blocks
+#                       opposingbkpg +
+#                       bkpg,
+#                     data = merged, family = "binomial")
+# 
+# 
+# start <- Sys.time()
+# 
+# logistic_predictions <- ids %>%
+#   mutate(predicted_probs = map2_dbl(.x = ids$teamid,
+#                                     .y = ids$otherid,
+#                                     .f = logistic_predictor)) %>%
+#    mutate(
+#     predicted_winner = if_else(predicted_probs > .5, team, other_team),
+#     predicted_winner_probs = if_else(predicted_probs > .5, predicted_probs , 1 - predicted_probs),
+#     predicted_loser_probs = 1 - predicted_winner_probs,
+#     prediction_points = predicted_winner_probs - predicted_loser_probs,
+#     .after = game
+#   )
+# paste0("runtime: ", round(Sys.time() - start, 2))
+# 
+# saveRDS(logistic_predictions, here::here("cache", "logistic_predictions.RDS"))
+# 
 
 logistic_predictions <- readRDS(here::here("cache", "logistic_predictions.RDS"))
-logistic_predictions
+logistic_predictions %>% 
+  select(score)
 
 
 # poisson -----------------------------------------------------------------

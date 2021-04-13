@@ -16,36 +16,69 @@ class: center, middle, inverse, title-slide
 
 # March Madness Basketball Turniment
 ### Sabrina Ball and Joe Despres
-### updated: 2021-04-11
+### updated: 2021-04-13
 
 ---
+
 
 
 background-image: url(https://upload.wikimedia.org/wikipedia/en/2/28/March_Madness_logo.svg)
----
-
-
-&lt;!-- --- --&gt;
-&lt;!-- # Backround on the turniment --&gt;
-&lt;!-- quick facts... --&gt;
-
-&lt;!-- --- --&gt;
-
-&lt;!-- ![](images/empty_bracket.jpg) --&gt;
-
-&lt;!-- --- --&gt;
-&lt;!-- class: center, middle --&gt;
-&lt;!-- # Zoomed in --&gt;
-
-&lt;!-- ![](images/zoomed.png) --&gt;
-
-&lt;!-- --- --&gt;
-&lt;!-- # Goal --&gt;
-&lt;!-- Can we use basketball seasion data to predict this turniment outcomes? --&gt;
 
 ---
 
-# Training Data
+# Backround
+
+--
+
+- First tournament was in 1939 only 8 teams
+
+--
+
+- Currently, the top 64 teams qualify
+
+--
+
+- Only one team has ever gone undefeated thought a season and the tournament
+
+--
+
+- 16.9 Million Viewers
+
+--
+
+- MSU won in 1979 and 2000
+
+--
+
+- maybe 2022...
+
+--
+
+- When the turiment starts we form small groups and gamble on the outcomes. Usually by selecting winners and loser from the backet until we have a completely filled out turniment
+
+--
+
+- Nobody has ever made a perfect bracket there are `\(2^{63}\)` possible outcomes.
+
+---
+
+![](images/empty_bracket.jpg)
+
+---
+class: center, middle
+# Zoomed in
+
+![](images/zoomed.png)
+
+---
+
+class: inverse, center, middle
+
+# Can we use basketball seasion data to predict this turniment outcomes?
+
+---
+
+# Predictors
 
 &lt;table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;"&gt;
  &lt;thead&gt;
@@ -53,7 +86,7 @@ background-image: url(https://upload.wikimedia.org/wikipedia/en/2/28/March_Madne
    &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; Mean &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; Median &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Standard DEv &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Std. Dev &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; Min &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; Max &lt;/th&gt;
   &lt;/tr&gt;
@@ -110,6 +143,23 @@ background-image: url(https://upload.wikimedia.org/wikipedia/en/2/28/March_Madne
 &lt;/tbody&gt;
 &lt;/table&gt;
 
+&lt;table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; Games Played &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Teams &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Turniment &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 35248 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 343 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 64 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
 ---
 class: center
 
@@ -117,10 +167,11 @@ class: center
 
 ![](slides_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
 
-
 ---
 
-# Model
+class: center
+
+# Logistic Model
 
 $$
 `\begin{aligned}
@@ -139,6 +190,8 @@ $$
 
 ---
 
+# Poisson Model
+
 $$
 `\begin{aligned}
 \log ({ E( \operatorname{team_score} ) })  &amp;= \beta_{0} + \beta_{1}(\operatorname{x3fg})\ + \\
@@ -151,9 +204,886 @@ $$
 &amp;\quad \beta_{14}(\operatorname{bkpg})
 \end{aligned}`
 $$
+
 ---
 
-# Results
+# Multinomeal Model
+
+---
+class: center 
+### Output and Interpretation
+
+&lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Std. Error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; T-Stat &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; P-Value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.333 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.523 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.636 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.52498 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; x3fg &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.002 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 8.832 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; opposingx3fg &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -0.003 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -9.161 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; fg_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.183 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33.439 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingfg_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.176 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -32.748 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ft_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.032 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.106 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingft_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.031 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -8.718 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; rpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.143 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26.359 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingrpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.145 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -26.736 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; st &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.885 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingst &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -19.700 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; to &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -21.856 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingto &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.558 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingbkpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.143 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -10.188 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; bkpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.165 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.652 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+class: center 
+## Output and Interpretation
+
+&lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Std. Error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; T-Stat &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; P-Value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.333 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.523 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.636 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.52498 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; x3fg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.832 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingx3fg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.003 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -9.161 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; fg_percent &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.183 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 33.439 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; opposingfg_percent &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -0.176 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -32.748 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ft_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.032 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.106 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingft_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.031 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -8.718 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; rpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.143 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26.359 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingrpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.145 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -26.736 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; st &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.885 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingst &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -19.700 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; to &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -21.856 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingto &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.558 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingbkpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.143 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -10.188 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; bkpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.165 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.652 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+class: center 
+## Output and Interpretation
+
+&lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Std. Error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; T-Stat &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; P-Value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.333 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.523 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.636 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.52498 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; x3fg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.832 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingx3fg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.003 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -9.161 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; fg_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.183 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33.439 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingfg_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.176 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -32.748 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; ft_percent &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.032 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.004 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 9.106 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; opposingft_percent &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -0.031 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.004 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -8.718 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; rpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.143 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26.359 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingrpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.145 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -26.736 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; st &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.885 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingst &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -19.700 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; to &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -21.856 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingto &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.558 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingbkpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.143 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -10.188 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; bkpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.165 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.652 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+class: center 
+## Output and Interpretation
+
+&lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Std. Error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; T-Stat &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; P-Value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.333 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.523 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.636 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.52498 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; x3fg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.832 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingx3fg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.003 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -9.161 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; fg_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.183 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33.439 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingfg_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.176 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -32.748 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ft_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.032 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.106 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingft_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.031 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -8.718 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; rpg &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.143 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 26.359 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; opposingrpg &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -0.145 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -26.736 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; st &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.885 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingst &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -19.700 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; to &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -21.856 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingto &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.558 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingbkpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.143 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -10.188 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; bkpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.165 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.652 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+class: center 
+## Output and Interpretation
+
+&lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Std. Error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; T-Stat &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; P-Value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.333 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.523 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.636 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.52498 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; x3fg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.832 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingx3fg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.003 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -9.161 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; fg_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.183 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33.439 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingfg_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.176 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -32.748 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ft_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.032 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.106 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingft_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.031 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -8.718 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; rpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.143 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26.359 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingrpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.145 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -26.736 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; st &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.007 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 19.885 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; opposingst &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -19.700 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; to &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -21.856 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingto &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.558 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingbkpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.143 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -10.188 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; bkpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.165 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.652 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+class: center 
+## Output and Interpretation
+
+&lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Std. Error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; T-Stat &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; P-Value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.333 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.523 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.636 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.52498 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; x3fg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.832 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingx3fg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.003 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -9.161 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; fg_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.183 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33.439 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingfg_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.176 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -32.748 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ft_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.032 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.106 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingft_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.031 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -8.718 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; rpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.143 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26.359 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingrpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.145 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -26.736 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; st &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.885 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingst &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -19.700 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; to &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -21.856 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; opposingto &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 21.558 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingbkpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.143 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -10.188 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; bkpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.165 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.652 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+class: center 
+## Output and Interpretation
+
+&lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Std. Error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; T-Stat &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; P-Value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.333 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.523 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.636 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.52498 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; x3fg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.832 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingx3fg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.003 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -9.161 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; fg_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.183 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33.439 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingfg_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.176 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -32.748 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ft_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.032 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.106 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingft_percent &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.031 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -8.718 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; rpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.143 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26.359 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingrpg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.145 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -26.736 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; st &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.885 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingst &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -19.700 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; to &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -21.856 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; opposingto &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.558 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; opposingbkpg &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -0.143 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.014 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -10.188 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; bkpg &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.165 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.014 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 11.652 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+class: center
+# Scoring
+
+`$$\LARGE\sum_{i=1}^{63} (p_i * \mathds{1}_{correct prediction}  -p_i * \mathds{1}_{incorrect perdiction}) = score$$`
+
+
+---
+
+# Performance
+
+---
+
+# Conclusion
 
 
 
