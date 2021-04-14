@@ -12,11 +12,10 @@
 | 4/05 | outline [Paper](https://github.com/despresj/March-Madness/blob/main/paper/paper.pdf)  |  :white_check_mark:  |
 | 4/05 | Game finals played | :white_check_mark:  results [scraped](https://github.com/despresj/March-Madness/blob/main/R/scrape_finals.R) |
 | 4/10 | [Proposal](https://github.com/despresj/March-Madness/blob/main/proposal/proposal.pdf) due | :white_check_mark: Done  |
-| 4/10 | recipes::step_normalize() compare outcome |
-| 4/10 | Test performance against, random chance, seeds, and odds. |
-| 4/19 | slides due |
+| 4/10 | recipes::step_normalize() compare outcome | :white_check_mark: Not helpful|
+| 4/10 | Test performance against, random chance, seeds, and odds. | :white_check_mark:  |
+| 4/19 | [slides](https://github.com/despresj/March-Madness/blob/main/slides/slides.Rmd) due |
 | 4/24 | [Paper](https://github.com/despresj/March-Madness/blob/main/paper/paper.pdf) Due| |
-| 4/19 | Due |
 ## Questions:
 
 Can we make a predictive model for the upcoming March Madness Tournament.
