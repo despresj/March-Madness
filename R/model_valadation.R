@@ -25,6 +25,9 @@ toscore <- function (df) {
 logistic_model_score <- toscore(logistic_predictions) %>% 
   mutate(score = if_else(predicted_winner == winner, predicted_winner_probs, -1*predicted_winner_probs)) 
 
+# saveRDS(logistic_model_score, here::here("cache", "logistic_model_score.RDS"))
+
+
 logistic_model_score %>% 
 summarise(mean = mean(score, na.rm = TRUE),
              sd = sd(score, na.rm = TRUE),
