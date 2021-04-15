@@ -19,7 +19,10 @@ logistic_fit <- glm(win ~ x3fg +
                        opposingbkpg +
                        bkpg,
                      data = merged, family = "binomial")
- 
+
+logistic_fit_null <- glm(win ~ 1,
+                    data = merged, family = "binomial") 
+
  fit_poisson <- glm(team_score ~ x3fg +
               opposingx3fg +
               # field goal pct
