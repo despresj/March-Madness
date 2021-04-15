@@ -33,41 +33,46 @@ background-image: url(https://upload.wikimedia.org/wikipedia/en/2/28/March_Madne
 
 ---
 
-# Backround
+# Backround on March Madness Tournament
 
 --
 
-- First tournament was in 1939 only 8 teams
+- First hosted in 1939 with 8 participating teams.
 
 --
 
-- Now, its restricted to the top 64 NCAA Division I Teams
+- Now, restricted to the top 64 qualifying NCAA division I teams.
 
 --
 
-- Only one team has ever gone undefeated thought a season and the tournament
+- Currently 16.9 million viewers.
 
 --
 
-- 16.9 Million Viewers
+- Michigan State won in 1979 and 2000.
 
 --
 
-- MSU won in 1979 and 2000
+- Offices, organizations, and friend groups make and submit a total of 40 Million predictions each year.
 
 --
 
-- When the turiment starts we form small groups and gamble on the outcomes. Usually by selecting winners and loser from the backet until we have a completely filled out turniment
+- At the beginning small groups form and gamble on the outcomes by selecting winners and losers. 
 
 --
 
-- Nobody has ever made a perfect bracket and there are $2^{63}$ possible outcomes.
+- Nobody has ever made a perfect bracket prediction and there are $2^{63}$ possible outcomes.
 
 ---
 
 ![](images/empty_bracket.jpg)
 
 ---
+
+![](images/results.jpg)
+
+---
+
 class: center, middle
 # Zoomed in
 
@@ -77,22 +82,23 @@ class: center, middle
 
 class: inverse
 
-# Using basketball seasion data to predict this year's turniment outcomes requires us to:
-
-### Design predive models to make out of sample predictions
+## We use basketball season game scores and statistics to predict this year's tournament outcome.
 
 --
 
-### Derrive a scoring metric
+## We need to derive a scoring metric.
 
 --
 
-### Evaluate and tune the model
+## Evaluate and tune the model.
 
 --
 
-### We made several models, In the interstst of time we are going to discuss the logistic because its the most straight-forward
+## Compare the model's performance.
 
+--
+
+## We made several models, in the interest of time we are going to discuss the logistic because its the most straight-forward.
 
 ---
 class: center
@@ -104,11 +110,10 @@ hists <- merged %>%
 
 histogram <- function(x, t){
   ggplot(data = hists, aes(x)) +
-    geom_histogram(bins = 55, color = "white", fill = "black") +
+    geom_histogram(bins = 55, color = "white", fill = "#025cba") +
     theme_light(base_size = 25) +
     labs(title = paste0("", t), x = "", y = "") +
     NULL
-
 }
 
 a <- histogram(merged$x3fg,       t = "Three-Points Goals")
@@ -116,7 +121,7 @@ b <- histogram(merged$fg_percent, t = "Percentage of Goals Scored")
 c <- histogram(merged$rpg,        t = "Rebounds Per Game")
 d <- histogram(merged$st,         t = "Steals Per Game")
 e <- histogram(merged$to,         t = "Turnovers Per Game")
-f <- histogram(merged$bkpg,       t = "Blocks Per game")
+f <- histogram(merged$bkpg,       t = "Blocks Per Game")
 # (a + b + c) / (d + e + f)
 (a + b) / (c + d) /(e + f)
 ```
@@ -162,13 +167,13 @@ cbind(
 ```
 
 
-- Normal-ish distributions
+- Normal-ish distributions.
 
-- No catastrophic skews or heavy tails
+- No catastrophic skews or heavy tails.
 
 --
 
-- Ideally we would have had steaks and turn-overs per game rather than season total. Not all played the same game
+- Ideally we would have had steaks and turn-overs per game rather than season total. Not all played the same game.
 
 
 ---
@@ -224,8 +229,26 @@ table_output <- function(obj, rows){
   add_footnote("Where O* is the Mertric associated with their opposing team", 
                notation = "none")
 
-```
+lrt_stat <- 2*(as.numeric(logLik(logistic_fit)) -
+  as.numeric(logLik(logistic_fit_null)))
 
+pval_lrt <- pchisq(lrt_stat, df = 1, lower.tail = FALSE)
+
+dev <- deviance(logistic_fit)
+
+pval_dev <- pchisq(dev, df.residual(logistic_fit), 
+       lower.tail = FALSE)
+
+tests <- cbind(
+LRT = c(lrt_stat, pval_lrt),
+DEViance = c(dev, pval_dev)
+)
+
+rownames(tests) <- c("Stat", "P Value")
+lrt_dev <- kable(tests) %>% 
+  kable_styling(font_size = 10)
+lrt_dev
+```
 
 ---
 class: center
@@ -234,8 +257,8 @@ Summary
 
 
 ```{r}
-
 table_output(obj = logistic_fit, rows = 2:3)
+lrt_dev
 ```
 
 ---
@@ -244,6 +267,7 @@ Summary
 
 ```{r}
 table_output(obj = logistic_fit, rows = 4:5)
+lrt_dev
 ```
 
 ---
@@ -252,6 +276,7 @@ Summary
 
 ```{r}
 table_output(obj = logistic_fit, rows = 6:7)
+lrt_dev
 ```
 
 ---
@@ -260,6 +285,7 @@ Summary
 
 ```{r}
 table_output(obj = logistic_fit, rows = 8:9)
+lrt_dev
 ```
 
 ---
@@ -268,6 +294,7 @@ Summary
 
 ```{r}
 table_output(obj = logistic_fit, rows = 10:11)
+lrt_dev
 ```
 
 ---
@@ -276,6 +303,7 @@ Summary
 
 ```{r}
 table_output(obj = logistic_fit, rows = 12:13)
+lrt_dev
 ```
 
 ---
@@ -284,6 +312,7 @@ Summary
 
 ```{r}
 table_output(obj = logistic_fit, rows = 14:15)
+lrt_dev
 ```
 
 ---
@@ -297,11 +326,11 @@ $$\sum_{i=1}^{n} [\mathbf {1} _{\{correct\ prediction\}} \hat{p_i} -\mathbf {1} 
 
 --
 
-- Our goal Goal is to weight correct prediction higher when it assigns a higher probability. Conversely a lower score to an incorrect prediction.
+- Our goal is to weight correct prediction higher when it assigns a higher probability. Conversely, a lower score to an incorrect prediction.
 
 --
 
-- $E(Model\ Score) = 0$ if our predictions are no better than randomly guessing.
+- If our predictions are no better than randomly guessing $E(Model\ Score) = 0$. 
 
 ---
 
@@ -360,14 +389,28 @@ logistic_model_score %>%
 
 $$\sum_{i=1}^{n} [\mathbf {1} _{\{correct\ prediction\}} \hat{p_i} -\mathbf {1} _{incorrect\ perdiction}\hat{p_i} ] = Model\ Score$$
 
-Score
+Incorrect Predictions
 
 ```{r}
 logistic_model_score %>% 
   kable(align = "r") %>% 
   kable_styling(font_size = 15) %>% 
-  column_spec(c(5), color =  ifelse(logistic_model_score$Score > 0, "white", "black"), 
-              background = ifelse(logistic_model_score$Score > 0, "#025cba", "#ff3700"))
+  column_spec(c(1:5), color =  ifelse(logistic_model_score$Score > 0, "black", "white"), 
+              background = ifelse(logistic_model_score$Score > 0, "white", "#ff3700"))
+```
+
+---
+
+## Scoring
+
+$$\sum_{i=1}^{n} [\mathbf {1} _{\{correct\ prediction\}} \hat{p_i} -\mathbf {1} _{incorrect\ perdiction}\hat{p_i} ] = Model\ Score$$
+
+Score
+
+```{r}
+logistic_model_score %>% 
+  kable(align = "r") %>% 
+  kable_styling(font_size = 15)
 ```
   
 
@@ -379,7 +422,6 @@ paste0("Model Score = ", sum(as.numeric(logistic_model_score$Score))) %>%
 ```
 
 ---
-
 
 ```{r}
 perform <- readRDS(here::here("cache", "logistic_model_score.RDS")) %>% 
@@ -396,13 +438,13 @@ a <- perform %>%
   labs(title = "Histogram of Scores", x = "Absolute Value of Score") +
   scale_fill_manual(values = c("#025cba", "#ff3700"))
 
-
 b <- perform %>% 
   ggplot(aes(as.factor(outcome), fill = outcome)) + 
   geom_bar(alpha = 0.7) + 
   labs(title = "", x = "") + 
   scale_fill_manual(values = c("#025cba", "#ff3700")) +
-  geom_text(size=10, color = "grey80", stat = 'count', aes(label =..count.., hjust = 1.5)) + 
+  geom_text(size=10, color = "grey80", stat = 'count',
+            aes(label =..count.., hjust = 1.5)) + 
   coord_flip()
 
 a/b
@@ -414,7 +456,12 @@ t2 <- perform %>%
             se = sd(score), 
             t = totalscore/se,
               p = pt(t, nrow(perform)-1, lower.tail = F)) %>% 
-  t()
+  t() %>% 
+  tibble() %>% 
+  mutate_if(is.numeric, round, 2)
+
+rownames(t2) <- c("Total Score", "Standard Error", "T-Statistic", "P-value")
+colnames(t2) <- NULL
 
 score <- perform %>% 
   group_by(outcome) %>% 
@@ -422,12 +469,60 @@ score <- perform %>%
   mutate(totalscore = round(totalscore, 2))
   
 t1 <- rbind(score, c("Total", sum(score$totalscore))) 
+colnames(t1) <- c("Result", "Score")
+
 ```
 
 ```{r}
 knitr::kable(list(t1, t2)) %>% 
   kable_styling(font_size = 10)
-  
+```
+---
+class: center
+Model Performance
+
+```{r}
+a <- perform %>% 
+  ggplot(aes(as.factor(outcome), fill = outcome)) + 
+  geom_bar(alpha = 0.7) + 
+  labs(title = "#2 Logistic Model", x = "", y = "") + 
+  scale_fill_manual(values = c("#025cba", "#ff3700")) +
+  geom_text(size=10, color = "grey80", stat = 'count',
+            aes(label =..count.., hjust = 1.5)) + 
+  coord_flip()
+```
+
+```{r}
+posson_model_score <- readRDS(here::here("cache","posson_model_score.RDS"))
+
+b <- posson_model_score %>% 
+  drop_na() %>% 
+  ggplot(aes(as.factor(outcome), fill = outcome)) + 
+  geom_bar(alpha = 0.7) + 
+  labs(title = "#1 Poisson Model", x = "", y = "") + 
+  scale_fill_manual(values = c("#025cba", "#ff3700")) +
+  geom_text(size=10, color = "grey80", stat = 'count',
+            aes(label =..count.., hjust = 1.5)) + 
+  coord_flip()
+```
+
+```{r}
+multinomeal_model_score <- readRDS(here::here("cache", "multinomeal_model_score.RDS"))
+
+c <- multinomeal_model_score %>% 
+  drop_na() %>% 
+  ggplot(aes(as.factor(outcome), fill = outcome)) + 
+  geom_bar(alpha = 0.7) + 
+  labs(title = "#3 Multinomeal Model", x = "", y = "") + 
+  scale_fill_manual(values = c("#025cba", "#ff3700")) +
+  geom_text(size=10, color = "grey80", stat = 'count',
+            aes(label =..count.., hjust = 1.5)) + 
+  coord_flip()
+```
+
+
+```{r fig.height=11}
+b/a/c
 ```
 
 ---
@@ -435,10 +530,12 @@ class: inverse
 
 # Conclusion
 
-### Logistic Regression performs well. Given measured statists.
+### Both Logistic and Poisson Regression perform well.
 
-### However out model is independent of the pervious game which would aplify shortcommings. 
+--
 
+### However, we are scoring the model based on independent predictions. While real-world predictions are made dependent on the previous round.
 
+--
 
-
+### These predictions are not wildly different than betting markets and seeds because they use similar statistics to derive their predictions.

@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 
 # March Madness Basketball Turniment
 ### Sabrina Ball and Joe Despres
-### updated: 2021-04-14
+### updated: 2021-04-15
 
 ---
 
@@ -26,41 +26,46 @@ background-image: url(https://upload.wikimedia.org/wikipedia/en/2/28/March_Madne
 
 ---
 
-# Backround
+# Backround on March Madness Tournament
 
 --
 
-- First tournament was in 1939 only 8 teams
+- First hosted in 1939 with 8 participating teams.
 
 --
 
-- Now, its restricted to the top 64 NCAA Division I Teams
+- Now, restricted to the top 64 qualifying NCAA division I teams.
 
 --
 
-- Only one team has ever gone undefeated thought a season and the tournament
+- Currently 16.9 million viewers.
 
 --
 
-- 16.9 Million Viewers
+- Michigan State won in 1979 and 2000.
 
 --
 
-- MSU won in 1979 and 2000
+- Offices, organizations, and friend groups make and submit a total of 40 Million predictions each year.
 
 --
 
-- When the turiment starts we form small groups and gamble on the outcomes. Usually by selecting winners and loser from the backet until we have a completely filled out turniment
+- At the beginning small groups form and gamble on the outcomes by selecting winners and losers. 
 
 --
 
-- Nobody has ever made a perfect bracket and there are `\(2^{63}\)` possible outcomes.
+- Nobody has ever made a perfect bracket prediction and there are `\(2^{63}\)` possible outcomes.
 
 ---
 
 ![](images/empty_bracket.jpg)
 
 ---
+
+![](images/results.jpg)
+
+---
+
 class: center, middle
 # Zoomed in
 
@@ -70,22 +75,23 @@ class: center, middle
 
 class: inverse
 
-# Using basketball seasion data to predict this year's turniment outcomes requires us to:
-
-### Design predive models to make out of sample predictions
+## We use basketball season game scores and statistics to predict this year's tournament outcome.
 
 --
 
-### Derrive a scoring metric
+## We need to derive a scoring metric.
 
 --
 
-### Evaluate and tune the model
+## Evaluate and tune the model.
 
 --
 
-### We made several models, In the interstst of time we are going to discuss the logistic because its the most straight-forward
+## Compare the model's performance.
 
+--
+
+## We made several models, in the interest of time we are going to discuss the logistic because its the most straight-forward.
 
 ---
 class: center
@@ -178,13 +184,13 @@ class: center
 &lt;/table&gt;
 
 
-- Normal-ish distributions
+- Normal-ish distributions.
 
-- No catastrophic skews or heavy tails
+- No catastrophic skews or heavy tails.
 
 --
 
-- Ideally we would have had steaks and turn-overs per game rather than season total. Not all played the same game
+- Ideally we would have had steaks and turn-overs per game rather than season total. Not all played the same game.
 
 
 ---
@@ -337,6 +343,27 @@ Summary
 &lt;/tfoot&gt;
 &lt;/table&gt;
 
+&lt;table class="table" style="font-size: 10px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; LRT &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; DEViance &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Stat &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8194.126 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40659.49 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; P Value &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 ---
 class: center
@@ -468,6 +495,28 @@ Summary
 &lt;/tfoot&gt;
 &lt;/table&gt;
 
+&lt;table class="table" style="font-size: 10px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; LRT &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; DEViance &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Stat &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8194.126 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40659.49 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; P Value &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
 ---
 class: center
 Summary
@@ -594,6 +643,28 @@ Summary
 &lt;td style = 'padding: 0; border:0;' colspan='100%'&gt;&lt;sup&gt;&lt;/sup&gt; Where O* is the Mertric associated with their opposing team&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tfoot&gt;
+&lt;/table&gt;
+
+&lt;table class="table" style="font-size: 10px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; LRT &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; DEViance &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Stat &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8194.126 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40659.49 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; P Value &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
 &lt;/table&gt;
 
 ---
@@ -724,6 +795,28 @@ Summary
 &lt;/tfoot&gt;
 &lt;/table&gt;
 
+&lt;table class="table" style="font-size: 10px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; LRT &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; DEViance &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Stat &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8194.126 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40659.49 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; P Value &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
 ---
 class: center
 Summary
@@ -850,6 +943,28 @@ Summary
 &lt;td style = 'padding: 0; border:0;' colspan='100%'&gt;&lt;sup&gt;&lt;/sup&gt; Where O* is the Mertric associated with their opposing team&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tfoot&gt;
+&lt;/table&gt;
+
+&lt;table class="table" style="font-size: 10px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; LRT &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; DEViance &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Stat &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8194.126 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40659.49 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; P Value &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
 &lt;/table&gt;
 
 ---
@@ -980,6 +1095,28 @@ Summary
 &lt;/tfoot&gt;
 &lt;/table&gt;
 
+&lt;table class="table" style="font-size: 10px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; LRT &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; DEViance &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Stat &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8194.126 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40659.49 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; P Value &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
 ---
 class: center
 Summary
@@ -1106,6 +1243,28 @@ Summary
 &lt;td style = 'padding: 0; border:0;' colspan='100%'&gt;&lt;sup&gt;&lt;/sup&gt; Where O* is the Mertric associated with their opposing team&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tfoot&gt;
+&lt;/table&gt;
+
+&lt;table class="table" style="font-size: 10px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; LRT &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; DEViance &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Stat &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8194.126 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40659.49 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; P Value &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
 &lt;/table&gt;
 
 ---
@@ -1236,6 +1395,28 @@ Summary
 &lt;/tfoot&gt;
 &lt;/table&gt;
 
+&lt;table class="table" style="font-size: 10px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; LRT &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; DEViance &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Stat &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8194.126 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40659.49 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; P Value &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
 ---
 ## Scoring
 
@@ -1247,11 +1428,11 @@ Summary
 
 --
 
-- Our goal Goal is to weight correct prediction higher when it assigns a higher probability. Conversely a lower score to an incorrect prediction.
+- Our goal is to weight correct prediction higher when it assigns a higher probability. Conversely, a lower score to an incorrect prediction.
 
 --
 
-- `\(E(Model\ Score) = 0\)` if our predictions are no better than randomly guessing.
+- If our predictions are no better than randomly guessing `\(E(Model\ Score) = 0\)`. 
 
 ---
 
@@ -1447,6 +1628,98 @@ Correct Predictions
 
 `$$\sum_{i=1}^{n} [\mathbf {1} _{\{correct\ prediction\}} \hat{p_i} -\mathbf {1} _{incorrect\ perdiction}\hat{p_i} ] = Model\ Score$$`
 
+Incorrect Predictions
+
+&lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; Game &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Predicted Winner &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Winner &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\hat{p}\)` &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Score &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; Abilenechristian Vs. Texas &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; Abilenechristian &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; Abilenechristian &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.52 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.52 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #ff3700 !important;"&gt; Abilenechristian Vs. Ucla &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #ff3700 !important;"&gt; Abilenechristian &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #ff3700 !important;"&gt; Ucla &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #ff3700 !important;"&gt; 0.39 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #ff3700 !important;"&gt; -0.61 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; Arkansas Vs. Baylor &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; Baylor &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; Baylor &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.53 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.53 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #ff3700 !important;"&gt; Baylor Vs. Gonzaga &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #ff3700 !important;"&gt; Gonzaga &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #ff3700 !important;"&gt; Baylor &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #ff3700 !important;"&gt; 0.30 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #ff3700 !important;"&gt; -0.70 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; Clevelandst Vs. Houston &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; Houston &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; Houston &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.87 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.87 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #ff3700 !important;"&gt; Colgate Vs. Arkansas &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #ff3700 !important;"&gt; Colgate &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #ff3700 !important;"&gt; Arkansas &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #ff3700 !important;"&gt; 0.28 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #ff3700 !important;"&gt; -0.72 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; Colorado Vs. Floridast &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; Floridast &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; Floridast &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.63 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.63 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; Creighton Vs. Gonzaga &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; Gonzaga &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; Gonzaga &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.80 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.80 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; Drexel Vs. Illinois &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; Illinois &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; Illinois &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.71 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.71 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #ff3700 !important;"&gt; Easternwash Vs. Kansas &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #ff3700 !important;"&gt; Easternwash &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #ff3700 !important;"&gt; Kansas &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #ff3700 !important;"&gt; 0.43 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #ff3700 !important;"&gt; -0.57 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+## Scoring
+
+`$$\sum_{i=1}^{n} [\mathbf {1} _{\{correct\ prediction\}} \hat{p_i} -\mathbf {1} _{incorrect\ perdiction}\hat{p_i} ] = Model\ Score$$`
+
 Score
 
 &lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
@@ -1465,70 +1738,70 @@ Score
    &lt;td style="text-align:right;"&gt; Abilenechristian &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; Abilenechristian &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.52 &lt;/td&gt;
-   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.52 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.52 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:right;"&gt; Abilenechristian Vs. Ucla &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; Abilenechristian &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; Ucla &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.39 &lt;/td&gt;
-   &lt;td style="text-align:right;color: black !important;background-color: #ff3700 !important;"&gt; -0.61 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.61 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:right;"&gt; Arkansas Vs. Baylor &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; Baylor &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; Baylor &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.53 &lt;/td&gt;
-   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.53 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.53 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:right;"&gt; Baylor Vs. Gonzaga &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; Gonzaga &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; Baylor &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.30 &lt;/td&gt;
-   &lt;td style="text-align:right;color: black !important;background-color: #ff3700 !important;"&gt; -0.70 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.70 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:right;"&gt; Clevelandst Vs. Houston &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; Houston &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; Houston &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.87 &lt;/td&gt;
-   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.87 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.87 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:right;"&gt; Colgate Vs. Arkansas &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; Colgate &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; Arkansas &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.28 &lt;/td&gt;
-   &lt;td style="text-align:right;color: black !important;background-color: #ff3700 !important;"&gt; -0.72 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.72 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:right;"&gt; Colorado Vs. Floridast &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; Floridast &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; Floridast &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.63 &lt;/td&gt;
-   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.63 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.63 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:right;"&gt; Creighton Vs. Gonzaga &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; Gonzaga &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; Gonzaga &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.80 &lt;/td&gt;
-   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.80 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:right;"&gt; Drexel Vs. Illinois &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; Illinois &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; Illinois &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.71 &lt;/td&gt;
-   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.71 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.71 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:right;"&gt; Easternwash Vs. Kansas &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; Easternwash &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; Kansas &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.43 &lt;/td&gt;
-   &lt;td style="text-align:right;color: black !important;background-color: #ff3700 !important;"&gt; -0.57 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.57 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -1552,8 +1825,7 @@ Score
 
 
 
-
-![](slides_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
 
 
 
@@ -1565,8 +1837,8 @@ Score
 &lt;table&gt;
  &lt;thead&gt;
   &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt; outcome &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; totalscore &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Result &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Score &lt;/th&gt;
   &lt;/tr&gt;
  &lt;/thead&gt;
 &lt;tbody&gt;
@@ -1591,20 +1863,20 @@ Score
 &lt;table&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; totalscore &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 11.2423939 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Total Score &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.24 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; se &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.6548248 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Standard Error &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.65 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; t &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 17.1685523 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; T-Statistic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.17 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; p &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; P-value &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -1613,19 +1885,33 @@ Score
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
+---
+class: center
+Model Performance
+
+
+
+
+
+
+
+
+![](slides_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
 
 ---
 class: inverse
 
 # Conclusion
 
-### Logistic Regression performs well. Given measured statists.
+### Both Logistic and Poisson Regression perform well.
 
-### However out model is independent of the pervious game which would aplify shortcommings. 
+--
 
+### However, we are scoring the model based on independent predictions. While real-world predictions are made dependent on the previous round.
 
+--
 
-
+### These predictions are not wildly different than betting markets and seeds because they use similar statistics to derive their predictions.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
