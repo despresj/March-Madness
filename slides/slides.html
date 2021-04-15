@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 
 # March Madness Basketball Turniment
 ### Sabrina Ball and Joe Despres
-### updated: 2021-04-13
+### updated: 2021-04-14
 
 ---
 
@@ -34,7 +34,7 @@ background-image: url(https://upload.wikimedia.org/wikipedia/en/2/28/March_Madne
 
 --
 
-- Currently, the top 64 teams qualify
+- Now, its restricted to the top 64 NCAA Division I Teams
 
 --
 
@@ -50,15 +50,11 @@ background-image: url(https://upload.wikimedia.org/wikipedia/en/2/28/March_Madne
 
 --
 
-- maybe 2022...
-
---
-
 - When the turiment starts we form small groups and gamble on the outcomes. Usually by selecting winners and loser from the backet until we have a completely filled out turniment
 
 --
 
-- Nobody has ever made a perfect bracket there are `\(2^{63}\)` possible outcomes.
+- Nobody has ever made a perfect bracket and there are `\(2^{63}\)` possible outcomes.
 
 ---
 
@@ -72,13 +68,34 @@ class: center, middle
 
 ---
 
-class: inverse, center, middle
+class: inverse
 
-# Can we use basketball seasion data to predict this turniment outcomes?
+# Using basketball seasion data to predict this year's turniment outcomes requires us to:
+
+### Design predive models to make out of sample predictions
+
+--
+
+### Derrive a scoring metric
+
+--
+
+### Evaluate and tune the model
+
+--
+
+### We made several models, In the interstst of time we are going to discuss the logistic because its the most straight-forward
+
+
+---
+class: center
+
+
+![](slides_files/figure-html/unnamed-chunk-1-1.png)&lt;!-- --&gt;
 
 ---
 
-# Predictors
+# Real Quick Descriptive Statisticcs
 
 &lt;table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;"&gt;
  &lt;thead&gt;
@@ -160,12 +177,15 @@ class: inverse, center, middle
 &lt;/tbody&gt;
 &lt;/table&gt;
 
----
-class: center
 
-# Distribution of Predictors
+- Normal-ish distributions
 
-![](slides_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+- No catastrophic skews or heavy tails
+
+--
+
+- Ideally we would have had steaks and turn-overs per game rather than season total. Not all played the same game
+
 
 ---
 
@@ -189,29 +209,9 @@ $$
 $$
 
 ---
+class: center
 
-# Poisson Model
-
-$$
-`\begin{aligned}
-\log ({ E( \operatorname{team_score} ) })  &amp;= \beta_{0} + \beta_{1}(\operatorname{x3fg})\ + \\
-&amp;\quad \beta_{2}(\operatorname{opposingx3fg}) + \beta_{3}(\operatorname{fg\_percent})\ + \\
-&amp;\quad \beta_{4}(\operatorname{opposingfg\_percent}) + \beta_{5}(\operatorname{ft\_percent})\ + \\
-&amp;\quad \beta_{6}(\operatorname{opposingft\_percent}) + \beta_{7}(\operatorname{rpg})\ + \\
-&amp;\quad \beta_{8}(\operatorname{opposingrpg}) + \beta_{9}(\operatorname{st})\ + \\
-&amp;\quad \beta_{10}(\operatorname{opposingst}) + \beta_{11}(\operatorname{to})\ + \\
-&amp;\quad \beta_{12}(\operatorname{opposingto}) + \beta_{13}(\operatorname{opposingbkpg})\ + \\
-&amp;\quad \beta_{14}(\operatorname{bkpg})
-\end{aligned}`
-$$
-
----
-
-# Multinomeal Model
-
----
-class: center 
-### Output and Interpretation
+Summary
 
 &lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
  &lt;thead&gt;
@@ -225,116 +225,252 @@ class: center
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Intercept &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.333 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.523 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.636 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.52498 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; x3fg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Three Pointers &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.832 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; O* Three Pointers &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.003 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -9.161 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Field Goal Percentage &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.183 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33.439 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; O* Field Goal Percentage &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.176 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -32.748 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Free-throw percentage &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.032 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.106 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; O* Free-throw percentage &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.031 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -8.718 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Rebounds &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.143 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26.359 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; O* Rebounds &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.145 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -26.736 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Steals &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.885 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; O* Steals &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -19.700 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Turnovers &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -21.856 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; O* Turnovers &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.558 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Blocks &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.143 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -10.188 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; O* Blocks &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.165 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.652 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tfoot&gt;
+&lt;tr&gt;
+&lt;td style = 'padding: 0; border:0;' colspan='100%'&gt;&lt;sup&gt;&lt;/sup&gt; Where O* is the Mertric associated with their opposing team&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tfoot&gt;
+&lt;/table&gt;
+
+
+---
+class: center
+Summary
+
+
+
+&lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Std. Error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; T-Stat &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; P-Value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Intercept &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.333 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.523 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.636 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.52498 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; Three Pointers &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.002 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 8.832 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; opposingx3fg &lt;/td&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; O* Three Pointers &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -0.003 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -9.161 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; fg_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Field Goal Percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.183 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 33.439 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingfg_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Field Goal Percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.176 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -32.748 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; ft_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Free-throw percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.032 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 9.106 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingft_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Free-throw percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.031 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -8.718 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; rpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Rebounds &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.143 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 26.359 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingrpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Rebounds &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.145 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -26.736 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; st &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Steals &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.007 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 19.885 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingst &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Steals &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -19.700 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; to &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Turnovers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -21.856 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingto &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Turnovers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.006 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 21.558 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingbkpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Blocks &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.143 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -10.188 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; bkpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Blocks &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.165 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 11.652 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
+&lt;tfoot&gt;
+&lt;tr&gt;
+&lt;td style = 'padding: 0; border:0;' colspan='100%'&gt;&lt;sup&gt;&lt;/sup&gt; Where O* is the Mertric associated with their opposing team&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tfoot&gt;
 &lt;/table&gt;
 
 ---
-class: center 
-## Output and Interpretation
+class: center
+Summary
 
 &lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
  &lt;thead&gt;
@@ -348,116 +484,121 @@ class: center
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Intercept &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.333 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.523 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.636 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.52498 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; x3fg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Three Pointers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.002 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 8.832 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingx3fg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Three Pointers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.003 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -9.161 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; fg_percent &lt;/td&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; Field Goal Percentage &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.183 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 33.439 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; opposingfg_percent &lt;/td&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; O* Field Goal Percentage &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -0.176 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -32.748 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; ft_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Free-throw percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.032 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 9.106 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingft_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Free-throw percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.031 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -8.718 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; rpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Rebounds &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.143 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 26.359 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingrpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Rebounds &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.145 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -26.736 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; st &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Steals &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.007 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 19.885 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingst &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Steals &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -19.700 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; to &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Turnovers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -21.856 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingto &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Turnovers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.006 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 21.558 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingbkpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Blocks &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.143 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -10.188 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; bkpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Blocks &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.165 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 11.652 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
+&lt;tfoot&gt;
+&lt;tr&gt;
+&lt;td style = 'padding: 0; border:0;' colspan='100%'&gt;&lt;sup&gt;&lt;/sup&gt; Where O* is the Mertric associated with their opposing team&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tfoot&gt;
 &lt;/table&gt;
 
 ---
-class: center 
-## Output and Interpretation
+class: center
+Summary
 
 &lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
  &lt;thead&gt;
@@ -471,116 +612,121 @@ class: center
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Intercept &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.333 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.523 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.636 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.52498 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; x3fg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Three Pointers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.002 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 8.832 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingx3fg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Three Pointers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.003 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -9.161 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; fg_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Field Goal Percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.183 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 33.439 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingfg_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Field Goal Percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.176 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -32.748 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; ft_percent &lt;/td&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; Free-throw percentage &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.032 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.004 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 9.106 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; opposingft_percent &lt;/td&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; O* Free-throw percentage &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -0.031 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.004 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -8.718 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; rpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Rebounds &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.143 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 26.359 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingrpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Rebounds &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.145 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -26.736 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; st &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Steals &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.007 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 19.885 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingst &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Steals &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -19.700 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; to &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Turnovers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -21.856 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingto &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Turnovers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.006 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 21.558 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingbkpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Blocks &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.143 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -10.188 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; bkpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Blocks &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.165 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 11.652 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
+&lt;tfoot&gt;
+&lt;tr&gt;
+&lt;td style = 'padding: 0; border:0;' colspan='100%'&gt;&lt;sup&gt;&lt;/sup&gt; Where O* is the Mertric associated with their opposing team&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tfoot&gt;
 &lt;/table&gt;
 
 ---
-class: center 
-## Output and Interpretation
+class: center
+Summary
 
 &lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
  &lt;thead&gt;
@@ -594,116 +740,121 @@ class: center
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Intercept &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.333 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.523 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.636 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.52498 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; x3fg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Three Pointers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.002 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 8.832 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingx3fg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Three Pointers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.003 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -9.161 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; fg_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Field Goal Percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.183 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 33.439 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingfg_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Field Goal Percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.176 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -32.748 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; ft_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Free-throw percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.032 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 9.106 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingft_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Free-throw percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.031 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -8.718 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; rpg &lt;/td&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; Rebounds &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.143 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 26.359 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; opposingrpg &lt;/td&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; O* Rebounds &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -0.145 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -26.736 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; st &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Steals &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.007 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 19.885 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingst &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Steals &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -19.700 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; to &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Turnovers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -21.856 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingto &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Turnovers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.006 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 21.558 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingbkpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Blocks &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.143 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -10.188 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; bkpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Blocks &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.165 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 11.652 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
+&lt;tfoot&gt;
+&lt;tr&gt;
+&lt;td style = 'padding: 0; border:0;' colspan='100%'&gt;&lt;sup&gt;&lt;/sup&gt; Where O* is the Mertric associated with their opposing team&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tfoot&gt;
 &lt;/table&gt;
 
 ---
-class: center 
-## Output and Interpretation
+class: center
+Summary
 
 &lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
  &lt;thead&gt;
@@ -717,116 +868,121 @@ class: center
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Intercept &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.333 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.523 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.636 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.52498 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; x3fg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Three Pointers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.002 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 8.832 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingx3fg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Three Pointers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.003 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -9.161 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; fg_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Field Goal Percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.183 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 33.439 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingfg_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Field Goal Percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.176 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -32.748 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; ft_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Free-throw percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.032 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 9.106 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingft_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Free-throw percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.031 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -8.718 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; rpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Rebounds &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.143 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 26.359 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingrpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Rebounds &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.145 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -26.736 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; st &lt;/td&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; Steals &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.007 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 19.885 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; opposingst &lt;/td&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; O* Steals &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -0.006 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -19.700 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; to &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Turnovers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -21.856 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingto &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Turnovers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.006 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 21.558 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingbkpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Blocks &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.143 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -10.188 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; bkpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Blocks &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.165 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 11.652 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
+&lt;tfoot&gt;
+&lt;tr&gt;
+&lt;td style = 'padding: 0; border:0;' colspan='100%'&gt;&lt;sup&gt;&lt;/sup&gt; Where O* is the Mertric associated with their opposing team&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tfoot&gt;
 &lt;/table&gt;
 
 ---
-class: center 
-## Output and Interpretation
+class: center
+Summary
 
 &lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
  &lt;thead&gt;
@@ -840,116 +996,121 @@ class: center
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Intercept &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.333 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.523 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.636 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.52498 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; x3fg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Three Pointers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.002 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 8.832 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingx3fg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Three Pointers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.003 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -9.161 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; fg_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Field Goal Percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.183 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 33.439 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingfg_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Field Goal Percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.176 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -32.748 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; ft_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Free-throw percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.032 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 9.106 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingft_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Free-throw percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.031 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -8.718 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; rpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Rebounds &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.143 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 26.359 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingrpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Rebounds &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.145 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -26.736 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; st &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Steals &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.007 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 19.885 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingst &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Steals &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -19.700 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; to &lt;/td&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; Turnovers &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -0.006 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -21.856 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; opposingto &lt;/td&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; O* Turnovers &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.006 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 21.558 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingbkpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Blocks &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.143 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -10.188 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; bkpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Blocks &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.165 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 11.652 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
+&lt;tfoot&gt;
+&lt;tr&gt;
+&lt;td style = 'padding: 0; border:0;' colspan='100%'&gt;&lt;sup&gt;&lt;/sup&gt; Where O* is the Mertric associated with their opposing team&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tfoot&gt;
 &lt;/table&gt;
 
 ---
-class: center 
-## Output and Interpretation
+class: center
+Summary
 
 &lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
  &lt;thead&gt;
@@ -963,129 +1124,504 @@ class: center
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Intercept &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.333 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.523 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.636 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.52498 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; x3fg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Three Pointers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.002 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 8.832 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingx3fg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Three Pointers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.003 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -9.161 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; fg_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Field Goal Percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.183 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 33.439 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingfg_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Field Goal Percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.176 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -32.748 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; ft_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Free-throw percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.032 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 9.106 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingft_percent &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Free-throw percentage &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.031 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -8.718 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; rpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Rebounds &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.143 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 26.359 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingrpg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Rebounds &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.145 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -26.736 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; st &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Steals &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.007 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 19.885 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingst &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Steals &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -19.700 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; to &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Turnovers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -0.006 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -21.856 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; opposingto &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; O* Turnovers &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.006 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 21.558 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; opposingbkpg &lt;/td&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; Blocks &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -0.143 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.014 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; -10.188 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; bkpg &lt;/td&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; O* Blocks &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.165 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.014 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 11.652 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.00000 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
+&lt;tfoot&gt;
+&lt;tr&gt;
+&lt;td style = 'padding: 0; border:0;' colspan='100%'&gt;&lt;sup&gt;&lt;/sup&gt; Where O* is the Mertric associated with their opposing team&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tfoot&gt;
 &lt;/table&gt;
 
 ---
-class: center
-# Scoring
+## Scoring
 
-`$$\LARGE\sum_{i=1}^{63} (p_i * \mathds{1}_{correct prediction}  -p_i * \mathds{1}_{incorrect perdiction}) = score$$`
+`$$\sum_{i=1}^{n} [\mathbf {1} _{\{correct\ prediction\}} \hat{p_i} -\mathbf {1} _{incorrect\ perdiction}\hat{p_i} ] = Model\ Score$$`
 
+--
+
+- Basketball games are often quite close and odds in betting markets are often close to 1:1. 
+
+--
+
+- Our goal Goal is to weight correct prediction higher when it assigns a higher probability. Conversely a lower score to an incorrect prediction.
+
+--
+
+- `\(E(Model\ Score) = 0\)` if our predictions are no better than randomly guessing.
 
 ---
 
-# Performance
+
+## Scoring
+
+`$$\sum_{i=1}^{n} [\mathbf {1} _{\{correct\ prediction\}} \hat{p_i} -\mathbf {1} _{incorrect\ perdiction}\hat{p_i} ] = Model\ Score$$`
+
+Minimal Example
+
+
+
+
+&lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; Game &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Predicted Winner &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Winner &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\hat{p}\)` &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Score &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; Abilenechristian Vs. Texas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Abilenechristian &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Abilenechristian &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.52 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.52 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; Abilenechristian Vs. Ucla &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Abilenechristian &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Ucla &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.39 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.61 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; Arkansas Vs. Baylor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Baylor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Baylor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.53 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.53 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; Baylor Vs. Gonzaga &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Gonzaga &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Baylor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.70 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; Clevelandst Vs. Houston &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Houston &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Houston &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.87 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.87 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; Colgate Vs. Arkansas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Colgate &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Arkansas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.28 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.72 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; Colorado Vs. Floridast &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Floridast &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Floridast &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.63 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.63 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; Creighton Vs. Gonzaga &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Gonzaga &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Gonzaga &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.80 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; Drexel Vs. Illinois &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Illinois &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Illinois &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.71 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.71 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; Easternwash Vs. Kansas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Easternwash &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Kansas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.43 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.57 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 ---
+
+## Scoring
+
+`$$\sum_{i=1}^{n} [\mathbf {1} _{\{correct\ prediction\}} \hat{p_i} -\mathbf {1} _{incorrect\ perdiction}\hat{p_i} ] = Model\ Score$$`
+
+Correct Predictions
+
+&lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; Game &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Predicted Winner &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Winner &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\hat{p}\)` &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Score &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; Abilenechristian Vs. Texas &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; Abilenechristian &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; Abilenechristian &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.52 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.52 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #f0f0f0 !important;"&gt; Abilenechristian Vs. Ucla &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #f0f0f0 !important;"&gt; Abilenechristian &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #f0f0f0 !important;"&gt; Ucla &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #f0f0f0 !important;"&gt; 0.39 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #f0f0f0 !important;"&gt; -0.61 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; Arkansas Vs. Baylor &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; Baylor &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; Baylor &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.53 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.53 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #f0f0f0 !important;"&gt; Baylor Vs. Gonzaga &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #f0f0f0 !important;"&gt; Gonzaga &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #f0f0f0 !important;"&gt; Baylor &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #f0f0f0 !important;"&gt; 0.30 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #f0f0f0 !important;"&gt; -0.70 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; Clevelandst Vs. Houston &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; Houston &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; Houston &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.87 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.87 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #f0f0f0 !important;"&gt; Colgate Vs. Arkansas &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #f0f0f0 !important;"&gt; Colgate &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #f0f0f0 !important;"&gt; Arkansas &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #f0f0f0 !important;"&gt; 0.28 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #f0f0f0 !important;"&gt; -0.72 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; Colorado Vs. Floridast &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; Floridast &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; Floridast &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.63 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.63 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; Creighton Vs. Gonzaga &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; Gonzaga &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; Gonzaga &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.80 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.80 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; Drexel Vs. Illinois &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; Illinois &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; Illinois &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.71 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.71 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #f0f0f0 !important;"&gt; Easternwash Vs. Kansas &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #f0f0f0 !important;"&gt; Easternwash &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #f0f0f0 !important;"&gt; Kansas &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #f0f0f0 !important;"&gt; 0.43 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #f0f0f0 !important;"&gt; -0.57 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+## Scoring
+
+`$$\sum_{i=1}^{n} [\mathbf {1} _{\{correct\ prediction\}} \hat{p_i} -\mathbf {1} _{incorrect\ perdiction}\hat{p_i} ] = Model\ Score$$`
+
+Score
+
+&lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; Game &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Predicted Winner &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Winner &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\hat{p}\)` &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Score &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; Abilenechristian Vs. Texas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Abilenechristian &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Abilenechristian &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.52 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.52 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; Abilenechristian Vs. Ucla &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Abilenechristian &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Ucla &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.39 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #ff3700 !important;"&gt; -0.61 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; Arkansas Vs. Baylor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Baylor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Baylor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.53 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.53 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; Baylor Vs. Gonzaga &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Gonzaga &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Baylor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.30 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #ff3700 !important;"&gt; -0.70 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; Clevelandst Vs. Houston &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Houston &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Houston &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.87 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.87 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; Colgate Vs. Arkansas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Colgate &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Arkansas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.28 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #ff3700 !important;"&gt; -0.72 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; Colorado Vs. Floridast &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Floridast &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Floridast &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.63 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.63 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; Creighton Vs. Gonzaga &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Gonzaga &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Gonzaga &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.80 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.80 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; Drexel Vs. Illinois &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Illinois &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Illinois &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.71 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: #025cba !important;"&gt; 0.71 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; Easternwash Vs. Kansas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Easternwash &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; Kansas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.43 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: #ff3700 !important;"&gt; -0.57 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+  
+
+&lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; `\(\sum_{i}Score\)` &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: white !important;background-color: #025cba !important;"&gt; Model Score = 1.46 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+
+
+
+
+![](slides_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+
+
+
+&lt;table class="kable_wrapper table" style="font-size: 10px; margin-left: auto; margin-right: auto;"&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td&gt; 
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; outcome &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; totalscore &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Correct &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 24.71 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Incorrect &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; -13.47 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Total &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 11.24 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+ &lt;/td&gt;
+   &lt;td&gt; 
+
+&lt;table&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; totalscore &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.2423939 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; se &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6548248 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; t &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.1685523 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; p &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+ &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+class: inverse
 
 # Conclusion
 
+### Logistic Regression performs well. Given measured statists.
 
+### However out model is independent of the pervious game which would aplify shortcommings. 
 
 
 

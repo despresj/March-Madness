@@ -11,7 +11,12 @@ output:
       countIncrementalSlides: false
 ---
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(fig.width = 6, echo = FALSE, message = FALSE, warning = FALSE, comment = "", cache = F)
+knitr::opts_chunk$set(fig.width=15,
+                      fig.height=12, 
+                      echo = FALSE, 
+                      message = FALSE,
+                      warning = FALSE, 
+                      comment = "")
 
 library(tidyverse)
 library(kableExtra)
@@ -21,6 +26,7 @@ merged <- readr::read_csv(here::here("data", "merged.csv"))
 ids <- readr::read_csv(here::here("data", "ids.csv"))
 s2021 <- readr::read_csv(here::here("data", "s2021.csv"))
 source(here::here("R", "fitting.R"))
+theme_set( theme_light(base_size = 25))
 ```
 
 background-image: url(https://upload.wikimedia.org/wikipedia/en/2/28/March_Madness_logo.svg)
@@ -35,7 +41,7 @@ background-image: url(https://upload.wikimedia.org/wikipedia/en/2/28/March_Madne
 
 --
 
-- Currently, the top 64 teams qualify
+- Now, its restricted to the top 64 NCAA Division I Teams
 
 --
 
@@ -51,15 +57,11 @@ background-image: url(https://upload.wikimedia.org/wikipedia/en/2/28/March_Madne
 
 --
 
-- maybe 2022...
-
---
-
 - When the turiment starts we form small groups and gamble on the outcomes. Usually by selecting winners and loser from the backet until we have a completely filled out turniment
 
 --
 
-- Nobody has ever made a perfect bracket there are $2^{63}$ possible outcomes.
+- Nobody has ever made a perfect bracket and there are $2^{63}$ possible outcomes.
 
 ---
 
@@ -73,13 +75,55 @@ class: center, middle
 
 ---
 
-class: inverse, center, middle
+class: inverse
 
-# Can we use basketball seasion data to predict this turniment outcomes?
+# Using basketball seasion data to predict this year's turniment outcomes requires us to:
+
+### Design predive models to make out of sample predictions
+
+--
+
+### Derrive a scoring metric
+
+--
+
+### Evaluate and tune the model
+
+--
+
+### We made several models, In the interstst of time we are going to discuss the logistic because its the most straight-forward
+
+
+---
+class: center
+
+
+```{r fig.width=15, fig.height=12}
+hists <- merged %>%
+  select(x3fg, fg_percent, rpg, st, to,  bkpg)
+
+histogram <- function(x, t){
+  ggplot(data = hists, aes(x)) +
+    geom_histogram(bins = 55, color = "white", fill = "black") +
+    theme_light(base_size = 25) +
+    labs(title = paste0("", t), x = "", y = "") +
+    NULL
+
+}
+
+a <- histogram(merged$x3fg,       t = "Three-Points Goals")
+b <- histogram(merged$fg_percent, t = "Percentage of Goals Scored")
+c <- histogram(merged$rpg,        t = "Rebounds Per Game")
+d <- histogram(merged$st,         t = "Steals Per Game")
+e <- histogram(merged$to,         t = "Turnovers Per Game")
+f <- histogram(merged$bkpg,       t = "Blocks Per game")
+# (a + b + c) / (d + e + f)
+(a + b) / (c + d) /(e + f)
+```
 
 ---
 
-# Predictors
+# Real Quick Descriptive Statisticcs
 
 ```{r}
 descriptive_statistics <- function(x){
@@ -117,33 +161,15 @@ cbind(
                 position = "center")
 ```
 
----
-class: center
 
-# Distribution of Predictors
+- Normal-ish distributions
 
-```{r fig.width=15, fig.height=10}
-hists <- merged %>%
-  select(x3fg, fg_percent, rpg, st, to,  bkpg)
+- No catastrophic skews or heavy tails
 
-histogram <- function(x, t){
-  ggplot(data = hists, aes(x)) +
-    geom_histogram(bins = 50, color = "black", fill = "gray80") +
-    theme_light(base_size = 20) +
-    labs(title = paste0("", t), x = "", y = "") +
-    NULL
+--
 
-}
+- Ideally we would have had steaks and turn-overs per game rather than season total. Not all played the same game
 
-a <- histogram(merged$x3fg,       t = "Three-Points Goals")
-b <- histogram(merged$fg_percent, t = "Percentage of Goals Scored")
-c <- histogram(merged$rpg,        t = "Rebounds Per Game")
-d <- histogram(merged$st,         t = "Steals Per Game")
-e <- histogram(merged$to,         t = "Turnovers Per Game")
-f <- histogram(merged$bkpg,       t = "Blocks Per game")
-# (a + b + c) / (d + e + f)
-(a + b) / (c + d) /(e + f)
-```
 
 ---
 
@@ -161,104 +187,257 @@ equatiomatic::extract_eq(model = logistic_fit,
 ```
 
 ---
+class: center
 
-# Poisson Model
+Summary
 
 ```{r}
-equatiomatic::extract_eq(model = fit_poisson,
-                         use_coefs = FALSE,
-                         show_distribution = TRUE,
-                         wrap = TRUE,
-                         terms_per_line = 2,
-                         intercept = "beta")
+row_name <- c("Intercept",
+  "Three Pointers", "O* Three Pointers", 
+          "Field Goal Percentage", "O* Field Goal Percentage",
+          "Free-throw percentage", "O* Free-throw percentage",
+          "Rebounds", "O* Rebounds",
+          "Steals", "O* Steals",
+          "Turnovers", "O* Turnovers",
+          "Blocks", "O* Blocks"
+          )
+
+cols <- c("Term", "Estimate", "Std. Error", "T-Stat", "P-Value")
+
+table_output <- function(obj, rows){
+  broom::tidy(obj) %>%
+  mutate(p.value = as.character(p.value), term = row_name) %>%
+  mutate_if(is.numeric, round, 3) %>%
+  mutate(p.value = as.numeric(p.value))  %>%
+  kable(col.names = cols) %>%
+  kable_styling(font_size = 15) %>%
+  row_spec(rows, color = "white", background = "#025cba") %>% 
+  add_footnote("Where O* is the Mertric associated with their opposing team", notation = "none")
+}
+  broom::tidy(logistic_fit) %>%
+  mutate(p.value = as.character(p.value), term = row_name) %>%
+  mutate_if(is.numeric, round, 3) %>%
+  mutate(p.value = as.numeric(p.value))  %>%
+  kable(col.names = cols) %>%
+  kable_styling(font_size = 15) %>%
+  # row_spec(rows, color = "white", background = "#025cba") %>% 
+  add_footnote("Where O* is the Mertric associated with their opposing team", 
+               notation = "none")
+
 ```
 
----
-
-# Multinomeal Model
 
 ---
-class: center 
-### Output and Interpretation
+class: center
+Summary
+
+
 
 ```{r}
-table_output <- function(obj, rows){
-  broom::tidy(obj) %>% 
-  mutate(p.value = as.character(p.value)) %>%
-  mutate_if(is.numeric, round, 3) %>% 
-  mutate(p.value = as.numeric(p.value))  %>% 
-  kable(col.names =  c("Term", "Estimate", "Std. Error", "T-Stat", "P-Value")) %>% 
-  kable_styling(font_size = 15) %>% 
-  row_spec(rows, color = "white", background = "#025cba")
-}
 
 table_output(obj = logistic_fit, rows = 2:3)
 ```
 
 ---
-class: center 
-## Output and Interpretation
+class: center
+Summary
 
 ```{r}
 table_output(obj = logistic_fit, rows = 4:5)
 ```
 
 ---
-class: center 
-## Output and Interpretation
+class: center
+Summary
 
 ```{r}
 table_output(obj = logistic_fit, rows = 6:7)
 ```
 
 ---
-class: center 
-## Output and Interpretation
+class: center
+Summary
 
 ```{r}
 table_output(obj = logistic_fit, rows = 8:9)
 ```
 
 ---
-class: center 
-## Output and Interpretation
+class: center
+Summary
 
 ```{r}
 table_output(obj = logistic_fit, rows = 10:11)
 ```
 
 ---
-class: center 
-## Output and Interpretation
+class: center
+Summary
 
 ```{r}
 table_output(obj = logistic_fit, rows = 12:13)
 ```
 
 ---
-class: center 
-## Output and Interpretation
+class: center
+Summary
 
 ```{r}
 table_output(obj = logistic_fit, rows = 14:15)
 ```
 
 ---
-class: center
-# Scoring
+## Scoring
 
-$$\LARGE\sum_{i=1}^{63} (p_i * \mathds{1}_{correct prediction}  -p_i * \mathds{1}_{incorrect perdiction}) = score$$
+$$\sum_{i=1}^{n} [\mathbf {1} _{\{correct\ prediction\}} \hat{p_i} -\mathbf {1} _{incorrect\ perdiction}\hat{p_i} ] = Model\ Score$$
 
+--
+
+- Basketball games are often quite close and odds in betting markets are often close to 1:1. 
+
+--
+
+- Our goal Goal is to weight correct prediction higher when it assigns a higher probability. Conversely a lower score to an incorrect prediction.
+
+--
+
+- $E(Model\ Score) = 0$ if our predictions are no better than randomly guessing.
 
 ---
 
-# Performance
+
+## Scoring
+
+$$\sum_{i=1}^{n} [\mathbf {1} _{\{correct\ prediction\}} \hat{p_i} -\mathbf {1} _{incorrect\ perdiction}\hat{p_i} ] = Model\ Score$$
+
+Minimal Example
+
+```{r}
+col_fix <- function(x){
+  x <- str_replace(x, "_", " ")
+  x <- str_to_title(x)
+  x
+}
+
+logistic_model_score <- readRDS(here::here("cache", "logistic_model_score.RDS")) %>% 
+  drop_na() %>% 
+  head(10) %>% 
+  mutate_if(is.character, str_to_title) %>% 
+  mutate_if(is.numeric, round, 2) %>% 
+  mutate(phat = if_else(predicted_winner == winner, 
+                          predicted_winner_probs, predicted_loser_probs)) %>% 
+  rename_all(col_fix) %>%
+  rename( `$\\hat{p}$` = Phat) %>% 
+  select(Game, `Predicted Winner`, `Winner`, `$\\hat{p}$`, Score)
+```
+
+
+```{r}
+logistic_model_score %>% 
+  kable(align = "r") %>% 
+  kable_styling(font_size = 15) 
+```
 
 ---
+
+## Scoring
+
+$$\sum_{i=1}^{n} [\mathbf {1} _{\{correct\ prediction\}} \hat{p_i} -\mathbf {1} _{incorrect\ perdiction}\hat{p_i} ] = Model\ Score$$
+
+Correct Predictions
+
+```{r}
+logistic_model_score %>% 
+  kable(align = "r") %>% 
+  kable_styling(font_size = 15) %>%
+  column_spec(c(1:5), color =  ifelse(logistic_model_score$Score > 0, "white", "black"), 
+              background = ifelse(logistic_model_score$Score > 0, "#025cba", "#f0f0f0"))
+```
+
+---
+
+## Scoring
+
+$$\sum_{i=1}^{n} [\mathbf {1} _{\{correct\ prediction\}} \hat{p_i} -\mathbf {1} _{incorrect\ perdiction}\hat{p_i} ] = Model\ Score$$
+
+Score
+
+```{r}
+logistic_model_score %>% 
+  kable(align = "r") %>% 
+  kable_styling(font_size = 15) %>% 
+  column_spec(c(5), color =  ifelse(logistic_model_score$Score > 0, "white", "black"), 
+              background = ifelse(logistic_model_score$Score > 0, "#025cba", "#ff3700"))
+```
+  
+
+```{r fig.align='right'}
+paste0("Model Score = ", sum(as.numeric(logistic_model_score$Score))) %>% 
+  kable(col.names = "$\\sum_{i}Score$") %>% 
+  kable_styling(font_size = 15) %>% 
+  row_spec(1, color = "white", background = "#025cba")
+```
+
+---
+
+
+```{r}
+perform <- readRDS(here::here("cache", "logistic_model_score.RDS")) %>% 
+  mutate(outcome = if_else(score > 0, "Correct", "Incorrect")) %>% 
+  drop_na() 
+```
+
+
+```{r fig.height=10}
+
+a <- perform %>%
+  ggplot(aes(x = abs(score), fill = outcome)) + 
+   geom_histogram(alpha=0.7, position="identity", bins = 10) + 
+  labs(title = "Histogram of Scores", x = "Absolute Value of Score") +
+  scale_fill_manual(values = c("#025cba", "#ff3700"))
+
+
+b <- perform %>% 
+  ggplot(aes(as.factor(outcome), fill = outcome)) + 
+  geom_bar(alpha = 0.7) + 
+  labs(title = "", x = "") + 
+  scale_fill_manual(values = c("#025cba", "#ff3700")) +
+  geom_text(size=10, color = "grey80", stat = 'count', aes(label =..count.., hjust = 1.5)) + 
+  coord_flip()
+
+a/b
+```
+
+```{r}
+t2 <- perform %>% 
+  summarise(totalscore = sum(score),
+            se = sd(score), 
+            t = totalscore/se,
+              p = pt(t, nrow(perform)-1, lower.tail = F)) %>% 
+  t()
+
+score <- perform %>% 
+  group_by(outcome) %>% 
+  summarise(totalscore = sum(score)) %>% 
+  mutate(totalscore = round(totalscore, 2))
+  
+t1 <- rbind(score, c("Total", sum(score$totalscore))) 
+```
+
+```{r}
+knitr::kable(list(t1, t2)) %>% 
+  kable_styling(font_size = 10)
+  
+```
+
+---
+class: inverse
 
 # Conclusion
 
+### Logistic Regression performs well. Given measured statists.
 
+### However out model is independent of the pervious game which would aplify shortcommings. 
 
 
 
