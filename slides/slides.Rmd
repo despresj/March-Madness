@@ -26,7 +26,7 @@ merged <- readr::read_csv(here::here("data", "merged.csv"))
 ids <- readr::read_csv(here::here("data", "ids.csv"))
 s2021 <- readr::read_csv(here::here("data", "s2021.csv"))
 source(here::here("R", "fitting.R"))
-theme_set( theme_light(base_size = 25))
+theme_set(theme_light(base_size = 25))
 ```
 
 background-image: url(https://upload.wikimedia.org/wikipedia/en/2/28/March_Madness_logo.svg)
