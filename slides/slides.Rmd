@@ -539,3 +539,12 @@ class: inverse
 --
 
 ### These predictions are not wildly different than betting markets and seeds because they use similar statistics to derive their predictions.
+
+
+---
+class: inverse
+
+# References
+
+Faraway, Julian James. Extending the Linear Model with R:  Generalized Linear,    Mixed Effects and Nonparametric Regression Models.        Chapman &amp; Hall/CRC, 2016. 
+
