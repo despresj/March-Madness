@@ -44,22 +44,21 @@ merged <- readr::read_csv("data/merged.csv")
 team_stats <- readr::read_csv("data/team_stats.csv")
 ```
 
-__Introduction__  
-
-Every year top university basketball teams compete in the March Madness tournament. Casual fans and enthusiasts submit predictions gambling small sums of money on the outcomes. This study will determine if which GLM performs best in predicting the results. Our data comes from three different sources Kaggle, NCAA, and the tournament results. Kagggle provides a comprehensive dataset^[CITE THIS: https://plexkits.com/march-madness-bracket/] for all NCAA in season (non-turniment) basektball games from 2001 to 2020. The NCAA provides team-level statistics^[CITE THIS: https://stats.ncaa.org/rankings/change_sport_year_div] for each team. We will use those two datasets to train a model that uses team-level statistics to predict basketball game outcomes. We will test our model on the actual tournament results after it is concluded on April 5th. The objective is to predict the individual game outcomes as accurately as possible.
- 
-Our response is the outcome *win/loss* as a function of team statistics. Win or loss coded 0 or 1. Then we will look at both team's statistics and determine which is more important. In our dataset we have: *field goal percentage* which is the rate attempt to score vs actually scoring. *Free-throw percentage*,  is the rate that the team has the opportunity to take an unguarded shot. Cumulative *Three-point goals made*. *Rebounds per game*, counts the times the team recovered the ball after a missed shot. *Steals*, the times a team was able to remove possession of the ball from the opposing team. *Turnover*, the number of times the team lost possession. *Blocks*, The number of times the team was able to block a shot made by the opposing team.
-
-We will use three regression methods, logistic, Poisson, and multinominal, to compare the results to determine which is most accurate. Logistic regression most naturally fits this problem because games do not tie so there is a 50/50 split of wins and losses. Also, we will try Poisson regression to predict the number of points scored by each team. Since there are many close basketball games we will use multinomial regression to predict if the game score is going to be a large difference one way, small difference, or a large difference the other way.
-
-We Found....
-
+# Introduction
 <!-- (a) introduces the background -->
 <!-- (b) states the scientific questions you aim to answer -->
 <!-- (c) describes the data set that you will use for the analysis (d) summarizes your major findings. -->
 
+Every year top university basketball teams compete in the March Madness tournament. Casual fans and enthusiasts submit predictions gambling small sums of money on the outcomes. This study will compare which GLM performs best in predicting the turniment results. Our data comes from three different sources Kaggle, NCAA, and the tournament results. Kagggle provides a comprehensive dataset^[CITE THIS: https://plexkits.com/march-madness-bracket/] for all NCAA in season (non-turniment) basektball games from 2001 to 2020. The NCAA provides team-level statistics^[CITE THIS: https://stats.ncaa.org/rankings/change_sport_year_div] for each team. We will use those two datasets to train a model using team-level statistics then use that model to predict basketball game outcomes. We will test our model on the actual tournament results after it is concluded on April 5th. The objective is to predict the individual game outcomes as accurately as possible.
+ 
+Our response terms is the outcome of the game *win or loss* with a 0 possibility of a tie. Our aim is to derive a function that will accurately predict this using team-level statistics. In our dataset we have many predictors however, we only selected the predictors that were not co-linear. First, *field goal percentage* which is the rate attempt to score vs actually scoring. *Free-throw percentage*,  is the rate that the team has the opportunity to take an unguarded shot. Cumulative *Three-point goals made*. *Rebounds per game*, counts the times the team recovered the ball after a missed shot. *Steals*, the times a team was able to remove possession of the ball from the opposing team. *Turnover*, the number of times the team lost possession. *Blocks*, The number of times the team was able to block a shot made by the opposing team.
 
-__Exploratory Data Analysis__  
+March Madness is a winner-take-all tournament and teams do not have a second chance to play a game. Therefore, making accurate predictions will be depending on predicting the previous round correctly. We did make predictions in that fashion, however our models will be compared by taking independent predictions. Meaning, we will filter our data down to using only the 64 teams that qualify, predict every single possible combination of games ${64\choose 2} = 2016$ then use the 63 games played as a sample from the population of all possible games. Then use basic statistical methods to determine if the predictions were better than random chance, better than betting markets, and better than seeds. Then we use the results to determine which regression method performs the best.
+
+We will use three regression methods, logistic, poisson, and multinominal, to generate a prediction models, to compare the results, and make a determination as to which is best suited to this problem. Logistic regression most naturally suits this suits this problem because games do not tie and there is a perfect 50/50 split of wins and losses in our training and testing data. This problem could also be suited to poison regression because the number of points scored is poisson distrubuted. After fitting a poisson model we will predict the amount of points Team A will score, then predict the number of points Team B will score then take whichever team was predicted to score more and record that as the prediction.
+
+
+# Exploratory Data Analysis
 
 taking a look at our variables we see that they all have a reasionably normal distribution.
 
