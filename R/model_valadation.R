@@ -80,7 +80,7 @@ colnames(multinomeal_model_score)
 # saveRDS(logistic_model_score, here::here("cache", "logistic_model_score.RDS"))
 
 multinomeal_model_score <- multinomeal_model_score %>% 
-  mutate(predicted_winner = if_else(`<-12` + `-12:-4` > `other4:13` + `>13`, 
+  mutate(predicted_winner = if_else(`<-12` + `-12:-4` < `other4:13` + `>13`, 
                                   team, other_team),
          outcome = if_else(predicted_winner == winner, "Correct", "Incorrect"))
 
