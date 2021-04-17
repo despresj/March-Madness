@@ -1,22 +1,17 @@
 ---
 title             : "Using GLMs to Predict Basketball Games"
 shorttitle        : "Using GLMs to Predict Basketball Games"
-
 author: 
   - name          : "Joe Despres"
     corresponding : yes    # Define only one corresponding author
   - name          : "Sabrina Ball"
-
 affiliation:
   - id            : ""
     institution   : "Michigan State University"
-
   
 keywords          : "keyword"
 wordcount         : "X"
-
 bibliography      : ["r-references.bib"]
-
 floatsintext      : yes
 figurelist        : no
 tablelist         : no
@@ -24,13 +19,16 @@ footnotelist      : no
 linenumbers       : no
 mask              : no
 draft             : no
-
 documentclass     : "apa6"
 classoption       : "man"
 output            : papaja::apa6_pdf
 urlcolor: blue
+editor_options: 
+  chunk_output_type: inline
+language:
+  label:
+    fig: "Abbildung "
 ---
-
 
 ```{r setup, include = FALSE}
 library("papaja")
@@ -38,63 +36,40 @@ library(tidymodels)
 library(patchwork)
 library(kableExtra)
 theme_set(theme_test())
-r_refs("r-references.bib")
+r_refs("r-references.bib") 
 
-merged <- readr::read_csv("data/merged.csv")
-team_stats <- readr::read_csv("data/team_stats.csv")
+merged <- readr::read_csv("https://raw.githubusercontent.com/despresj/March-Madness/main/data/merged.csv")
+team_stats <- readr::read_csv("https://raw.githubusercontent.com/despresj/March-Madness/main/data/team_stats.csv")
 ```
 
-# Introduction
-<!-- (a) introduces the background -->
-<!-- (b) states the scientific questions you aim to answer -->
-<!-- (c) describes the data set that you will use for the analysis (d) summarizes your major findings. -->
+<!-- All the files for this project is in a github repo found at https://github.com/despresj/March-Madness -->
+## Introduction
 
-Every year top university basketball teams compete in the March Madness tournament. Casual fans and enthusiasts submit predictions gambling small sums of money on the outcomes. This study will compare which GLM performs best in predicting the turniment results. Our data comes from three different sources Kaggle, NCAA, and the tournament results. Kagggle provides a comprehensive dataset^[CITE THIS: https://plexkits.com/march-madness-bracket/] for all NCAA in season (non-turniment) basektball games from 2001 to 2020. The NCAA provides team-level statistics^[CITE THIS: https://stats.ncaa.org/rankings/change_sport_year_div] for each team. We will use those two datasets to train a model using team-level statistics then use that model to predict basketball game outcomes. We will test our model on the actual tournament results after it is concluded on April 5th. The objective is to predict the individual game outcomes as accurately as possible.
- 
-Our response terms is the outcome of the game *win or loss* with a 0 possibility of a tie. Our aim is to derive a function that will accurately predict this using team-level statistics. In our dataset we have many predictors however, we only selected the predictors that were not co-linear. First, *field goal percentage* which is the rate attempt to score vs actually scoring. *Free-throw percentage*,  is the rate that the team has the opportunity to take an unguarded shot. Cumulative *Three-point goals made*. *Rebounds per game*, counts the times the team recovered the ball after a missed shot. *Steals*, the times a team was able to remove possession of the ball from the opposing team. *Turnover*, the number of times the team lost possession. *Blocks*, The number of times the team was able to block a shot made by the opposing team.
+Every year top division I basketball teams compete in the annual March Madness tournament. Casual fans and enthusiasts submit predictions gambling small sums of money on the outcomes. This study uses logistic, poisson, and multinominal regression models in R [@R-base] to predict the March Madness tournament outcomes. Our primary objective is to determine which GLM is the most accurate when predicting the results. The data we use come from three different sources Kaggle [@R-Kaggle], NCAA [@R-NCAA], and the tournament results [@R-NCAA]. Kaggle [@R-Kaggle] provides a comprehensive dataset including all NCAA in-season (non-turniment) basketball games from 2001 to 2020. The NCAA [@R-NCAA] provides team-level statistics for each team. We filter, clean, and combine these data using the tidyverse package [@R-tidyverse]. Then use the combination of these datasets to fit our models. The objective is to predict the individual game outcomes as accurately as possible and determine which GLM is the most accurate.  
+Our response terms is the outcome of the game *win or loss* with a 0 possibility of a tie. Our aim is to derive a function that will accurately predict this using team-level statistics. In our dataset we have many predictors however, we only selected the predictors that were not co-linear. First, *field goal percentage* which is the rate attempt to score vs actually scoring. *Free-throw percentage*,  is the rate that the team has the opportunity to take an unguarded shot. Cumulative *Three-point goals made*. *Rebounds per game*, counts the times the team recovered the ball after a missed shot. *Steals*, the times a team was able to remove possession of the ball from the opposing team. *Turnover*, the number of times the team lost possession. *Blocks*, The number of times the team was able to block a shot made by the opposing team.  
+March Madness is a winner-take-all tournament and teams do not have a second chance to play a game. Therefore, making accurate predictions will be depending on predicting the previous round correctly. We did make predictions in that fashion, however our models will be compared by taking independent predictions. Meaning, we will filter our data down to using only the 64 teams that qualify, predict every single possible combination of games ${64\choose 2} = 2016$ then use the 63 games played as a sample from the population of all possible games. Then use basic statistical methods to determine if the predictions were better than random chance, better than betting markets, and better than seeds. Then we use the results to determine which regression method performs the best.  
+We will use three regression methods, logistic, poisson, and multinominal, to generate a prediction models, to compare the results, and make a determination as to which is best suited to this problem. Logistic regression most naturally suits this suits this problem because games do not tie and there is a perfect 50/50 split of wins and losses in our training and testing data. This problem could also be suited to poison regression because the number of points scored is poisson distrubuted. After fitting a poisson model we will predict the amount of points Team A will score, then predict the number of points Team B will score then take whichever team was predicted to score more and record that as the prediction.  
 
-March Madness is a winner-take-all tournament and teams do not have a second chance to play a game. Therefore, making accurate predictions will be depending on predicting the previous round correctly. We did make predictions in that fashion, however our models will be compared by taking independent predictions. Meaning, we will filter our data down to using only the 64 teams that qualify, predict every single possible combination of games ${64\choose 2} = 2016$ then use the 63 games played as a sample from the population of all possible games. Then use basic statistical methods to determine if the predictions were better than random chance, better than betting markets, and better than seeds. Then we use the results to determine which regression method performs the best.
+We find that these models have an accurate between 59% and 65% which is well over 50%. Therefore, GLM's are helpful in predicting March madness tournament outcomes. We find that the team-level statistics recorded by the NCAA are highly significant and helpful for predicting the tournament outcomes however, come up short of producing truely fantastic results. Also, we find that when predicting the probability of a win or a loss we find that the coefficients are symmetric because of the nature of the zero-sum-contest.
 
-We will use three regression methods, logistic, poisson, and multinominal, to generate a prediction models, to compare the results, and make a determination as to which is best suited to this problem. Logistic regression most naturally suits this suits this problem because games do not tie and there is a perfect 50/50 split of wins and losses in our training and testing data. This problem could also be suited to poison regression because the number of points scored is poisson distrubuted. After fitting a poisson model we will predict the amount of points Team A will score, then predict the number of points Team B will score then take whichever team was predicted to score more and record that as the prediction.
+From these results we see that logistic and posisson model was the best at predicting wins and losses. All three models were well over 50% accurate, so this the research goal of having GLM's predict March Madness Outcomes. Also, we confirmed the suspicion that basketball statistics are symmetrical in relation to the probability of winning. Yet are not when we are predicting the score.
+
+## Exploratory Data Analysis  
 
 
-# Exploratory Data Analysis
-
-taking a look at our variables we see that they all have a reasionably normal distribution.
-
-```{r}
+```{r fig.height=2}
 hists <- merged %>% 
   select(x3fg, fg_percent, rpg, st, to,  bkpg)
 
-histogram <- function(x, t){
-  ggplot(data = hists, aes(x)) + 
-    geom_histogram(bins = 30, color = "black", fill = "gray98") + 
-    theme_light(base_size = 5) + 
-    labs(title = paste0("Distribution of ", t), x = t, y = "") + 
-    NULL
-    
-}
-
-a <- histogram(merged$x3fg,       t = "Three-Points goals Scored")
-b <- histogram(merged$fg_percent, t = "Percentage of Field Goals Scored")
-c <- histogram(merged$rpg,        t = "Rebounds Per Game")
-d <- histogram(merged$st,         t = "Steels Per Game")
-e <- histogram(merged$to,         t = "Turn Overs Per Game")
-f <- histogram(merged$bkpg,       t = "Blocks Per game")
-(a + b + c) / (d + e + f)
-```
-
-```{r}
-stat <- function(x, df = hists, rounding_digits = 2){
+stat <- function(x, df = hists, rounding_digits = 2) {
     x <- enquo(x)
     df %>%
-      summarise(
-                       Mean  = mean( !! x),
-                     Median  = median( !! x),
-                         Std = sd  ( !! x),
-                         Min = min ( !! x),
-                         Max = max ( !! x),
-                       Range = max(!! x) - min(!! x) ) %>%
+      summarise(Mean = mean(!!x),
+              Median = median(!!x),
+                 Std = sd(!!x),
+                 Min = min(!!x),
+                 Max = max(!!x),
+               Range = max(!!x) - min(!!x)) %>%
       mutate_if(is.numeric, round, rounding_digits)
 }
 
@@ -103,7 +78,7 @@ variables <- c(
 "Field Goals Scored Percentage",
 "Rebounds Per Game",
 "Steels Per Game",
-"Turn Overs Per Game",
+"Turn Overs",
 "Blocks Per game")
 
 hists %>% 
@@ -117,22 +92,160 @@ hists %>%
   caption = "Descriptive Statistics")
 ```
 
+```{r }
+histogram <- function(x, t) {
+  ggplot(data = hists, aes(x)) + 
+    geom_histogram(bins = 50, color = "black", fill = "white") + 
+    theme_light(base_size = 7) + 
+    labs(title = paste0(t), x = "", y = "") + 
+    NULL
+}
 
-<!-- • Perform exploratory data analysis (with summary statistics or exploratory graphs) that reveals some basic and general information of the data set. -->
-__Description__  
-To gather these data, we used the tidyr, [@R-tidyr] dplyr, [@R-dplyr] and purrr [@R-purrr] package to read-in clean, and prepare our data for analysis.
-Since this is a predictive model we used all the data we had at our disposal that was not colinear. 
+a <- histogram(merged$x3fg, t = "Three-Points Goals")
+b <- histogram(merged$fg_percent, t = "Percentage of Field Goals Scored")
+c <- histogram(merged$rpg, t = "Rebounds Per Game")
+d <- histogram(merged$st, t = "Steels Per Game")
+e <- histogram(merged$to, t = "Turn Overs Per Game")
+f <- histogram(merged$bkpg, t = "Blocks Per game")
+(a + b + c + d + e + f)
+```
 
-<!-- • Provide a description and explanation of the steps that you have taken to obtain the best model (or models). -->
-__Results__  
-<!-- • Give the results of relevant parameter estimation and statistical inference under your best model (or models). Discuss and interpret important features of your best model (or models), and state your conclusions in the context of the scientific questions that you have been focused on. -->
-__Diagnostic Methods__  
-<!-- • Check the goodness of fit of your model (or models), including a description of the model diagnostic methods and test procedures you used, and what the results were. -->
-__Conculsion__  
-<!-- • Conclude the report with a discussion section that -->
-<!-- (a) recaps your scientific findings -->
-<!-- (b) discusses possible limitations and improvements of your methods -->
-<!-- (c) outlines additional questions that are worth studying as a future work. -->
+As mentioned above, there are substantially more variables in the dataset we used, however we omitted the ones that were co-linear. When making a decision we selected the variable using deviance tests and likelihood ratios. For our modeling and prediction we are going to use these statistics associated with both teams. Basic descriptive statistics can be found in Table 1. We notice that the mean of the predictor is relatively close to the median. The standard deviations can be high, but are not wildly so and the range is reasionable for the data we have. In the histograms below we remark the predictors roughly normal distribution with no substantial skew, heavy tails, or slow decay. 
+
+Now we turn our attention to the outcomes. The logistic model is straight forward all we needed to do was code a win to be 1 and a loss to be 0 then fit the model and make a prediction. The possion model will work if we to taking score as a count. This is not perfectly suited to poisson because a winning team's score has a mean of `r mean(merged$w_score) %>% round(2)` and a variance of `r var(merged$w_score) %>% round(2)`.  Regardless we will see how it performs, when we will predict the score for Team A and predict the score for Team B, then take who ever has a higher predictions.
+
+```{r warning=FALSE}
+w <- merged %>% 
+  ggplot(aes(x = w_score)) + 
+  geom_histogram(bins = 50, color = "black", fill = "white") +
+  geom_vline(xintercept = mean(merged$w_score), color = "red", size = 0.25) + 
+   labs(title = "Winning Team's Score", x = "", y = "",
+       subtitle = paste0("Mean = ", mean(merged$w_score) %>% round(2),
+                         " Variance = ", var(merged$w_score) %>% round(2)))
+  
+l <- merged %>% 
+  ggplot(aes(x = l_score)) + 
+  geom_histogram(bins = 50, color = "black", fill = "white")  +
+  geom_vline(xintercept = mean(merged$l_score), color = "red", size = 0.25) + 
+  labs(title = "Losing Team's Score", x = "", y = "",
+       subtitle = paste0("Mean = ", mean(merged$l_score) %>% round(2), 
+                        " Variance = ", var(merged$l_score) %>% round(2)))
+      
+  
+d <-  merged %>% 
+  ggplot(aes(x = diff)) + 
+  geom_histogram(bins = 100, color = "black", fill = "white") + 
+  geom_vline(xintercept = c(-12, -4, 4, 12), color = "red", size = 0.25) +
+  labs(title = "Differences in Score", x = "", y = "") + 
+  scale_x_continuous(limits = c(-50, 50), 
+                     breaks = c(-28, -20, -12, -4, 4, 12, 20, 28))
+
+(w + l) / d
+```
+The multinomeal case is not obviously suited to this problem however we can adapt it. We will take a look at the difference in score between winner and loser. This is a common thing in betting markets to gamble on. Therefore we mapped the difference in score into 5 categories using the 0.2, 0.4, 0.6, and 0.8 quantifies. First, the team losing with by more than 12. Second, the team losing by between 12 and 4 points. Third, a very close game between losing by 4 and winning by 4 (This is fairly common as there is really good competition between teams). Fourth, winning by more than 4 and less than 12. In the fifth category, winning by more than 12. We will use the probabilities to predict a winner by suming the proabilities of losing by more than 12 and losing by between 12 and four and summing the probability of winning by more than 12 and winning by between four and 12. Then taking whichever is larger as a prediction.
+
+## Description
+
+To make an accurate compartment, we use the same formula for the three models with only the dependent variable being different. Win or loss for our logistic, the amount Team A scores for the poisson and the difference in score for the multinomeal. Now we tried normalizing the data where we subtracted the mean and devided by standard deviation for all out predictors. However, that really did not have that much effect. Also we individually tested each predictor using likelyhood ratio tests to add each term. These all came significant. Also when we were adding terms we found many were co-linear, therefore when we found co-linear predictors we omitted the one with a smaller likelihood ratio. 
+
+```{r, out.width="100%", fig.cap = ""}
+knitr::include_graphics("/Users/josephdespres/Documents/MSU/STT-864_Statistical_Methods_II/March-Madness/paper/paper_files/equ.png")
+```
+
+## Results
+
+In the Table 2 made manually with the kableExtra package [@R-kableExtra], you can see that we have the results for poisson, logistic, and multinomeal models. We have a sample of over 35,000 and all of the coeffecients are highly significant. This is to be expected because these are the statistics that the NCAA records and ones they have determined to being useful to measure a team's performance. The aim of this study is to compare predictive models so we will not cover it exhaustively or include individual z-statistics and p-values. 
+First, notice is that in the case of the logistic and multinomeal models we see that when comparing a factors that affect a team's probability of winning we see the associated coefficient is quite similar for the factor capturing the opposing teams. That is because basketball is a zero-sum-game, and anything good for team A is proportionately bad for team B. Note this is not true of the  multinomeal and poisson models. The reasion that is is because the winner picked by thoes models is a function of the score. Therefore, thoes models are looking at coeffecients that are oging to increase the scores. Take three pointers in the poisson model, for instance, a team where an opposing team scores a lot of three pointers has a significant coefficient for the amount of points scored. More points scored is not deterministic of winning, however, it is an indicator.
+  
+```{r models}
+predictors <- "x3fg + opposingx3fg + # field goal pct
+              fg_percent + opposingfg_percent + # free throws
+              ft_percent + opposingft_percent +# rebound per game
+              rpg + opposingrpg + # steels
+              st + opposingst + #turnover
+              to +  opposingto + # blocks
+              opposingbkpg + bkpg"
+
+logistic_fit <- glm(paste0("win ~ ", predictors), data = merged, family = "binomial")
+fit_poisson <- glm(paste0("team_score ~ ", predictors), data = merged, family = poisson(link = "log"))
+fit_multinom <- VGAM::vglm(paste0("x_tile ~ ", predictors), family = VGAM::cumulative(parallel=TRUE), data = merged)
+```
+
+```{r}
+row_name <- c("Three Pointers", "O* Three Pointers", "Field Goals", "O* Field Goals",
+          "Free-throws", "O* Free-throws", "Rebounds", "O* Rebounds", "Steals", "O* Steals",
+          "Turnovers", "O* Turnovers", "Blocks", "O* Blocks")
+
+binder <- function(obj){
+  obj %>% tidy() %>% filter(term != "(Intercept)")
+}
+
+multi_terms <- c('<-12', '-12:-4', '-4:4', '4:13', row_name)
+
+logistic_pos <- binder(logistic_fit) %>% 
+  rename_all(~paste0("L", .x)) %>% 
+  bind_cols(binder(fit_poisson) %>% rename_all(~paste0("p", .x))) %>% 
+  transmute(`Logistic Model` = Lestimate, `Poisson Model` = pestimate)
+
+tibble(`Logistic Model` = rep(NA, 4),`Poisson Model` = rep(NA, 4)) %>% 
+  bind_rows(logistic_pos) %>% 
+  bind_cols(tibble(`Multinomial Model` = fit_multinom@coefficients), 
+            tibble(Terms = multi_terms)) %>% 
+  select(Terms, `Multinomial Model`, `Logistic Model`:`Poisson Model`) %>% 
+  mutate_if(is.numeric, round, 5) %>% 
+  mutate_at(vars(Terms:`Poisson Model`), replace_na, '.') %>% 
+  kable(format = "latex", booktabs = TRUE,
+  escape = FALSE,longtable = TRUE, caption = "Regression Output") %>% 
+  footnote(number = c("Sample size 35248 games.",
+                      "O* is the term asscoiated with the opposing team.",
+                      "All the above terms are significant at P < 0.01.",
+                      "Multinomeal Intercepts are differences in predicted score."))
+  
+```
+
+
+## Goodness of Fit
+
+Now that we have fitted the model, lets take a look at how well it performed. Using the tidyr [@-tidyr] package, we make every combination of teams and associated statistics in one dataframe. Then wrote custom functions that would take two of the 64 teams as inputs and output the probabilities of winning, predicted amounts of points scored, or probabilities of the score resulting in one of the above mentioned multinomeal categories. After that we used the purrr [@R-purrr] package to iterate over all possible games that could be played. From there, wrote and ran a webscraping script  to obtain a dataframe of the results. Then counted the games each model predicted correctly and incorrectly. In this case our population is all  ${64\choose 2}$ possible games in this turniment and a sample of the games that were played. We are not assuming that we have a random sample from the whole population as these are the best teams in the league. Also, there is a selection bias twards games that were played. Therefore, the teams that played in the finals are represented 6 times in our sample and 32 of the 64 teams only are represented once. Therefore, we do not claim that these results will hold for games in general. However, for the purpose of comparing models for this specific turniment this is approprite.
+
+```{r}
+bar <- function (obj, title, sub) {
+  obj %>% 
+  drop_na() %>% 
+  ggplot(aes(as.factor(outcome), fill = outcome)) + 
+  geom_bar(alpha = 0.7) + 
+  labs(title = title, subtitle = paste("Accuracy:", sub, "%"), x = "", y = "") + 
+  scale_fill_manual(name = "", values = c("grey20", "grey80"))  +
+  geom_text(size=5, color = "black", stat = 'count',
+            aes(label =..count.., hjust = 1.5)) + 
+  coord_flip()
+}
+
+multinomeal_model_score <- readRDS(here::here("cache", "multinomeal_model_score.RDS"))
+posson_model_score <- readRDS(here::here("cache","posson_model_score.RDS"))
+logistic_model_score <- readRDS(here::here("cache", "logistic_model_score.RDS")) %>% 
+  mutate(outcome = if_else(winner == predicted_winner, "Correct", "Incorrect"))
+
+a <- bar(obj = posson_model_score, title = "#1 Poisson Model", sub = "64.5")
+b <- bar(obj = logistic_model_score, title = "#2 Logistic Model", sub = "63.1")
+c <- bar(obj = multinomeal_model_score , title = "#3 Multinomeal Model", sub = "59.6")
+
+a/b/c
+```
+
+```{r}
+# plot(residuals(fit_poisson))
+# 
+# plot(residuals(logistic_fit))
+```
+## Conculsion
+
+From these results we see that logistic and posisson model was the best at predicting wins and losses. All three models were well over 50% accurate, so this the research goal of having GLM's predict March Madness Outcomes. Also, we confirmed the suspicion that basketball statistics are symmetrical in relation to the probability of winning. Yet are not when we are predicting the score.
+
+The limits of this study have a lot to do with data limitations. Ideally, we would have more tournaments playing with lesser skilled teams. would be much more robust if the tournament was much larger. We had a lot of data points over 35,000 which I think was more than sufficient, however, we lacking non co-linear covariates. We only had 7 predictors. An accuracy of 64.5% is not superb considering betting markets take these exact factors into account. 
+
+Future studies could be focused on fitting more models and getting a better understanding of season games before making predictions like this. I would like to get more robust predictions, therefore, I think it could be beneficial to go back through the seasion games data and draw out the times each team in the March Madness tournament played each other and test our model against that. (Well see if we feel like doing that).  While exploring, I found that teams from different parts of the country tended to have a different coefficients relationship between statistics and outcomes. I think the team's conferences are a random effect that should be taken into account. I think the season games could be modeled very nicely using linear mixed models.
+
 
 \newpage
 
@@ -140,7 +253,12 @@ __Conculsion__
 
 \begingroup
 \setlength{\parindent}{-0.5in}
-\setlength{\leftskip}{0.5in}
+\setlength{\leftskip}{0.0in}
 
 <div id="refs" custom-style="Bibliography"></div>
 \endgroup
+
+```{r}
+beepr::beep()
+```
+
