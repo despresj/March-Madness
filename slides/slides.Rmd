@@ -1,5 +1,5 @@
 ---
-title: "March Madness Basketball Turniment"
+title: "March Madness Basketball Tournament"
 author: "Sabrina Ball and Joe Despres"
 date: "updated: `r Sys.Date()`"
 output:
@@ -455,7 +455,7 @@ t2 <- perform %>%
   summarise(totalscore = sum(score),
             se = sd(score), 
             t = totalscore/se,
-              p = pt(t, nrow(perform)-1, lower.tail = F)) %>% 
+            p = pt(t, nrow(perform)-1, lower.tail = F)) %>% 
   t() %>% 
   tibble() %>% 
   mutate_if(is.numeric, round, 2)
