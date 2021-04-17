@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.4.10)  16 APR 2021 21:37
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.3.29)  17 APR 2021 11:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -33,7 +33,7 @@ Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
 Class apa6 Info: No bibliography package was specified; defaulting to (but not 
 loading) Biblatex on input line 213.
 (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/lm/lmodern.sty
-Package: lmodern 2015/05/01 v1.6.1 Latin Modern Fonts
+Package: lmodern 2009/10/30 v1.6 Latin Modern Fonts
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/cmr/m/n --> OT1/lmr/m/n on input line 22.
 LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
@@ -71,7 +71,7 @@ Package: fontenc 2020/08/10 v2.0s Standard LaTeX package
 LaTeX Font Info:    Trying to load font information for T1+lmr on input line 11
 2.
 (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
-File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ))
 (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/geometry/geometry.st
 y
@@ -220,6 +220,19 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \float@box=\box49
 \@float@everytoks=\toks18
 \@floatcapt=\box50
+))
+(/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.st
+y
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\@emptytoks=\toks19
+\symAMSa=\mathgroup7
+\symAMSb=\mathgroup8
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
 )) (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.s
 ty
 Package: amsmath 2020/09/23 v2.17i AMS math features
@@ -229,7 +242,7 @@ For additional information on amsmath, use the `?' option.
 Package: amstext 2000/06/29 v2.01 AMS text
 (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
-\@emptytoks=\toks19
+\@emptytoks=\toks20
 \ex@=\dimen169
 )) (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.st
 y
@@ -259,37 +272,25 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
 \dotsspace@=\muskip16
 \c@parentequation=\count277
 \dspbrk@lvl=\count278
-\tag@help=\toks20
+\tag@help=\toks21
 \row@=\count279
 \column@=\count280
 \maxfields@=\count281
-\andhelp@=\toks21
+\andhelp@=\toks22
 \eqnshift@=\dimen172
 \alignsep@=\dimen173
 \tagshift@=\dimen174
 \tagwidth@=\dimen175
 \totwidth@=\dimen176
 \lineht@=\dimen177
-\@envbody=\toks22
+\@envbody=\toks23
 \multlinegap=\skip72
 \multlinetaggap=\skip73
-\mathdisplay@stack=\toks23
+\mathdisplay@stack=\toks24
 LaTeX Info: Redefining \[ on input line 2923.
 LaTeX Info: Redefining \] on input line 2924.
-)
-(/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb.sty
-Package: amssymb 2013/01/14 v3.01 AMS font symbols
-
-(/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.st
+) (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/generic/iftex/ifxetex.st
 y
-Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
-\symAMSa=\mathgroup7
-\symAMSb=\mathgroup8
-LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
-LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
-(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
-)) (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/generic/iftex/ifxetex.s
-ty
 Package: ifxetex 2019/10/25 v0.7 ifxetex legacy package. Use iftex instead.
 )
 (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/generic/iftex/ifluatex.sty
@@ -298,10 +299,14 @@ Package: ifluatex 2019/10/25 v1.5 ifluatex legacy package. Use iftex instead.
 Package: fontenc 2020/08/10 v2.0s Standard LaTeX package
 ) (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/base/inputenc.sty
 Package: inputenc 2020/08/01 v1.3d Input encoding file
-\inpenc@prehook=\toks24
-\inpenc@posthook=\toks25
+\inpenc@prehook=\toks25
+\inpenc@posthook=\toks26
 ) (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/base/textcomp.sty
 Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
+) (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/upquote/upquote.st
+y
+Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
+tim
 ) (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/xcolor/xcolor.sty
 Package: xcolor 2016/05/11 v2.12 LaTeX color extensions (UK)
 
@@ -336,9 +341,9 @@ Package: hyperref 2021-02-27 v7.00k Hypertext links for LaTeX
 y
 Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
 )
-(/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexc
-mds.sty
-Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
+(/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/pdftexcmds/pdftexcmd
+s.sty
+Package: pdftexcmds 2019/11/24 v0.31 Utility functions of pdfTeX for LuaTeX (HO
 )
 
 (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarer
@@ -499,7 +504,7 @@ Package: longtable 2020/01/07 v4.13 Multi-page Table package (DPC)
 \LT@rows=\count294
 \c@LT@tables=\count295
 \c@LT@chunks=\count296
-\LT@p@ftn=\toks26
+\LT@p@ftn=\toks27
 ) (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/graphics/lscape.st
 y
 Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
@@ -518,7 +523,7 @@ Package: array 2020/10/01 v2.5c Tabular extension package (FMi)
 \col@sep=\dimen184
 \ar@mcellbox=\box57
 \extrarowheight=\dimen185
-\NC@list=\toks27
+\NC@list=\toks28
 \extratabsurround=\skip81
 \backup@length=\skip82
 \ar@cellbox=\box58
@@ -529,7 +534,7 @@ Package: array 2020/10/01 v2.5c Tabular extension package (FMi)
 \TX@target=\dimen189
 \TX@delta=\dimen190
 \TX@cols=\count298
-\TX@ftn=\toks28
+\TX@ftn=\toks29
 )
 (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/threeparttablex/thre
 eparttablex.sty
@@ -544,17 +549,34 @@ Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 \TPTL@width=\skip83
 )
 \longtablewidth=\skip84
-
+(/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/lineno/lineno.sty
+Package: lineno 2005/11/02 line numbers on paragraphs v4.41
+\linenopenalty=\count299
+\output=\toks30
+\linenoprevgraf=\count300
+\linenumbersep=\dimen191
+\linenumberwidth=\dimen192
+\c@linenumber=\count301
+\c@pagewiselinenumber=\count302
+\c@LN@truepage=\count303
+\c@internallinenumber=\count304
+\c@internallinenumbers=\count305
+\quotelinenumbersep=\dimen193
+\bframerule=\dimen194
+\bframesep=\dimen195
+\bframebox=\box59
+LaTeX Info: Redefining \\ on input line 3056.
+)
 (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/csquotes/csquotes.st
 y
 Package: csquotes 2021-02-22 v5.2l context-sensitive quotations (JAW)
-\csq@reset=\count299
-\csq@gtype=\count300
-\csq@glevel=\count301
-\csq@qlevel=\count302
-\csq@maxlvl=\count303
-\csq@tshold=\count304
-\csq@ltx@everypar=\toks29
+\csq@reset=\count306
+\csq@gtype=\count307
+\csq@glevel=\count308
+\csq@qlevel=\count309
+\csq@maxlvl=\count310
+\csq@tshold=\count311
+\csq@ltx@everypar=\toks31
 
 (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/csquotes/csquotes.de
 f
@@ -568,49 +590,35 @@ g
 File: csquotes.cfg 
 ))
 \cslhangindent=\skip85
-\csllabelwidth=\skip86
-(/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/tools/calc.sty
-Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
-\calc@Acount=\count305
-\calc@Bcount=\count306
-\calc@Adimen=\dimen191
-\calc@Bdimen=\dimen192
-\calc@Askip=\skip87
-\calc@Bskip=\skip88
-LaTeX Info: Redefining \setlength on input line 80.
-LaTeX Info: Redefining \addtolength on input line 81.
-\calc@Ccount=\count307
-\calc@Cskip=\skip89
-)
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... none found.
 
 (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-
 pdftex.def
 File: l3backend-pdftex.def 2021-03-18 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count308
-\l__pdf_internal_box=\box59
+\l__color_backend_stack_int=\count312
+\l__pdf_internal_box=\box60
 ) (./paper.aux)
 \openout1 = `paper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 165.
-LaTeX Font Info:    ... okay on input line 165.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 165.
-LaTeX Font Info:    ... okay on input line 165.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 165.
-LaTeX Font Info:    ... okay on input line 165.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 165.
-LaTeX Font Info:    ... okay on input line 165.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 165.
-LaTeX Font Info:    ... okay on input line 165.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 165.
-LaTeX Font Info:    ... okay on input line 165.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 165.
-LaTeX Font Info:    ... okay on input line 165.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 165.
-LaTeX Font Info:    ... okay on input line 165.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 165.
-LaTeX Font Info:    ... okay on input line 165.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 137.
+LaTeX Font Info:    ... okay on input line 137.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 137.
+LaTeX Font Info:    ... okay on input line 137.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 137.
+LaTeX Font Info:    ... okay on input line 137.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 137.
+LaTeX Font Info:    ... okay on input line 137.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 137.
+LaTeX Font Info:    ... okay on input line 137.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 137.
+LaTeX Font Info:    ... okay on input line 137.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 137.
+LaTeX Font Info:    ... okay on input line 137.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 137.
+LaTeX Font Info:    ... okay on input line 137.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 137.
+LaTeX Font Info:    ... okay on input line 137.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -671,7 +679,7 @@ y
 Package: ltcaption 2020/05/30 v1.4b longtable captions (AR)
 )
 Package caption Info: End \AtBeginDocument code.
-Package hyperref Info: Link coloring ON on input line 165.
+Package hyperref Info: Link coloring ON on input line 137.
 
 (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
@@ -684,11 +692,11 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 titlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count309
+\c@section@level=\count313
 )
-LaTeX Info: Redefining \ref on input line 165.
-LaTeX Info: Redefining \pageref on input line 165.
-LaTeX Info: Redefining \nameref on input line 165.
+LaTeX Info: Redefining \ref on input line 137.
+LaTeX Info: Redefining \pageref on input line 137.
+LaTeX Info: Redefining \nameref on input line 137.
 (./paper.out) (./paper.out)
 \@outlinefile=\write5
 \openout5 = `paper.out'.
@@ -696,38 +704,43 @@ LaTeX Info: Redefining \nameref on input line 165.
 
 Class apa6 Warning: Abstract not defined.
 
+LaTeX Font Info:    Trying to load font information for T1+lmss on input line 1
+39.
+(/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmss.fd
+File: t1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 1
-67.
+39.
 (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
-File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
-67.
+39.
 (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
-File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-167.
+139.
 (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
-File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-167.
+139.
 (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
-File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 167.
+(Font)              <12> on input line 139.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 167.
+(Font)              <8> on input line 139.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 167.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 167
+(Font)              <6> on input line 139.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 139
 .
 (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 167
+LaTeX Font Info:    Trying to load font information for U+msb on input line 139
 .
 (/Users/josephdespres/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -738,70 +751,66 @@ tex.map}
 
 Package amsmath Warning: Foreign command \atopwithdelims;
 (amsmath)                \frac or \genfrac should be used instead
-(amsmath)                 on input line 173.
+(amsmath)                 on input line 145.
 
-[2] [3]
-<paper_files/figure-latex/unnamed-chunk-2-1.pdf, id=53, 444.66125pt x 299.1175p
+[2]
+Underfull \vbox (badness 7649) has occurred while \output is active []
+
+[3]
+<paper_files/figure-latex/unnamed-chunk-2-1.pdf, id=54, 444.66125pt x 299.1175p
 t>
 File: paper_files/figure-latex/unnamed-chunk-2-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/unnamed-chunk-2-1.pdf>
 Package pdftex.def Info: paper_files/figure-latex/unnamed-chunk-2-1.pdf  used o
-n input line 198.
+n input line 170.
 (pdftex.def)             Requested size: 444.66016pt x 299.11676pt.
-
-Overfull \hbox (3.81268pt too wide) in paragraph at lines 198--199
-[][]  
- []
-
-
-Underfull \vbox (badness 3009) has occurred while \output is active []
-
-[4 <./paper_files/figure-latex/unnamed-chunk-2-1.pdf>]
-<paper_files/figure-latex/unnamed-chunk-3-1.pdf, id=67, 435.6275pt x 290.08376p
+[4]
+<paper_files/figure-latex/unnamed-chunk-3-1.pdf, id=61, 435.6275pt x 290.08376p
 t>
 File: paper_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/unnamed-chunk-3-1.pdf>
 Package pdftex.def Info: paper_files/figure-latex/unnamed-chunk-3-1.pdf  used o
-n input line 204.
+n input line 183.
 (pdftex.def)             Requested size: 435.62643pt x 290.08304pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-[5 <./paper_files/figure-latex/unnamed-chunk-3-1.pdf>]
+[5 <./paper_files/figure-latex/unnamed-chunk-2-1.pdf>] [6 <./paper_files/figure
+-latex/unnamed-chunk-3-1.pdf>]
 </Users/josephdespres/Documents/MSU/STT-864_Statistical_Methods_II/March-Madnes
-s/paper/paper_files/equ.png, id=79, 948.54375pt x 170.6375pt>
+s/paper/paper_files/equ.png, id=87, 948.54375pt x 170.6375pt>
 File: /Users/josephdespres/Documents/MSU/STT-864_Statistical_Methods_II/March-M
 adness/paper/paper_files/equ.png Graphic file (type png)
 <use /Users/josephdespres/Documents/MSU/STT-864_Statistical_Methods_II/March-Ma
 dness/paper/paper_files/equ.png>
 Package pdftex.def Info: /Users/josephdespres/Documents/MSU/STT-864_Statistical
-_Methods_II/March-Madness/paper/paper_files/equ.png  used on input line 213.
+_Methods_II/March-Madness/paper/paper_files/equ.png  used on input line 198.
 (pdftex.def)             Requested size: 469.75494pt x 84.50616pt.
+[7 </Users/josephdespres/Documents/MSU/STT-864_Statistical_Methods_II/March-Mad
+ness/paper/paper_files/equ.png>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-Underfull \vbox (badness 1127) has occurred while \output is active []
-
-[6 </Users/josephdespres/Documents/MSU/STT-864_Statistical_Methods_II/March-Mad
-ness/paper/paper_files/equ.png>] [7] [8]
-<paper_files/figure-latex/unnamed-chunk-6-1.pdf, id=101, 434.62375pt x 290.0837
+[8]
+<paper_files/figure-latex/unnamed-chunk-6-1.pdf, id=104, 434.62375pt x 290.0837
 6pt>
 File: paper_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/unnamed-chunk-6-1.pdf>
 Package pdftex.def Info: paper_files/figure-latex/unnamed-chunk-6-1.pdf  used o
-n input line 259.
+n input line 243.
 (pdftex.def)             Requested size: 434.6492pt x 290.10074pt.
-[9 <./paper_files/figure-latex/unnamed-chunk-6-1.pdf>] [10] AED endfloat: Proce
-ssing end Figures and Tables [11] (./paper.aux)
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[9] [10 <./paper_files/figure-latex/unnamed-chunk-6-1.pdf>] [11] AED endfloat: 
+Processing end Figures and Tables [12] (./paper.aux)
 Package rerunfilecheck Info: File `paper.out' has not changed.
-(rerunfilecheck)             Checksum: D50509FF271EB8BFE2A25395295B9A66;770.
+(rerunfilecheck)             Checksum: CA05615C10EAE47B8F8C9E188E1DC05E;772.
  ) 
 Here is how much of TeX's memory you used:
- 13593 strings out of 480929
- 205534 string characters out of 5904869
- 537821 words of memory out of 5000000
- 30534 multiletter control sequences out of 15000+600000
- 440890 words of font info for 60 fonts, out of 8000000 for 9000
+ 13772 strings out of 480937
+ 208736 string characters out of 5905019
+ 551503 words of memory out of 5000000
+ 30698 multiletter control sequences out of 15000+600000
+ 446649 words of font info for 62 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 83i,11n,88p,2244b,498s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 83i,11n,88p,2244b,504s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/Users/josephdespres/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc
 }{/Users/josephdespres/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}
 {/Users/josephdespres/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.e
@@ -810,11 +819,12 @@ nc}</Users/josephdespres/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx1
 ex10.pfb></Users/josephdespres/Library/TinyTeX/texmf-dist/fonts/type1/public/lm
 /lmr12.pfb></Users/josephdespres/Library/TinyTeX/texmf-dist/fonts/type1/public/
 lm/lmr8.pfb></Users/josephdespres/Library/TinyTeX/texmf-dist/fonts/type1/public
-/lm/lmri12.pfb>
-Output written on paper.pdf (11 pages, 224182 bytes).
+/lm/lmri12.pfb></Users/josephdespres/Library/TinyTeX/texmf-dist/fonts/type1/pub
+lic/lm/lmss8.pfb>
+Output written on paper.pdf (12 pages, 239547 bytes).
 PDF statistics:
- 175 PDF objects out of 1000 (max. 8388607)
- 144 compressed objects within 2 object streams
- 37 named destinations out of 1000 (max. 500000)
+ 185 PDF objects out of 1000 (max. 8388607)
+ 152 compressed objects within 2 object streams
+ 40 named destinations out of 1000 (max. 500000)
  77 words of extra memory for PDF output out of 10000 (max. 10000000)
 
