@@ -1,0 +1,35 @@
+---
+title: ""
+subtitle: ""
+author: ""
+institute: ""
+date: ""
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r eval=FALSE, echo=FALSE}
+equatiomatic::extract_eq(model = logistic_fit, 
+                         use_coefs = FALSE, 
+                         show_distribution = FALSE,
+                         intercept = "beta")
+# results='asis' in code chunk to render as LaTex
+```
+
+$$
+\begin{align}
+\beta_{0} + \beta_{1}(\operatorname{x3fg}) + \beta_{2}(\operatorname{opposingx3fg}) + \beta_{3}(\operatorname{fg\_percent}) + \beta_{4}(\operatorname{opposingfg\_percent}) + \beta_{5}(\operatorname{ft\_percent}) + \beta_{6}(\operatorname{opposingft\_percent}) + \beta_{7}(\operatorname{rpg}) + \beta_{8}(\operatorname{opposingrpg}) + \beta_{9}(\operatorname{st}) + \beta_{10}(\operatorname{opposingst}) + \beta_{11}(\operatorname{to}) + \beta_{12}(\operatorname{opposingto}) + \beta_{13}(\operatorname{opposingbkpg}) + \beta_{14}(\operatorname{bkpg})
+\begin{align}
+$$
+
+---
+$$
+\begin{align}
+\operatorname{polrights} = \beta_{0} + \beta_{1}(\operatorname{corruption\_perception\_index\_cpi}) +\\ \beta_{2}(\operatorname{edu\_exp\_gdp\_per\_person}) +\\ \beta_{3}(\operatorname{life\_expectancy\_years}) +\\ \beta_{4}(\operatorname{military\_spending\_pct\_of\_gdp}) +\\ \beta_{5}(\operatorname{murder\_per\_mil\_people}) + \epsilon
+\end{align}
+$$

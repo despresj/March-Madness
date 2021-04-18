@@ -5,8 +5,8 @@
 %
 \documentclass[
   man,floatsintext]{apa6}
+\usepackage{amsmath,amssymb}
 \usepackage{lmodern}
-\usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
@@ -103,6 +103,20 @@
 % \setlength{\parindent}{0.5in}
 % \setlength{\parskip}{0pt plus 0pt minus 0pt}
 
+% Overwrite redefinition of paragraph and subparagraph by the default LaTeX template
+% See https://github.com/crsh/papaja/issues/292
+\makeatletter
+\renewcommand{\paragraph}{\@startsection{paragraph}{4}{\parindent}%
+  {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+  {-1em}%
+  {\normalfont\normalsize\bfseries\itshape\typesectitle}}
+
+\renewcommand{\subparagraph}[1]{\@startsection{subparagraph}{5}{1em}%
+  {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+  {-\z@\relax}%
+  {\normalfont\normalsize\itshape\hspace{\parindent}{#1}\textit{\addperi}}{\relax}}
+\makeatother
+
 % \usepackage{etoolbox}
 \makeatletter
 \patchcmd{\HyOrg@maketitle}
@@ -120,12 +134,29 @@
 
 \linenumbers
 \usepackage{csquotes}
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
-\newenvironment{cslreferences}%
-  {\setlength{\parindent}{0pt}%
-  \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces}%
-  {\par}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
+ {% don't indent paragraphs
+  \setlength{\parindent}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1 \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces\fi
+  % set entry spacing
+  \ifnum #2 > 0
+  \setlength{\parskip}{#2\baselineskip}
+  \fi
+ }%
+ {}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
 \title{Using GLMs to Predict Basketball Games}
 \author{Joe Despres\textsuperscript{} \& Sabrina Ball\textsuperscript{}}
@@ -152,9 +183,9 @@ These models predict the correct outcomes with an accuracy between 59\% and 65\%
 
 \begin{longtable}[t]{lrrrrrr}
 \caption{\label{tab:unnamed-chunk-1}Descriptive Statistics}\\
-\toprule{}
+\toprule
 Variable & Mean & Median & Std & Min & Max & Range\\
-\midrule{}
+\midrule
 Three-Points goals Scored & 242.08 & 241.00 & 48.18 & 107.0 & 454.00 & 347.00\\
 Field Goals Scored Percentage & 44.03 & 44.10 & 2.46 & 35.4 & 52.60 & 17.20\\
 Rebounds Per Game & 35.48 & 35.35 & 2.49 & 27.6 & 43.81 & 16.21\\
@@ -162,7 +193,7 @@ Steels Per Game & 206.34 & 202.00 & 40.59 & 116.0 & 369.00 & 253.00\\
 Turn Overs & 421.84 & 419.00 & 49.01 & 290.0 & 604.00 & 314.00\\
 \addlinespace
 Blocks Per game & 3.30 & 3.20 & 0.94 & 1.3 & 6.80 & 5.50\\
-\bottomrule{}
+\bottomrule
 \end{longtable}
 
 \begin{figure}
@@ -204,9 +235,9 @@ In Table 2, made manually with the kableExtra package (Zhu, 2020), you can see t
 
 \begin{longtable}[t]{llll}
 \caption{\label{tab:unnamed-chunk-5}Regression Output}\\
-\toprule{}
+\toprule
 Terms & Multinomial Model & Logistic Model & Poisson Model\\
-\midrule{}
+\midrule
 <-12 & -1.2516 & -- & --\\
 -12:-4 & -0.28546 & -- & --\\
 -4:4 & 0.54181 & -- & --\\
@@ -232,7 +263,7 @@ O* Blocks & -0.05622 & 0.16488 & 0.00263\\
 \multicolumn{4}{l}{\rule{0pt}{1em}\textsuperscript{1} Sample size 35248 games.}\\
 \multicolumn{4}{l}{\rule{0pt}{1em}\textsuperscript{2} O* is the term asscoiated with the opposing team.}\\
 \multicolumn{4}{l}{\rule{0pt}{1em}\textsuperscript{3} All the above terms are significant at P < 0.01.}\\
-\multicolumn{4}{l}{\rule{0pt}{1em}\textsuperscript{4} Multinomeal Intercepts are differences in predicted score.}\\{}
+\multicolumn{4}{l}{\rule{0pt}{1em}\textsuperscript{4} Multinomeal Intercepts are differences in predicted score.}\\
 \end{longtable}
 
 \hypertarget{goodness-of-fit}{%
@@ -261,7 +292,7 @@ Future studies could be focused on making a better fit and getting a better unde
 \setlength{\leftskip}{0.0in}
 
 \hypertarget{refs}{}
-\begin{cslreferences}
+\begin{CSLReferences}{1}{0}
 \leavevmode\hypertarget{ref-R-purrr}{}%
 Henry, L., \& Wickham, H. (2020). \emph{Purrr: Functional programming tools}. Retrieved from \url{https://CRAN.R-project.org/package=purrr}
 
@@ -275,11 +306,12 @@ NCAA. (2021). \emph{Men's basketball}. Retrieved from \url{https://www.ncaa.com/
 R Core Team. (2020). \emph{R: A language and environment for statistical computing}. Vienna, Austria: R Foundation for Statistical Computing. Retrieved from \url{https://www.R-project.org/}
 
 \leavevmode\hypertarget{ref-R-tidyverse}{}%
-Wickham, H., Averick, M., Bryan, J., Chang, W., McGowan, L. D., François, R., \ldots{} Yutani, H. (2019). Welcome to the tidyverse. \emph{Journal of Open Source Software}, \emph{4}(43), 1686. \url{https://doi.org/10.21105/joss.01686}
+Wickham, H., Averick, M., Bryan, J., Chang, W., McGowan, L. D., François, R., \ldots{} Yutani, H. (2019). Welcome to the {tidyverse}. \emph{Journal of Open Source Software}, \emph{4}(43), 1686. \url{https://doi.org/10.21105/joss.01686}
 
 \leavevmode\hypertarget{ref-R-kableExtra}{}%
-Zhu, H. (2020). \emph{KableExtra: Construct complex table with 'kable' and pipe syntax}. Retrieved from \url{https://CRAN.R-project.org/package=kableExtra}
-\end{cslreferences}
+Zhu, H. (2020). \emph{kableExtra: Construct complex table with 'kable' and pipe syntax}. Retrieved from \url{https://CRAN.R-project.org/package=kableExtra}
+
+\end{CSLReferences}
 
 \endgroup
 
