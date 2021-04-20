@@ -4,6 +4,7 @@
 \PassOptionsToPackage{dvipsnames,svgnames*,x11names*}{xcolor}
 %
 \documentclass[
+  english,
   man,floatsintext]{apa6}
 \usepackage{amsmath,amssymb}
 \usepackage{lmodern}
@@ -39,6 +40,7 @@
 \hypersetup{
   pdftitle={Using GLMs to Predict Basketball Games},
   pdfauthor={Joe Despres \& Sabrina Ball},
+  pdflang={en-EN},
   pdfkeywords={keyword},
   colorlinks=true,
   linkcolor=Maroon,
@@ -130,10 +132,17 @@
 \makeatother
 \shorttitle{Using GLMs to Predict Basketball Games}
 \keywords{keyword\newline\indent Word count: X}
-\usepackage{lineno}
-
-\linenumbers
 \usepackage{csquotes}
+\ifxetex
+  % Load polyglossia as late as possible: uses bidi with RTL langages (e.g. Hebrew, Arabic)
+  \usepackage{polyglossia}
+  \setmainlanguage[]{english}
+\else
+  \usepackage[main=english]{babel}
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+\fi
 \ifluatex
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -171,7 +180,7 @@
 \hypertarget{introduction}{%
 \subsection{Introduction}\label{introduction}}
 
-Every year qualifying Division I basketball teams compete in the annual March Madness tournament. Casual fans and enthusiasts submit predictions gambling small sums of money in hopes of completing a perfect bracket. A perfect bracket is when one correctly predicts the outcome of all 63 games. This study uses logistic, poisson, and multinomial regression models fitted with R (R Core Team, 2020) to predict the outcomes of the March Madness tournament games. Our primary objective is to determine which of these GLMs make the most accurate predictions. To begin, we collect data from three different sources Kaggle (Kaggle, 2021), NCAA (NCAA, 2021), and the tournament results (NCAA, 2021). Kaggle (Kaggle, 2021), provides a comprehensive dataset including all NCAA in-season basketball games from 2001 to 2020. The NCAA (NCAA, 2021) provides team-level statistics for each team. We filter, clean, and combine these data using the tidyverse package (Wickham et al., 2019). Then use the combination of these datasets to fit our models. The objective is to predict the individual game outcomes as accurately as possible and determine which GLM is the most accurate.\\
+Every year qualifying Division I basketball teams compete in the annual March Madness tournament. Casual fans and enthusiasts submit predictions gambling small sums of money in hopes of completing a perfect bracket. A perfect bracket is when one correctly predicts the outcome of all 63 games. This study uses logistic, poisson, and multinomial regression models fitted with R (R Core Team, 2020) to predict the outcomes of the March Madness tournament games\footnote{Rcripts and datasets assocaited with this project can be found in this \href{https://github.com/despresj/March-Madness}{Github Repository}}. Our primary objective is to determine which of these GLMs make the most accurate predictions. To begin, we collect data from three different sources Kaggle (Kaggle, 2021), NCAA (NCAA, 2021), and the tournament results (NCAA, 2021). Kaggle (Kaggle, 2021), provides a comprehensive dataset including all NCAA in-season basketball games from 2001 to 2020. The NCAA (NCAA, 2021) provides team-level statistics for each team. We filter, clean, and combine these data using the tidyverse package (Wickham et al., 2019). Then use the combination of these datasets to fit our models. The objective is to predict the individual game outcomes as accurately as possible and determine which GLM is the most accurate.\\
 Our response terms is the outcome of the game, \emph{win or loss} without the possibility of a tie. Our aim is to derive a function that will accurately predict this using team-level statistics. In our dataset, we have many predictors however, we only selected ones that are not co-linear. First, \emph{field goal percentage} which is the ratio of attempted scores to successful scores. \emph{Free-throw percentage}, is the the rate of scoring a penalty shot. Cumulative \emph{Three-point goals made}, field goals made from a sufficient distance. \emph{Rebounds per game}, counts the amount of times a team recovers the ball after a missed shot. \emph{Steals} is when a team was able to remove possession of the ball from the opposing team. \emph{Turnover}, is the number of times the team lost possession. \emph{Blocks}, is the number of times the team was able to block a shot made by the opposing team.\\
 March Madness is a winner-take-all tournament and teams do not have a second chance to play a game. Therefore, making accurate predictions will be dependent on predicting the previous round correctly. We did make predictions using that method, however our models will be compared by treating the games as independent of the previous round. Meaning, we will filter our data down to include only the 64 teams that qualify, predict every single one of the \({64\choose 2} = 2016\) possible combination, then use the 63 games played as a sample from the population of all possible games. After that, we use basic statistical methods to determine if the predictions were better than random chance, better than betting markets, and better than seeds. Then we use the results to determine which regression model performs the best.\\
 We will employ three regression methods, logistic, Poisson, and multinomial, to generate predictive models, compare the results, and decide which is best suited to this problem. Logistic regression most naturally suits this problem because games cannot tie and there is a perfectly equal number of wins and losses. This problem could also be suited to Poisson regression because the number of points scored is roughly Poisson distributed. After fitting a Poisson model, we will predict the number of points scored by Team A, and Team B. Then select the team with the highest predicted score to be the predicted winner. A multinomial model is less naturally suited to this problem, however, it may address the shortcomings of the logistic model. In particular, many games are close scoring and won by merely a few points. Therefore, we will use multinomial regression to predict the difference in-game score by assigning the differences into five categories. From there, assign a predicted winner based on which outcome the model considers to be the most likely.
@@ -269,11 +278,12 @@ O* Blocks & -0.05622 & 0.16488 & 0.00263\\
 \hypertarget{goodness-of-fit}{%
 \subsection{Goodness of Fit}\label{goodness-of-fit}}
 
-Now that we have fitted the model, let us take a look at performance. Using the tidyr {[}@-tidyr{]} package, we make every combination of teams and associated statistics in one dataframe. We wrote custom functions tha take two of the 64 teams as inputs and output the probability of winning, predicted amount of points scored, or probabilities of the score resulting in one of the above-mentioned multinomial categories. After that, we used the purrr (Henry \& Wickham, 2020) package to iterate over all possible games that could be played. From there, wrote and ran a web scraping script to obtain a dataframe of the tournament results. Finally, we counted the games each model predicted correctly and incorrectly. In this case, our population is all \({64\choose 2}\) possible games in this tournament and a sample is the 63 games that were played. We are not assuming that we have a random sample from the whole population as these are the best teams in the league. Also, there is a selection bias towards games that were played. For example, the teams that played in the finals are represented 6 times in our sample and 32 of the 64 teams are represented only once. Therefore, we do not claim that these results will hold for all NCAA games. However, for the purpose of comparing models that make predictions for this specific tournament is appropriate.
+Now that we have fitted the model, let us take a look at performance. Using the tidyr (Wickham, 2021) package, we make every combination of teams and associated statistics in one dataframe. We wrote custom functions tha take two of the 64 teams as inputs and output the probability of winning, predicted amount of points scored, or probabilities of the score resulting in one of the above-mentioned multinomial categories. After that, we used the purrr (Henry \& Wickham, 2020) package to iterate over all possible games that could be played. From there, wrote and ran a web scraping script to obtain a dataframe of the tournament results. Finally, we counted the games each model predicted correctly and incorrectly. In this case, our population is all \({64\choose 2}\) possible games in this tournament and a sample is the 63 games that were played. We are not assuming that we have a random sample from the whole population as these are the best teams in the league. Also, there is a selection bias towards games that were played. For example, the teams that played in the finals are represented 6 times in our sample and 32 of the 64 teams are represented only once. Therefore, we do not claim that these results will hold for all NCAA games. However, for the purpose of comparing models that make predictions for this specific tournament is appropriate.
 
 \includegraphics{paper_files/figure-latex/unnamed-chunk-6-1.pdf}
-m
-\#\# Conculsion
+
+\hypertarget{conculsion}{%
+\subsection{Conculsion}\label{conculsion}}
 
 From these results, we see that the logistic and Poisson models outperform the multinomial. All three models are well over 50\% accurate, confirming the claim that GLMs can predict March Madness outcomes better than random chance. Also, we confirmed the suspicion that basketball statistics are symmetric in relation to the probability of winning and are not when we are predicting the game score.
 
@@ -303,6 +313,9 @@ NCAA. (2021). \emph{Men's basketball}. Retrieved from \url{https://www.ncaa.com/
 
 \leavevmode\hypertarget{ref-R-base}{}%
 R Core Team. (2020). \emph{R: A language and environment for statistical computing}. Vienna, Austria: R Foundation for Statistical Computing. Retrieved from \url{https://www.R-project.org/}
+
+\leavevmode\hypertarget{ref-R-tidyr}{}%
+Wickham, H. (2021). \emph{Tidyr: Tidy messy data}. Retrieved from \url{https://CRAN.R-project.org/package=tidyr}
 
 \leavevmode\hypertarget{ref-R-tidyverse}{}%
 Wickham, H., Averick, M., Bryan, J., Chang, W., McGowan, L. D., François, R., \ldots{} Yutani, H. (2019). Welcome to the {tidyverse}. \emph{Journal of Open Source Software}, \emph{4}(43), 1686. \url{https://doi.org/10.21105/joss.01686}
