@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.4.10)  17 APR 2021 19:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.4.10)  19 APR 2021 20:50
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -766,7 +766,7 @@ Package amsmath Warning: Foreign command \atopwithdelims;
 Underfull \vbox (badness 7649) has occurred while \output is active []
 
 [3]
-<paper_files/figure-latex/unnamed-chunk-2-1.pdf, id=54, 444.66125pt x 299.1175p
+<paper_files/figure-latex/unnamed-chunk-2-1.pdf, id=50, 444.66125pt x 299.1175p
 t>
 File: paper_files/figure-latex/unnamed-chunk-2-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/unnamed-chunk-2-1.pdf>
@@ -774,7 +774,7 @@ Package pdftex.def Info: paper_files/figure-latex/unnamed-chunk-2-1.pdf  used o
 n input line 201.
 (pdftex.def)             Requested size: 444.66016pt x 299.11676pt.
 [4]
-<paper_files/figure-latex/unnamed-chunk-3-1.pdf, id=61, 435.6275pt x 290.08376p
+<paper_files/figure-latex/unnamed-chunk-3-1.pdf, id=57, 435.6275pt x 290.08376p
 t>
 File: paper_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/unnamed-chunk-3-1.pdf>
@@ -787,7 +787,7 @@ Underfull \vbox (badness 5637) has occurred while \output is active []
 [5 <./paper_files/figure-latex/unnamed-chunk-2-1.pdf>] [6 <./paper_files/figure
 -latex/unnamed-chunk-3-1.pdf>]
 </Users/josephdespres/Documents/MSU/STT-864_Statistical_Methods_II/March-Madnes
-s/paper/paper_files/equ.png, id=87, 948.54375pt x 170.6375pt>
+s/paper/paper_files/equ.png, id=83, 948.54375pt x 170.6375pt>
 File: /Users/josephdespres/Documents/MSU/STT-864_Statistical_Methods_II/March-M
 adness/paper/paper_files/equ.png Graphic file (type png)
 <use /Users/josephdespres/Documents/MSU/STT-864_Statistical_Methods_II/March-Ma
@@ -797,7 +797,7 @@ _Methods_II/March-Madness/paper/paper_files/equ.png  used on input line 229.
 (pdftex.def)             Requested size: 469.75494pt x 84.50616pt.
 [7 </Users/josephdespres/Documents/MSU/STT-864_Statistical_Methods_II/March-Mad
 ness/paper/paper_files/equ.png>] [8]
-<paper_files/figure-latex/unnamed-chunk-6-1.pdf, id=104, 434.62375pt x 290.0837
+<paper_files/figure-latex/unnamed-chunk-6-1.pdf, id=100, 434.62375pt x 290.0837
 6pt>
 File: paper_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/unnamed-chunk-6-1.pdf>
@@ -810,13 +810,13 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 [9 <./paper_files/figure-latex/unnamed-chunk-6-1.pdf>] [10] AED endfloat: Proce
 ssing end Figures and Tables [11] (./paper.aux)
 Package rerunfilecheck Info: File `paper.out' has not changed.
-(rerunfilecheck)             Checksum: CA05615C10EAE47B8F8C9E188E1DC05E;772.
+(rerunfilecheck)             Checksum: 1192D7E7BE654E06D887D53E669EB0DF;677.
  ) 
 Here is how much of TeX's memory you used:
- 13845 strings out of 480929
- 209657 string characters out of 5904869
- 542486 words of memory out of 5000000
- 30775 multiletter control sequences out of 15000+600000
+ 13841 strings out of 480929
+ 209611 string characters out of 5904869
+ 541451 words of memory out of 5000000
+ 30773 multiletter control sequences out of 15000+600000
  446649 words of font info for 62 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  83i,11n,88p,2244b,504s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -830,10 +830,10 @@ ex10.pfb></Users/josephdespres/Library/TinyTeX/texmf-dist/fonts/type1/public/lm
 lm/lmr8.pfb></Users/josephdespres/Library/TinyTeX/texmf-dist/fonts/type1/public
 /lm/lmri12.pfb></Users/josephdespres/Library/TinyTeX/texmf-dist/fonts/type1/pub
 lic/lm/lmss8.pfb>
-Output written on paper.pdf (11 pages, 238869 bytes).
+Output written on paper.pdf (11 pages, 238823 bytes).
 PDF statistics:
- 181 PDF objects out of 1000 (max. 8388607)
- 149 compressed objects within 2 object streams
- 39 named destinations out of 1000 (max. 500000)
- 77 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 176 PDF objects out of 1000 (max. 8388607)
+ 144 compressed objects within 2 object streams
+ 37 named destinations out of 1000 (max. 500000)
+ 69 words of extra memory for PDF output out of 10000 (max. 10000000)
 
