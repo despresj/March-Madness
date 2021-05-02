@@ -27,7 +27,7 @@ Can we make a predictive model for the upcoming March Madness Tournament.
 
 ### scoring
 
-![](https://i.imgur.com/AYQ71Qy.png)
+![](https://i.imgur.com/ONWL3NL.png)
 
 ### Performance
 
