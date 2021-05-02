@@ -15,11 +15,24 @@
 | 4/10 | recipes::step_normalize() compare outcome | :white_check_mark: Not helpful|
 | 4/10 | Test performance against, random chance, seeds, and odds. | :white_check_mark:  |
 | 4/19 | [slides](https://github.com/despresj/March-Madness/blob/main/slides/slides.Rmd) due | :white_check_mark: Finished  |
-| 4/16 | [draft Paper](https://github.com/despresj/March-Madness/blob/main/paper/paper.pdf) | | :white_check_mark: draft finished |
-| 4/24 | [Paper](https://github.com/despresj/March-Madness/blob/main/paper/paper.pdf) Due| |:white_check_mark: Finished!|
+| 4/16 | [draft Paper](https://github.com/despresj/March-Madness/blob/main/paper/paper.pdf) | |   :white_check_mark: draft finished |
+| 4/24 | [Paper](https://github.com/despresj/March-Madness/blob/main/paper/paper.pdf) Due| |  :white_check_mark:   Finished!|
 ## Questions:
 
 Can we make a predictive model for the upcoming March Madness Tournament.
+
+### Model
+
+![](/Users/josephdespres/Documents/MSU/MISC/STT-864_Statistical_Methods_II/March-Madness/slides/images/model.png)
+
+### scoring
+
+![](/Users/josephdespres/Documents/MSU/MISC/STT-864_Statistical_Methods_II/March-Madness/slides/images/scoring.png)
+
+### Performance
+
+![](/Users/josephdespres/Documents/MSU/MISC/STT-864_Statistical_Methods_II/March-Madness/slides/images/performance.png)
+
 
 ### First Round Predcitons
 ![](https://i.imgur.com/KG9rI9z.png)
@@ -31,10 +44,6 @@ Can we make a predictive model for the upcoming March Madness Tournament.
 ### Filled out bracket
 ![](https://i.imgur.com/dCyHFlc.png)
 
-
-### scoring
-
-assing score of pred_winner - pred_loser. sum it up and compare to 0.
 
 # Datasets:
 ### Turniment game outcomes data
