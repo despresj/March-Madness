@@ -23,15 +23,15 @@ Can we make a predictive model for the upcoming March Madness Tournament.
 
 ### Model
 
-![](/Users/josephdespres/Documents/MSU/MISC/STT-864_Statistical_Methods_II/March-Madness/slides/images/model.png)
+![](https://i.imgur.com/QY9tZK8.png)
 
 ### scoring
 
-![](/Users/josephdespres/Documents/MSU/MISC/STT-864_Statistical_Methods_II/March-Madness/slides/images/scoring.png)
+![](https://i.imgur.com/AYQ71Qy.png)
 
 ### Performance
 
-![](/Users/josephdespres/Documents/MSU/MISC/STT-864_Statistical_Methods_II/March-Madness/slides/images/performance.png)
+![](https://i.imgur.com/ixDfdoU.png)
 
 
 ### First Round Predcitons
