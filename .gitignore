@@ -12,3 +12,6 @@ slides/flipbookeg.Rmd
 slides/slideeg.Rmd
 slides/slides_files
 slides_files
+.DS_Store
+cache/
+flipbookeg_files/
